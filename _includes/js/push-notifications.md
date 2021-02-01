@@ -4,7 +4,7 @@ If you haven't installed the SDK yet, please [head over to the Push QuickStart](
 
 ## Introduction
 
-Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of Parse to send push notifications.
+Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of MSG to send push notifications.
 
 <div class='tip info'><div>
 The JavaScript SDK does not currently support receiving pushes. It can only be used to send notifications to iOS and Android applications. A common use case is to send pushes from Cloud Code.
@@ -16,7 +16,7 @@ There is no setup required to use the JavaScript SDK for sending push notificati
 
 ## Installations
 
-Every Parse application installed on a device registered for push notifications has an associated `Installation` object. The `Installation` object is where you store all the data needed to target push notifications. For example, in a baseball app, you could store the teams a user is interested in to send updates about their performance.
+Every MSG application installed on a device registered for push notifications has an associated `Installation` object. The `Installation` object is where you store all the data needed to target push notifications. For example, in a baseball app, you could store the teams a user is interested in to send updates about their performance.
 
 Note that `Installation` data can only be modified by the client SDKs, the data browser, or the REST API.
 
@@ -26,26 +26,26 @@ This class has several special fields that help you manage and target devices.
 *   **`channels`**: An array of the channels to which a device is currently subscribed.
 *   **`timeZone`**: The current time zone where the target device is located. This value is synchronized every time an `Installation` object is saved from the device.
 *   **`deviceType`**: The type of device, "ios", "android", "winrt", "winphone", or "dotnet"_(readonly)_.
-*   **`pushType`**: This field is reserved for directing Parse to the push delivery network to be used. If the device is registered to receive pushes via FCM, this field will be marked "gcm". If this device is not using FCM, and is using Parse's push notification service, it will be blank _(readonly)_.
-*   **`installationId`**: Universally Unique Identifier (UUID) for the device used by Parse. It must be unique across all of an app's installations. _(readonly)_.
+*   **`pushType`**: This field is reserved for directing MSG to the push delivery network to be used. If the device is registered to receive pushes via FCM, this field will be marked "gcm". If this device is not using FCM, and is using MSG's push notification service, it will be blank _(readonly)_.
+*   **`installationId`**: Universally Unique Identifier (UUID) for the device used by MSG. It must be unique across all of an app's installations. _(readonly)_.
 *   **`deviceToken`**: The Apple or Google generated token used to deliver messages to the APNs or FCM push networks respectively.
 *   **`channelUris`**: The Microsoft-generated push URIs for Windows devices.
 *   **`appName`**: The display name of the client application to which this installation belongs.
 *   **`appVersion`**: The version string of the client application to which this installation belongs.
-*   **`parseVersion`**: The version of the Parse SDK which this installation uses.
+*   **`parseVersion`**: The version of the MSG SDK which this installation uses.
 *   **`appIdentifier`**: A unique identifier for this installation's client application. In iOS, this is the Bundle Identifier.
 
 ## Sending Pushes
 
-There are two ways to send push notifications using Parse: [channels](#using-channels) and [advanced targeting](#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
+There are two ways to send push notifications using MSG: [channels](#using-channels) and [advanced targeting](#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
 
-Sending notifications is often done from the Parse Dashboard push console, the [REST API](#sending-pushes) or from [Cloud Code](#sending-pushes). Since the JavaScript SDK is used in Cloud Code, this is the place to start if you want to send pushes from your Cloud Functions. However, if you decide to send notifications from the JavaScript SDK outside of Cloud Code or any of the other client SDKs, you will need to set    **Client Push Enabled** in the Push Notifications settings of your Parse app.
+Sending notifications is often done from the MSG Dashboard push console, the [REST API](#sending-pushes) or from [Cloud Code](#sending-pushes). Since the JavaScript SDK is used in Cloud Code, this is the place to start if you want to send pushes from your Cloud Functions. However, if you decide to send notifications from the JavaScript SDK outside of Cloud Code or any of the other client SDKs, you will need to set    **Client Push Enabled** in the Push Notifications settings of your MSG app.
 
 However, be sure you understand that enabling Client Push can lead to a security vulnerability in your app. We recommend that you enable Client Push for testing purposes only, and move your push notification logic into Cloud Code when your app is ready to go into production.
 
 <img alt="" data-echo="{{ '/assets/images/client_push_settings.png' | prepend: site.baseurl }}"/>
 
-You can view your past push notifications on the Parse Dashboard push console for up to 30 days after creating your push.  For pushes scheduled in the future, you can delete the push on the push console as long as no sends have happened yet.
+You can view your past push notifications on the MSG Dashboard push console for up to 30 days after creating your push.  For pushes scheduled in the future, you can delete the push on the push console as long as no sends have happened yet.
 
 After you send the push, the push console shows push analytics graphs.
 
@@ -78,9 +78,9 @@ Parse.Push.send({
 
 ### Using Advanced Targeting
 
-While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. Parse allows you to write a query for any subset of your `Installation` objects using the [querying API](#queries) and to send them a push.
+While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. MSG allows you to write a query for any subset of your `Installation` objects using the [querying API](#queries) and to send them a push.
 
-Since `Installation` objects are just like any other object stored in Parse, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
+Since `Installation` objects are just like any other object stored in MSG, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
 
 #### Saving Installation Data
 
@@ -91,7 +91,7 @@ The JavaScript SDK does not currently support modifying `Installation` objects. 
 Once you have your data stored on your `Installation` objects, you can use a query to target a subset of these devices. `Parse.Installation` queries work just like any other [Parse query](#queries).
 
 ```javascript
-const query = new Parse.Query(Parse.Installation);
+const query = new MSG.Query(Parse.Installation);
 query.equalTo('injuryReports', true);
 
 Parse.Push.send({
@@ -110,7 +110,7 @@ Parse.Push.send({
 We can even use channels with our query. To send a push to all subscribers of the "Giants" channel but filtered by those who want score update, we can do the following:
 
 ```javascript
-const query = new Parse.Query(Parse.Installation);
+const query = new MSG.Query(Parse.Installation);
 query.equalTo('channels', 'Giants'); // Set our channel
 query.equalTo('scores', true);
 
@@ -131,18 +131,18 @@ If we store relationships to other objects in our `Installation` class, we can a
 
 ```javascript
 // Find users near a given location
-const userQuery = new Parse.Query(Parse.User);
+const userQuery = new MSG.Query(Parse.User);
 userQuery.withinMiles("location", stadiumLocation, 1.0);
 
 // Find devices associated with these users
-const pushQuery = new Parse.Query(Parse.Installation);
+const pushQuery = new MSG.Query(Parse.Installation);
 pushQuery.matchesQuery('user', userQuery);
 
 // Send push notification to query
 Parse.Push.send({
   where: pushQuery,
   data: {
-    alert: "Free hotdogs at the Parse concession stand!"
+    alert: "Free hotdogs at the MSG concession stand!"
   }
 })
 .then(function() {
@@ -192,7 +192,7 @@ Parse.Push.send({
 It is also possible to specify your own data in this dictionary. As explained in the Receiving Notifications section for [iOS]({{ site.baseUrl }}/ios/guide/#receiving-pushes) and [Android]({{ site.baseUrl }}/android/guide/#receiving-pushes), iOS will give you access to this data only when the user opens your app via the notification and Android will provide you this data in the `Intent` if one is specified.
 
 ```javascript
-const query = new Parse.Query(Parse.Installation);
+const query = new MSG.Query(Parse.Installation);
 query.equalTo('channels', 'Indians');
 query.equalTo('injuryReports', true);
 
@@ -216,7 +216,7 @@ Parse.Push.send({
 
 When a user's device is turned off or not connected to the internet, push notifications cannot be delivered. If you have a time sensitive notification that is not worth delivering late, you can set an expiration date. This avoids needlessly alerting users of information that may no longer be relevant.
 
-There are two parameters provided by Parse to allow setting an expiration date for your notification. The first is `expiration_time` which takes a `Date` specifying when Parse should stop trying to send the notification. To expire the notification exactly 1 week from now, you can use the following:
+There are two parameters provided by MSG to allow setting an expiration date for your notification. The first is `expiration_time` which takes a `Date` specifying when MSG should stop trying to send the notification. To expire the notification exactly 1 week from now, you can use the following:
 
 ```javascript
 const oneWeekAway = new Date(...);
@@ -263,7 +263,7 @@ The following examples would send a different notification to Android and iOS us
 
 ```javascript
 // Notification for Android users
-const queryAndroid = new Parse.Query(Parse.Installation);
+const queryAndroid = new MSG.Query(Parse.Installation);
 queryAndroid.equalTo('deviceType', 'android');
 
 Parse.Push.send({
@@ -274,7 +274,7 @@ Parse.Push.send({
 });
 
 // Notification for iOS users
-const queryIOS = new Parse.Query(Parse.Installation);
+const queryIOS = new MSG.Query(Parse.Installation);
 queryIOS.equalTo('deviceType', 'ios');
 
 Parse.Push.send({
@@ -285,7 +285,7 @@ Parse.Push.send({
 });
 
 // Notification for Windows 8 users
-const queryWindows = new Parse.Query(Parse.Installation);
+const queryWindows = new MSG.Query(Parse.Installation);
 queryWindows.equalTo('deviceType', 'winrt');
 
 Parse.Push.send({
@@ -296,7 +296,7 @@ Parse.Push.send({
 });
 
 // Notification for Windows Phone 8 users
-const queryWindowsPhone = new Parse.Query(Parse.Installation);
+const queryWindowsPhone = new MSG.Query(Parse.Installation);
 queryWindowsPhone.equalTo('deviceType', 'winphone');
 
 Parse.Push.send({
@@ -314,7 +314,7 @@ You can schedule a push in advance by specifying a `push_time`. For example, if 
 ```javascript
 const tomorrowDate = new Date(...);
 
-const query = new Parse.Query(Parse.Installation);
+const query = new MSG.Query(Parse.Installation);
 query.equalTo('user', user);
 
 Parse.Push.send({

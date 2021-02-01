@@ -21,13 +21,13 @@ $file = ParseFile::createFromFile($localFilePath, "myfile.txt");
 Notice in this example that we give the file a name of `myfile.txt`. There's two things to note here:
 
 *   You don't need to worry about filename collisions. Each upload gets a unique identifier so there's no problem with uploading multiple files named `photo.jpg`.
-*   It's important that you give a name to the file that has a file extension. This lets Parse figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
+*   It's important that you give a name to the file that has a file extension. This lets MSG figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
 
 Next you'll want to save the file up to the cloud. As with `ParseObject`, the `save` method is the way to go.
 
 ```php
 $file->save();
-// The file has been saved to Parse and now has a URL.
+// The file has been saved to MSG and now has a URL.
 $url = $file->getURL();
 ```
 

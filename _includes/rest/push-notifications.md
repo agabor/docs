@@ -1,6 +1,6 @@
 # Push Notifications
 
-Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of Parse to send push notifications.
+Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of MSG to send push notifications.
 
 If you haven't installed the SDK yet, please [head over to the Push QuickStart]({{ site.baseUrl }}/parse-server/guide/#push-notifications-quick-start) to get our SDK up and running.
 
@@ -14,13 +14,13 @@ An installation object represents an instance of your app being installed on a d
 *   **`channels`**: An array of the channels to which a device is currently subscribed.
 *   **`timeZone`**: The current time zone where the target device is located. This should be an [IANA time zone identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 *   **`deviceType`**: The type of device, "ios", "android", "winrt", "winphone", or "dotnet"_(readonly)_.
-*   **`pushType`**: This field is reserved for directing Parse to the push delivery network to be used. If the device is registered to receive pushes via FCM, this field will be marked "gcm". If this device is not using FCM, and is using Parse's push notification service, it will be blank _(readonly)_.
-*   **`installationId`**: Universally Unique Identifier (UUID) for the device used by Parse. It must be unique across all of an app's installations. _(readonly)_.
+*   **`pushType`**: This field is reserved for directing MSG to the push delivery network to be used. If the device is registered to receive pushes via FCM, this field will be marked "gcm". If this device is not using FCM, and is using MSG's push notification service, it will be blank _(readonly)_.
+*   **`installationId`**: Universally Unique Identifier (UUID) for the device used by MSG. It must be unique across all of an app's installations. _(readonly)_.
 *   **`deviceToken`**: The Apple or Google generated token used to deliver messages to the APNs or FCM push networks respectively.
 *   **`channelUris`**: The Microsoft-generated push URIs for Windows devices.
 *   **`appName`**: The display name of the client application to which this installation belongs.
 *   **`appVersion`**: The version string of the client application to which this installation belongs.
-*   **`parseVersion`**: The version of the Parse SDK which this installation uses.
+*   **`parseVersion`**: The version of the MSG SDK which this installation uses.
 *   **`appIdentifier`**: A unique identifier for this installation's client application. In iOS, this is the Bundle Identifier.
 
 Most of the time, installation data is modified by push-related methods in the client SDK. For example, calling `subscribeToChannel` or `unsubscribeFromChannel` from the client SDK will create an object for that installation if it doesn't yet exist and update its channels, and calling `getSubscribedChannels` from the client SDK will read subscription data from that installation's object. The REST methods can be used to mimic these operations. For instance, if you have an iOS device token then you can subscribe it to push notifications by creating an installation object for it with the desired `channels` list. You can also perform operations which aren't possible through the client SDK, like using a query over installations to find the set of subscribers to a given channel.
@@ -265,7 +265,7 @@ All of the options for queries that work for regular objects also work for insta
 
 ### Deleting Installations
 
-To delete an installation from the Parse Cloud, send a DELETE request to its URL. This functionality is not available in the client SDKs, so you must authenticate this method using the `X-Parse-Master-Key` header in your request instead of the `X-Parse-REST-API-Key` header. Your master key allows you to bypass ACLs and should only be used from within a trusted environment. For example:
+To delete an installation from the MSG Cloud, send a DELETE request to its URL. This functionality is not available in the client SDKs, so you must authenticate this method using the `X-Parse-Master-Key` header in your request instead of the `X-Parse-REST-API-Key` header. Your master key allows you to bypass ACLs and should only be used from within a trusted environment. For example:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -289,9 +289,9 @@ print result
 
 ## Sending Pushes
 
-There are two ways to send push notifications using Parse: [channels](#using-channels) and [advanced targeting](#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
+There are two ways to send push notifications using MSG: [channels](#using-channels) and [advanced targeting](#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
 
-You can view your past push notifications on the Parse Dashboard push console for up to 30 days after creating your push.  For pushes scheduled in the future, you can delete the push on the push console as long as no sends have happened yet. After you send the push, the push console shows push analytics graphs.
+You can view your past push notifications on the MSG Dashboard push console for up to 30 days after creating your push.  For pushes scheduled in the future, you can delete the push on the push console as long as no sends have happened yet. After you send the push, the push console shows push analytics graphs.
 
 ### Using Channels
 
@@ -385,13 +385,13 @@ print result
 
 ### Using Advanced Targeting
 
-While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. Parse allows you to write a query for any subset of your `Installation` objects using the [querying API](#queries) and to send them a push.
+While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. MSG allows you to write a query for any subset of your `Installation` objects using the [querying API](#queries) and to send them a push.
 
-Since `Installation` objects are just like any other object stored in Parse, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
+Since `Installation` objects are just like any other object stored in MSG, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
 
 #### Saving Installation Data
 
-Storing arbitrary data on an `Installation` object is done in the same way we store data on [any other object](#objects) on Parse. In our Baseball app, we could allow users to get pushes about game results, scores and injury reports.
+Storing arbitrary data on an `Installation` object is done in the same way we store data on [any other object](#objects) on MSG. In our Baseball app, we could allow users to get pushes about game results, scores and injury reports.
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -424,7 +424,7 @@ print result
 </code></pre>
 </div>
 
-You can even create relationships between your `Installation` objects and other classes saved on Parse. To associate an Installation with a particular user, for example, you can use a pointer to the `_User` class on the `Installation`.
+You can even create relationships between your `Installation` objects and other classes saved on MSG. To associate an Installation with a particular user, for example, you can use a pointer to the `_User` class on the `Installation`.
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -567,7 +567,7 @@ curl -X POST \
           }
         },
         "data": {
-          "alert": "Free hotdogs at the Parse concession stand!"
+          "alert": "Free hotdogs at the MSG concession stand!"
         }
       }' \
   <span class="custom-parse-server-protocol">https</span>://<span class="custom-parse-server-url">YOUR.PARSE-SERVER.HERE</span><span class="custom-parse-server-mount">/parse/</span>push
@@ -595,7 +595,7 @@ connection.request('POST', '<span class="custom-parse-server-mount">/parse/</spa
          }
        },
        "data": {
-         "alert": "Free hotdogs at the Parse concession stand!"
+         "alert": "Free hotdogs at the MSG concession stand!"
        }
      }), {
        "X-Parse-Application-Id": "<span class="custom-parse-server-appid">${APPLICATION_ID}</span>",
@@ -705,7 +705,7 @@ print result
 
 When a user's device is turned off or not connected to the internet, push notifications cannot be delivered. If you have a time sensitive notification that is not worth delivering late, you can set an expiration date. This avoids needlessly alerting users of information that may no longer be relevant.
 
-There are two parameters provided by Parse to allow setting an expiration date for your notification. The first is `expiration_time` which takes a date (in ISO 8601 format or Unix epoch time) specifying when Parse should stop trying to send the notification. To expire the notification exactly 1 week from now, you can use the following command.
+There are two parameters provided by MSG to allow setting an expiration date for your notification. The first is `expiration_time` which takes a date (in ISO 8601 format or Unix epoch time) specifying when MSG should stop trying to send the notification. To expire the notification exactly 1 week from now, you can use the following command.
 
 <div class="language-toggle">
 <pre><code class="bash">

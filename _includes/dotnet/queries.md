@@ -1,6 +1,6 @@
 # Queries
 
-We've already seen how a `ParseQuery` with `GetAsync` can retrieve a single `ParseObject` from Parse. There are many other ways to retrieve data with `ParseQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
+We've already seen how a `ParseQuery` with `GetAsync` can retrieve a single `ParseObject` from MSG. There are many other ways to retrieve data with `ParseQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
 
 ## Basic Queries
 
@@ -56,7 +56,7 @@ var query = ParseObject.GetQuery("GameScore")
     .WhereGreaterThan("playerAge", 18);
 ```
 
-You can limit the number of results by calling `Limit`. By default, results are limited to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint:
+You can limit the number of results by calling `Limit`. By default, results are limited to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint:
 
 ```cs
 query = query.Limit(10); // limit to at most 10 results
@@ -76,7 +76,7 @@ var query = ParseObject.GetQuery("GameScore")
 ParseObject obj = await query.FirstAsync();
 ```
 
-You can skip the first results by calling `Skip`. In the old Parse hosted backend, the maximum skip value was 10,000, but Parse Server removed that constraint. This can be useful for pagination:
+You can skip the first results by calling `Skip`. In the old MSG hosted backend, the maximum skip value was 10,000, but MSG Server removed that constraint. This can be useful for pagination:
 
 ```cs
 query = query.Skip(10); // skip the first 10 results
@@ -384,7 +384,7 @@ You can issue a query with multiple fields included by calling `Include` multipl
 
 ## Counting Objects
 
-Note: In the old Parse hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, Parse Server has removed both constraints and can count objects well above 1,000.
+Note: In the old MSG hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, MSG Server has removed both constraints and can count objects well above 1,000.
 
 If you just need to count how many objects match a query, but you do not need to retrieve the objects that match, you can use `CountAsync` instead of `FindAsync`. For example, to count how many games have been played by a particular player:
 

@@ -1,5 +1,5 @@
 ---
-title: iOS Push Tutorial | Parse
+title: iOS Push Tutorial | MSG
 permalink: /tutorials/ios-push-notifications/
 layout: guide
 platform: ios

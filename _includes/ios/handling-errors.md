@@ -17,7 +17,7 @@ user.signUp
 
 This will throw an `NSInternalInconsistencyException` because `signUp` was called without first setting the required properties (`username` and `password`).
 
-The second type of error is one that occurs when interacting with Parse Server over the network. These errors are either related to problems connecting to the cloud or problems performing the requested operation. Let's take a look at another example:
+The second type of error is one that occurs when interacting with MSG Server over the network. These errors are either related to problems connecting to the cloud or problems performing the requested operation. Let's take a look at another example:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -36,7 +36,7 @@ func getMyNote() -> Void {
 ```
 </div>
 
-In the above code, we try to fetch an object with a non-existent `objectId`. Parse Server will return an error with an error code set in `code` and message in the error's `userInfo`. Here's how to handle it properly in your callback:
+In the above code, we try to fetch an object with a non-existent `objectId`. MSG Server will return an error with an error code set in `code` and message in the error's `userInfo`. Here's how to handle it properly in your callback:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -70,7 +70,7 @@ func callbackForGet(result: PFObject?, error: NSError?) -> Void {
 ```
 </div>
 
-The query might also fail because the device couldn't connect to your Parse Server. Here's the same callback but with a bit of extra code to handle that scenario explicitly:
+The query might also fail because the device couldn't connect to your MSG Server. Here's the same callback but with a bit of extra code to handle that scenario explicitly:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -82,7 +82,7 @@ The query might also fail because the device couldn't connect to your Parse Serv
             NSLog(@"Uh oh, we couldn't find the object!");
         // Now also check for connection errors:
         } else if ([error code] == kPFErrorConnectionFailed) {
-            NSLog(@"Uh oh, we couldn't even connect to the Parse Cloud!");
+            NSLog(@"Uh oh, we couldn't even connect to the MSG Cloud!");
         } else if (error) {
             NSLog(@"Error: %@", [error userInfo][@"error"]);
         }
@@ -99,7 +99,7 @@ func callbackForGet(result: PFObject?, error: NSError?) -> Void {
                 print("Uh oh, we couldn't find the object!")
                 // Now also check for connection errors:
             } else if error._code == PFErrorCode.errorConnectionFailed.rawValue {
-                print("Uh oh, we couldn't even connect to the Parse Cloud!")
+                print("Uh oh, we couldn't even connect to the MSG Cloud!")
             } else {
                 let errorString = error._userInfo!["error"] as? NSString
                 print("Error: \(errorString)")
@@ -119,7 +119,7 @@ When the callback expects a `NSNumber`, its `boolValue` tells you whether the op
         NSLog(@"Everything went fine!");
     } else {
         if ([error code] == kPFErrorConnectionFailed) {
-            NSLog(@"Uh oh, we couldn't even connect to the Parse Cloud!");
+            NSLog(@"Uh oh, we couldn't even connect to the MSG Cloud!");
         } else if (error) {
             NSLog(@"Error: %@", [error userInfo][@"error"]);
         }
@@ -133,7 +133,7 @@ func callbackForSave(result: NSNumber?, error: NSError?) -> Void {
     } else {
         if let error = error {
             if error.code == PFErrorCode.ErrorConnectionFailed.rawValue {
-                print("Uh oh, we couldn't even connect to the Parse Cloud!")
+                print("Uh oh, we couldn't even connect to the MSG Cloud!")
             } else {
                 let errorString = error.userInfo!["error"] as? NSString
                 print("Error: \(errorString)")

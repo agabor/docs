@@ -6,10 +6,10 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-name: Parse Platform Docs
-title: Parse Docs
+name: MSG Platform Docs
+title: MSG Docs
 email: community@parseplatform.org
-description: The open source docs for the Parse platform SDKs & other guides.
+description: The open source docs for the MSG platform SDKs & other guides.
 url: "http://docs.parseplatform.org" # the base hostname & protocol for your site
 repository: parse-community/docs
 twitter_username:  parseplatform

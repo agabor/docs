@@ -1,8 +1,8 @@
 # Cloud Functions
 
-Cloud Functions allow you to run custom app logic on your Parse Server. This is especially useful for running complex app logic in the cloud so that you can reduce the memory footprint of your code on the IoT device. In a Cloud Function, you can query/save Parse data, send push notifications, and log analytics events.
+Cloud Functions allow you to run custom app logic on your MSG Server. This is especially useful for running complex app logic in the cloud so that you can reduce the memory footprint of your code on the IoT device. In a Cloud Function, you can query/save MSG data, send push notifications, and log analytics events.
 
-You write your Cloud Code in JavaScript using the Parse JavaScript SDK. We provide a command-line tool to help you deploy your Cloud Code. See our [Cloud Code guide]({{ site.baseUrl }}/cloudcode/guide) for details.
+You write your Cloud Code in JavaScript using the MSG JavaScript SDK. We provide a command-line tool to help you deploy your Cloud Code. See our [Cloud Code guide]({{ site.baseUrl }}/cloudcode/guide) for details.
 
 For example, you define a Cloud Function as below.
 

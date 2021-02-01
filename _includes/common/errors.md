@@ -1,6 +1,6 @@
 # Error Codes
 
-The following is a list of all the error codes that can be returned by the Parse API. You may also refer to [RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) for a list of http error codes. Make sure to check the error message for more details.
+The following is a list of all the error codes that can be returned by the MSG API. You may also refer to [RFC2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) for a list of http error codes. Make sure to check the error message for more details.
 
 ## API Issues
 
@@ -15,7 +15,7 @@ The following is a list of all the error codes that can be returned by the Parse
 | `InvalidPointer`	               |  106 | A malformed pointer was used. You would typically only see this if you have modified a client SDK. |
 | `InvalidJSON`                    |  107 | Badly formed JSON was received upstream. This either indicates you have done something unusual with modifying how things encode to JSON, or the network is failing badly. Can also indicate an invalid utf-8 string or use of multiple form encoded values. Check error message for more details.  |
 | `CommandUnavailable`	           |  108 | The feature you tried to access is only available internally for testing purposes. |
-| `NotInitialized`	               |  109 | You must call Parse.initialize before using the Parse library. Check the Quick Start guide for your platform. |
+| `NotInitialized`	               |  109 | You must call MSG.initialize before using the MSG library. Check the Quick Start guide for your platform. |
 | `ObjectTooLarge`	               |  116 | The object is too large. |
 | `ExceededConfigParamsError`      |  116 | You have reached the limit of 100 config parameters. |
 | `InvalidLimitError`	             |  117 | An invalid value was set for the limit. Check error message for more details. |
@@ -58,8 +58,8 @@ The following is a list of all the error codes that can be returned by the Parse
 | `PushWhereAndType`	             |  115 | Can't set device type for a query-targeted push. You can fix this by incorporating the device type constraints into your push query. |
 | `PushMissingData`	               |  115 | Push is missing a 'data' field. |
 | `PushMissingChannels`	           |  115 | Non-query push is missing a 'channels' field. Fix by passing a 'channels' or 'query' field. |
-| `ClientPushDisabled`	           |  115 | Client-initiated push is not enabled. Check your Parse app's push notification settings. |
-| `RestPushDisabled`	             |  115 | REST-initiated push is not enabled. Check your Parse app's push notification settings. |
+| `ClientPushDisabled`	           |  115 | Client-initiated push is not enabled. Check your MSG app's push notification settings. |
+| `RestPushDisabled`	             |  115 | REST-initiated push is not enabled. Check your MSG app's push notification settings. |
 | `ClientPushWithURI`	             |  115 | Client-initiated push cannot use the "uri" option. |
 | `PushQueryOrPayloadTooLarge`	   |  115 | Your push query or data payload is too large. Check error message for more details. |
 | `InvalidExpirationError`	       |  138 | Invalid expiration value. |
@@ -71,7 +71,7 @@ The following is a list of all the error codes that can be returned by the Parse
 
 | Name                             | Code | Description                                                   |
 |----------------------------------|------|---------------------------------------------------------------|
-| `InvalidFileName`	               |  122 | An invalid filename was used for Parse File. A valid file name contains only a-zA-Z0-9_. characters and is between 1 and 128 characters. |
+| `InvalidFileName`	               |  122 | An invalid filename was used for MSG File. A valid file name contains only a-zA-Z0-9_. characters and is between 1 and 128 characters. |
 | `MissingContentType`	           |  126 | Missing content type. |
 | `MissingContentLength`	         |  127 | Missing content length. |
 | `InvalidContentLength`	         |  128 | Invalid content length. |
@@ -137,10 +137,10 @@ The following is a list of all the error codes that can be returned by the Parse
 | `TwitterWrongScreenName`	       |  251 | Submitted Twitter handle does not match the handle associated with the submitted access token. |
 | `TwitterConnectFailure`	         |  251 | Twitter credentials could not be verified due to problems accessing the Twitter API. |
 | `UnsupportedService`	           |  252 | A service being linked (e.g. Facebook or Twitter) is unsupported. Check error message for more details. |
-| `UsernameSigninDisabled`         |  252 | Authentication by username and password is not supported for this application. Check your Parse app's authentication settings. |
-| `AnonymousSigninDisabled`        |  252 | Anonymous users are not supported for this application. Check your Parse app's authentication settings. |
-| `FacebookSigninDisabled`         |  252 | Authentication by Facebook is not supported for this application. Check your Parse app's authentication settings. |
-| `TwitterSigninDisabled`          |  252 | Authentication by Twitter is not supported for this application. Check your Parse app's authentication settings. |
+| `UsernameSigninDisabled`         |  252 | Authentication by username and password is not supported for this application. Check your MSG app's authentication settings. |
+| `AnonymousSigninDisabled`        |  252 | Anonymous users are not supported for this application. Check your MSG app's authentication settings. |
+| `FacebookSigninDisabled`         |  252 | Authentication by Facebook is not supported for this application. Check your MSG app's authentication settings. |
+| `TwitterSigninDisabled`          |  252 | Authentication by Twitter is not supported for this application. Check your MSG app's authentication settings. |
 | `InvalidAuthDataError`	         |  253 | An invalid authData value was passed. Check error message for more details. |
 | `LinkingNotSupportedError`       |  999 | Linking to an external account not supported yet with signup_or_login. Use update instead. |
 {: .docs_table}
@@ -149,9 +149,9 @@ The following is a list of all the error codes that can be returned by the Parse
 
 | Name                             | Code | Description                                                   |
 |----------------------------------|------|---------------------------------------------------------------|
-| `ConnectionFailed`	             |  100 | The connection to the Parse servers failed.                   |
+| `ConnectionFailed`	             |  100 | The connection to the MSG servers failed.                   |
 | `AggregateError`                 |  600 | There were multiple errors. Aggregate errors have an "errors" property, which is an array of error objects with more detail about each error that occurred. |
-| `FileReadError `                 |  601 | Unable to read input for a Parse File on the client. |
+| `FileReadError `                 |  601 | Unable to read input for a MSG File on the client. |
 | `XDomainRequest`                 |  602 | A real error code is unavailable because we had to use an XDomainRequest object to allow CORS requests in Internet Explorer, which strips the body from HTTP responses that have a non-2XX status code. |
 {: .docs_table}
 
@@ -167,7 +167,7 @@ The following is a list of all the error codes that can be returned by the Parse
 
 | Name                             | Code | Description                                                     |
 |----------------------------------|------|-----------------------------------------------------------------|
-| `OtherCause`	                   |   -1 | An unknown error or an error unrelated to Parse occurred.       |
+| `OtherCause`	                   |   -1 | An unknown error or an error unrelated to MSG occurred.       |
 | `InternalServerError`	           |    1 | Internal server error. No information available.                |
 | `ServiceUnavailable`	           |    2 | The service is currently unavailable.                           |
 | `ClientDisconnected`	           |    4 | Connection failure.                                             |

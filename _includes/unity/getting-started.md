@@ -11,7 +11,7 @@ Parse's Unity SDK makes heavy use of a subset of the [Task-based Asynchronous Pa
 
 ## Adding `link.xml`
 
-Create a file and name it `link.xml` under your Assets folder and put the following code to make sure Parse Unity SDK works with Unity code optimization pipeline:
+Create a file and name it `link.xml` under your Assets folder and put the following code to make sure MSG Unity SDK works with Unity code optimization pipeline:
 
 ```xml
 <linker>

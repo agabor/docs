@@ -2,7 +2,7 @@
 
 ## httpRequest
 
-You can use your favorite npm module to make HTTP requests, such as [request](https://www.npmjs.com/package/request). Parse Server also supports `Parse.Cloud.httpRequest` for legacy reasons. It allows you to send HTTP requests to any HTTP Server. This function takes an options object to configure the call.
+You can use your favorite npm module to make HTTP requests, such as [request](https://www.npmjs.com/package/request). MSG Server also supports `Parse.Cloud.httpRequest` for legacy reasons. It allows you to send HTTP requests to any HTTP Server. This function takes an options object to configure the call.
 
 A simple GET request would look like:
 
@@ -163,7 +163,7 @@ The response object passed into the `success` and `error` will contain:
 
 # Cloud Code Webhooks
 
-Webhooks allow you to write your server-side logic in your own environment with any tools you wish to use. This can be useful if you want to use a language other than JavaScript, host it yourself for improved testing capabilities, or if you require a specialized library or technology not available in Cloud Code. Webhooks are currently available for `beforeSave`, `afterSave`, `beforeDelete`, `afterDelete`, and Cloud functions. To specify a new webhook, you can use the Parse Dashboard in the Webhooks section located under Core.
+Webhooks allow you to write your server-side logic in your own environment with any tools you wish to use. This can be useful if you want to use a language other than JavaScript, host it yourself for improved testing capabilities, or if you require a specialized library or technology not available in Cloud Code. Webhooks are currently available for `beforeSave`, `afterSave`, `beforeDelete`, `afterDelete`, and Cloud functions. To specify a new webhook, you can use the MSG Dashboard in the Webhooks section located under Core.
 
 We've written an example Cloud Code Webhooks server, in Express.js, which you can find on Github: [CloudCodeWebhooks-Express](https://github.com/ParsePlatform/CloudCodeWebhooks-Express).
 
@@ -174,7 +174,7 @@ Note: At the current time, custom webhooks cannot be set for the special classes
 A webhook request for a Cloud function will contain the following parameters:
 
 *   **master**: True if the master key was used and false otherwise.
-*   **user**: If set, this will contain the Parse User who made the request, in our REST API format. This is not set if the master key is used.
+*   **user**: If set, this will contain the MSG User who made the request, in our REST API format. This is not set if the master key is used.
 *   **installationId**: If available, the installationId which made the request.
 *   **params**: A JSON object containing the parameters passed to the function. For example: `{ "foo": "bar" }`
 *   **functionName**: The name of the Cloud function.
@@ -294,7 +294,7 @@ This response would indicate a success in the webhook:
 
 Set your webhook from the Dashboard UI. After that, it's available from all SDKs and the REST API the same way you would a normal Cloud function
 
-Webhooks are great when you want to use a specialized technology not available on Parse's Cloud Code. In this case we made use of an open source library and integrated with a separate data source where our billing info might be stored for legacy reasons.
+Webhooks are great when you want to use a specialized technology not available on MSG's Cloud Code. In this case we made use of an open source library and integrated with a separate data source where our billing info might be stored for legacy reasons.
 
 ## beforeSave Webhooks
 
@@ -303,12 +303,12 @@ Let's write a `beforeSave` trigger to truncate movie review comments that are mo
 For triggers, the following parameters are sent to your webhook.
 
 *   **master**: True if the master key was used and false otherwise.
-*   **user**: If set, this will contain the Parse User who made the request, in our REST API format.
+*   **user**: If set, this will contain the MSG User who made the request, in our REST API format.
 *   **installationId**: If available, the installationId which made the request.
-*   **object**: For triggers, this will contain the Parse Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
+*   **object**: For triggers, this will contain the MSG Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
 *   **triggerName**: "beforeSave"
 
-To respond to a `beforeSave` request, send a JSON object with the key `error` or `success` set. This is the same as for Cloud functions, but there's an extra capability with `beforeSave` triggers. By returning an error, you will cancel the save request and the object will not be stored on Parse. You can also return a JSON object in this following format to override the values that will be saved for the object:
+To respond to a `beforeSave` request, send a JSON object with the key `error` or `success` set. This is the same as for Cloud functions, but there's an extra capability with `beforeSave` triggers. By returning an error, you will cancel the save request and the object will not be stored on MSG. You can also return a JSON object in this following format to override the values that will be saved for the object:
 
 ```json
 {
@@ -363,7 +363,7 @@ Here's an example of the JSON data that would be sent in the request to this web
   "triggerName": "beforeSave",
   "object": {
     "className": "Comment",
-    "comment": "A very long comment that will be truncated to be just 140 characters. I sure love using Parse, it's just so easy to get started :)! Hopefully that part doesn't get truncated :/"
+    "comment": "A very long comment that will be truncated to be just 140 characters. I sure love using MSG, it's just so easy to get started :)! Hopefully that part doesn't get truncated :/"
   }
 }
 ```
@@ -375,7 +375,7 @@ This response would indicate a success in the webhook:
 {
   "success": {
     "className": "Comment",
-    "comment": "A very long comment that will be truncated to be just 140 characters. I sure love using Parse, it's just so easy to get started :)! Hopef..."
+    "comment": "A very long comment that will be truncated to be just 140 characters. I sure love using MSG, it's just so easy to get started :)! Hopef..."
   }
 }
 ```
@@ -385,14 +385,14 @@ This response would indicate a success in the webhook:
 Like we've seen in Cloud Code, it's also possible to run some code after an object has been saved using a webhook. The parameters sent to your webhook are the same as for `beforeSave` triggers but we'll repeat them here for clarity.
 
 *   **master**: True if the master key was used and false otherwise.
-*   **user**: If set, this will contain the Parse User who made the request, in our REST API format.
+*   **user**: If set, this will contain the MSG User who made the request, in our REST API format.
 *   **installationId**: If available, the installationId which made the request.
-*   **object**: For triggers, this will contain the Parse Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
+*   **object**: For triggers, this will contain the MSG Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
 *   **triggerName**: "afterSave"
 
 No response is required for `afterSave` triggers.
 
-Let's take the same example we created in Cloud Code [in the last chapter](#cloud-code-aftersave-triggers); keeping track of the number of comments on a blog post. But instead of storing the number in our Parse database, we'll store the count in a separate data source accessible by our Rails app. This could be useful if you're storing data that will be used to run custom analysics instead of being served to your users through a client.
+Let's take the same example we created in Cloud Code [in the last chapter](#cloud-code-aftersave-triggers); keeping track of the number of comments on a blog post. But instead of storing the number in our MSG database, we'll store the count in a separate data source accessible by our Rails app. This could be useful if you're storing data that will be used to run custom analysics instead of being served to your users through a client.
 
 ```ruby
 # We need to disable CSRF protection for webhooks to work. Instead we
@@ -451,9 +451,9 @@ Here's an example of the JSON data that would be sent in the request to this web
 You also use webhooks for `beforeDelete` triggers. The parameters sent to your webhook are the same as for `beforeSave` and  `afterSave` triggers but we'll repeat them here for clarity.
 
 *   **master**: True if the master key was used and false otherwise.
-*   **user**: If set, this will contain the Parse User who made the request, in our REST API format.
+*   **user**: If set, this will contain the MSG User who made the request, in our REST API format.
 *   **installationId**: If available, the installationId which made the request.
-*   **object**: For triggers, this will contain the Parse Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
+*   **object**: For triggers, this will contain the MSG Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
 *   **triggerName**: "beforeDelete"
 
 Just like for Cloud functions, to respond to a `beforeDelete` request, send a JSON object with the key `error` or `success` set. Returning an error will cancel the delete and the object will remain in your database.
@@ -521,9 +521,9 @@ As with previous examples, for this example to work you would also need to set u
 The `afterDelete` trigger is also accessible via webhooks. The parameters sent to your webhook are the same as for other triggers but we'll repeat them here for clarity.
 
 *   **master**: True if the master key was used and false otherwise.
-*   **user**: If set, this will contain the Parse User who made the request, in our REST API format.
+*   **user**: If set, this will contain the MSG User who made the request, in our REST API format.
 *   **installationId**: If available, the installationId which made the request.
-*   **object**: For triggers, this will contain the Parse Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
+*   **object**: For triggers, this will contain the MSG Object, in our REST API format. For example: `{ "className": "TestObject", "foo": "bar" }`.
 *   **triggerName**: "afterDelete"
 
 No response is required for `afterDelete` triggers.
@@ -587,8 +587,8 @@ After setting up your webhook in the Dashboard UI, you'll be acurately decrement
 Parse Config offers a convenient way to configure parameters in Cloud Code.
 
 ```javascript
-const config = await Parse.Config.get({useMasterKey: true});
+const config = await MSG.Config.get({useMasterKey: true});
 const privateParam = config.get("privateParam");
 ```
 
-By default, Parse Config parameters can be publicly read which may be undesired if the parameter contains sensitive information that should not be exposed to clients. A parameter can be made readable only with the master key by setting the `Requires master key?` property via the Parse Dashboard to `Yes`.
+By default, MSG Config parameters can be publicly read which may be undesired if the parameter contains sensitive information that should not be exposed to clients. A parameter can be made readable only with the master key by setting the `Requires master key?` property via the MSG Dashboard to `Yes`.

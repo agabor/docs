@@ -4,7 +4,7 @@ Using Push Notifications, you'll be able to send realtime notifications to your 
 
 ## Installations
 
-Every Parse application installed on a device registered for push notifications has an associated Installation object. The Installation object is where you store all the data needed to target push notifications. For example, you could send a connected thermostat a push to change the desired temperature.
+Every MSG application installed on a device registered for push notifications has an associated Installation object. The Installation object is where you store all the data needed to target push notifications. For example, you could send a connected thermostat a push to change the desired temperature.
 
 There are two ways to create an installation in conjunction with your hardware device. You can generate an installation ID (random lowercase UUID) elsewhere (e.g. phone), send that to your hardware device during initial provisioning, then set the installation ID on the hardward device:
 
@@ -15,7 +15,7 @@ parseSetInstallationId(client, data);
 
 The installation ID is a unique identifier for the device, so you should make sure to assign different installation IDs to different devices (i.e. your UUID generator has enough randomness). After you do the above, the device will automatically create an Installation object with this installation ID.
 
-If you do not pass in an installation ID, the SDK will automatically generate an installation ID for you, and create an Installation object with it upon the first request sent to Parse. There are several events that will trigger this:`parseGetInstallationId`,`parseSetSessionToken`,`parseSendRequest`, and`parseStartPushService`.
+If you do not pass in an installation ID, the SDK will automatically generate an installation ID for you, and create an Installation object with it upon the first request sent to MSG. There are several events that will trigger this:`parseGetInstallationId`,`parseSetSessionToken`,`parseSendRequest`, and`parseStartPushService`.
 
 You can retrieve your installation ID with the`parseGetInstallationId` function:
 
@@ -29,10 +29,10 @@ The Installation class has several special fields that help you manage and targe
 
 *   `channels`: An array of the channels to which a device is currently subscribed.
 *   `deviceType`: The type of device, "ios", "android", "winrt", "winphone", "dotnet", or “embedded” (readonly).
-*   `installationId`: Universally Unique Identifier (UUID) for the device used by Parse. It must be unique across all of an app's installations.(readonly).
+*   `installationId`: Universally Unique Identifier (UUID) for the device used by MSG. It must be unique across all of an app's installations.(readonly).
 *   `appName`: The display name of the client application to which this installation belongs.
 *   `appVersion`: The version string of the client application to which this installation belongs.
-*   `parseVersion`: The version of the Parse SDK which this installation uses.
+*   `parseVersion`: The version of the MSG SDK which this installation uses.
 
 ## Subscribing to Pushes
 

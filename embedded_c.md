@@ -1,5 +1,5 @@
 ---
-title: Embedded C Developers Guide | Parse
+title: Embedded C Developers Guide | MSG
 permalink: /embedded_c/guide/
 layout: guide
 platform: embedded_c

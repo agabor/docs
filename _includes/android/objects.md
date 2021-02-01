@@ -2,7 +2,7 @@
 
 ## The ParseObject
 
-Storing data on Parse is built around the `ParseObject`. Each `ParseObject` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `ParseObject`. You simply set whatever key-value pairs you want, and our backend will store it.
+Storing data on MSG is built around the `ParseObject`. Each `ParseObject` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `ParseObject`. You simply set whatever key-value pairs you want, and our backend will store it.
 
 For example, let's say you're tracking high scores for a game. A single `ParseObject` could contain:
 
@@ -16,7 +16,7 @@ Each `ParseObject` has a class name that you can use to distinguish different so
 
 ## Saving Objects
 
-Let's say you want to save the `GameScore` described above to your Parse Server. The interface is similar to a `Map`, plus the `saveInBackground` method:
+Let's say you want to save the `GameScore` described above to your MSG Server. The interface is similar to a `Map`, plus the `saveInBackground` method:
 
 ```java
 ParseObject gameScore = new ParseObject("GameScore");
@@ -26,16 +26,16 @@ gameScore.put("cheatMode", false);
 gameScore.saveInBackground();
 ```
 
-After this code runs, you will probably be wondering if anything really happened. To make sure the data was saved, you can look at the Data Browser in your app on Parse. You should see something like this:
+After this code runs, you will probably be wondering if anything really happened. To make sure the data was saved, you can look at the Data Browser in your app on MSG. You should see something like this:
 
 ```javascript
 objectId: "xWMyZ4YEGZ", score: 1337, playerName: "Sean Plott", cheatMode: false,
 createdAt:"2011-06-10T18:33:42Z", updatedAt:"2011-06-10T18:33:42Z"
 ```
 
-There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your Parse app lazily creates this Class for you when it first encounters it.
+There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your MSG app lazily creates this Class for you when it first encounters it.
 
-There are also a few fields you don't need to specify that are provided as a convenience. `objectId` is a unique identifier for each saved object. `createdAt` and `updatedAt` represent the time that each object was created and last modified in the cloud. Each of these fields is filled in by Parse, so they don't exist on a `ParseObject` until a save operation has completed.
+There are also a few fields you don't need to specify that are provided as a convenience. `objectId` is a unique identifier for each saved object. `createdAt` and `updatedAt` represent the time that each object was created and last modified in the cloud. Each of these fields is filled in by MSG, so they don't exist on a `ParseObject` until a save operation has completed.
 
 ## Retrieving Objects
 
@@ -102,7 +102,7 @@ gameScore.put("cheatMode", false);
 gameScore.pinInBackground();
 ```
 
-As with saving, this recursively stores every object and file that `gameScore` points to, if it has been fetched from the cloud. Whenever you save changes to the object, or fetch new changes from Parse, the copy in the datastore will be automatically updated, so you don't have to worry about it.
+As with saving, this recursively stores every object and file that `gameScore` points to, if it has been fetched from the cloud. Whenever you save changes to the object, or fetch new changes from MSG, the copy in the datastore will be automatically updated, so you don't have to worry about it.
 
 ## Retrieving Objects from the Local Datastore
 
@@ -147,7 +147,7 @@ gameScore.unpinInBackground();
 
 ## Saving Objects Offline
 
-Most save functions execute immediately, and inform your app when the save is complete. If you don't need to know when the save has finished, you can use `saveEventually` instead. The advantage is that if the user currently doesn't have a network connection, `saveEventually` will store the update on the device until a network connection is re-established. If your app is closed before the connection is back, Parse will try again the next time the app is opened. All calls to `saveEventually` (and `deleteEventually`) are executed in the order they are called, so it is safe to call `saveEventually` on an object multiple times. If you have the local datastore enabled, then any object you `saveEventually` will be pinned as long as that save is in progress. That makes it easy to retrieve your local changes while waiting for the network to be available.
+Most save functions execute immediately, and inform your app when the save is complete. If you don't need to know when the save has finished, you can use `saveEventually` instead. The advantage is that if the user currently doesn't have a network connection, `saveEventually` will store the update on the device until a network connection is re-established. If your app is closed before the connection is back, MSG will try again the next time the app is opened. All calls to `saveEventually` (and `deleteEventually`) are executed in the order they are called, so it is safe to call `saveEventually` on an object multiple times. If you have the local datastore enabled, then any object you `saveEventually` will be pinned as long as that save is in progress. That makes it easy to retrieve your local changes while waiting for the network to be available.
 
 ```java
 ParseObject gameScore = new ParseObject("GameScore");
@@ -169,7 +169,7 @@ query.getInBackground("xWMyZ4YEGZ", new GetCallback<ParseObject>() {
   public void done(ParseObject gameScore, ParseException e) {
     if (e == null) {
       // Now let's update it with some new data. In this case, only cheatMode and score
-      // will get sent to your Parse Server. playerName hasn't changed.
+      // will get sent to your MSG Server. playerName hasn't changed.
       gameScore.put("score", 1338);
       gameScore.put("cheatMode", true);
       gameScore.saveInBackground();
@@ -184,7 +184,7 @@ Parse automatically figures out which data has changed so only "dirty" fields wi
 
 The above example contains a common use case. The "score" field is a counter that we'll need to continually update with the player's latest score. Using the above method works but it's cumbersome and can lead to problems if you have multiple clients trying to update the same counter.
 
-To help with storing counter-type data, Parse provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
+To help with storing counter-type data, MSG provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
 
 ```java
 gameScore.increment("score");
@@ -212,7 +212,7 @@ Note that it is not currently possible to atomically add and remove items from a
 
 ## Deleting Objects
 
-To delete an object from your Parse Server:
+To delete an object from your MSG Server:
 
 ```java
 myObject.deleteInBackground();
@@ -226,13 +226,13 @@ You can delete a single field from an object with the `remove` method:
 // After this, the playerName field will be empty
 myObject.remove("playerName");
 
-// Saves the field deletion to your Parse Server
+// Saves the field deletion to your MSG Server
 myObject.saveInBackground();
 ```
 
 ## Relational Data
 
-Objects can have relationships with other objects. To model this behavior, any `ParseObject` can be used as a value in other `ParseObject`s. Internally, the Parse framework will store the referred-to object in just one place, to maintain consistency.
+Objects can have relationships with other objects. To model this behavior, any `ParseObject` can be used as a value in other `ParseObject`s. Internally, the MSG framework will store the referred-to object in just one place, to maintain consistency.
 
 For example, each `Comment` in a blogging app might correspond to one `Post`. To create a new `Post` with a single `Comment`, you could write:
 
@@ -312,7 +312,7 @@ ParseQuery<ParseObject> query = relation.getQuery();
 
 ## Data Types
 
-So far we've used values with type `String`, `Integer`, `boolean`, and `ParseObject`. Parse also supports `float`, `java.util.Date`, and `JSONObject.NULL`.
+So far we've used values with type `String`, `Integer`, `boolean`, and `ParseObject`. MSG also supports `float`, `java.util.Date`, and `JSONObject.NULL`.
 
 You can nest `JSONObject` and `JSONArray` objects to store more structured data within a single `ParseObject`. Overall, the following types are allowed for each field in your object:
 
@@ -354,7 +354,7 @@ bigObject.saveInBackground();
 
 We do not recommend storing large pieces of binary data like images or documents on `ParseObject`. We recommend you use `ParseFile`s to store images, documents, and other types of files. You can do so by instantiating a `ParseFile` object and setting it on a field. See [Files](#files) for more details.
 
-For more information about how Parse handles data, check out our documentation on [Data](#data).
+For more information about how MSG handles data, check out our documentation on [Data](#data).
 
 ## Subclasses
 
@@ -405,7 +405,7 @@ public class App extends Application {
     super.onCreate();
 
     ParseObject.registerSubclass(Armor.class);
-    Parse.initialize(this);
+    MSG.initialize(this);
   }
 }
 ```
@@ -447,7 +447,7 @@ public void takeDamage(int amount) {
 
 ### Initializing Subclasses
 
-You should create new instances of your subclasses using the constructors you have defined. Your subclass must define a public default constructor that does not modify fields of the `ParseObject`, which will be used throughout the Parse SDK to create strongly-typed instances of your subclass.
+You should create new instances of your subclasses using the constructors you have defined. Your subclass must define a public default constructor that does not modify fields of the `ParseObject`, which will be used throughout the MSG SDK to create strongly-typed instances of your subclass.
 
 To create a reference to an existing object, use `ParseObject.createWithoutData()`:
 

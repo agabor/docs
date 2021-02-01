@@ -1,5 +1,5 @@
 ---
-title: Cloud Code Guide | Parse
+title: Cloud Code Guide | MSG
 permalink: /cloudcode/guide/
 layout: guide
 platform: cloudcode

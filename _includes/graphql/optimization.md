@@ -50,7 +50,7 @@ query ASuperUsedQuery {
 // Add the index to user class
 const addAnIndexToUserClass = () => {
     // Get current class from database
-    const UserClass = await (new Parse.Schema('_User')).get();
+    const UserClass = await (new MSG.Schema('_User')).get();
     UserClass.addIndex('ASuperUsedQueryIndex', {
         firstname: 1,
         lastname: 1,

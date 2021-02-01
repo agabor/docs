@@ -1,7 +1,7 @@
 {
   "name": "parsedocs",
   "version": "0.0.1",
-  "description": "A static site that serves Parse's documentation using Jekyll on GitHub Pages. Work in progress.",
+  "description": "A static site that serves MSG's documentation using Jekyll on GitHub Pages. Work in progress.",
   "main": "_app/main.js",
   "scripts": {
     "start": "npm run dev",

@@ -1,6 +1,6 @@
 # Handling Errors
 
-The Parse PHP SDK throws `ParseException`s when errors are returned from the Parse API.  For other errors, the base `Exception` class will be thrown.  It is recommended to wrap your Parse calls in try/catch blocks to handle any errors which occur.
+The MSG PHP SDK throws `ParseException`s when errors are returned from the MSG API.  For other errors, the base `Exception` class will be thrown.  It is recommended to wrap your MSG calls in try/catch blocks to handle any errors which occur.
 
 ```php
 $query = new ParseQuery("Note");

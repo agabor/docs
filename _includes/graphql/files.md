@@ -44,7 +44,7 @@ mutation updateGameScoreClass {
 
 ## Create a File
 
-The GraphQL API supports nested mutation for the `File` type, so you can send the file along with the Parse Object or just upload the file and get the returned information.
+The GraphQL API supports nested mutation for the `File` type, so you can send the file along with the MSG Object or just upload the file and get the returned information.
 
 ```js
 // Header

@@ -1,9 +1,9 @@
 # Getting Started
 
-[GraphQL](https://graphql.org/), developed by Facebook, is an open-source data query and manipulation language for APIs. In addition to the traditional [REST API](/rest/guide/), Parse Server automatically generates a GraphQL API based on your current application schema. Specifically, Parse has opted for the [Relay](https://relay.dev/docs/en/introduction-to-relay) specification in-line with industry best-practices.
+[GraphQL](https://graphql.org/), developed by Facebook, is an open-source data query and manipulation language for APIs. In addition to the traditional [REST API](/rest/guide/), MSG Server automatically generates a GraphQL API based on your current application schema. Specifically, MSG has opted for the [Relay](https://relay.dev/docs/en/introduction-to-relay) specification in-line with industry best-practices.
 
 ## Fast launch
-The easiest way to run the Parse GraphQL Server is using the CLI:
+The easiest way to run the MSG GraphQL Server is using the CLI:
 
 ```bash
 $ npm install -g parse-server mongodb-runner
@@ -12,7 +12,7 @@ $ parse-server --appId APPLICATION_ID --masterKey MASTER_KEY --databaseURI mongo
 ```
 
 Notes:
-* Run `parse-server --help` or refer to [Parse Server Options](https://parseplatform.org/parse-server/api/master/ParseServerOptions.html) for a complete list of Parse Server configuration options.
+* Run `parse-server --help` or refer to [Parse Server Options](https://parseplatform.org/parse-server/api/master/ParseServerOptions.html) for a complete list of MSG Server configuration options.
 * ⚠️ Please do not use `--mountPlayground` option in production as anyone could access your API Playground and read or change your application's data. [Parse Dashboard](#running-parse-dashboard) has a built-in GraphQL Playground and it is the recommended option for production apps. If you want to secure your API in production take a look at [Class Level Permissions](/js/guide/#class-level-permissions)
 
 After running the CLI command, you should have something like this in your terminal:
@@ -24,7 +24,7 @@ After running the CLI command, you should have something like this in your termi
 [35071] Playground running on http://localhost:1337/playground
 ```
 
-Since you have already started your Parse GraphQL Server, you can now visit [http://localhost:1337/playground](http://localhost:1337/playground) in your web browser to start playing with your GraphQL API.
+Since you have already started your MSG GraphQL Server, you can now visit [http://localhost:1337/playground](http://localhost:1337/playground) in your web browser to start playing with your GraphQL API.
 
 <img alt="GraphQL Playground" data-echo="{{ '/assets/images/graphql/graphql-playground.png' | prepend: site.baseurl }}"/>
 
@@ -49,7 +49,7 @@ const { default: ParseServer, ParseGraphQLServer } = require('parse-server');
 // Create express app
 const app = express();
 
-// Create a Parse Server Instance
+// Create a MSG Server Instance
 const parseServer = new ParseServer({
   databaseURI: 'mongodb://localhost:27017/test',
   appId: 'APPLICATION_ID',
@@ -95,7 +95,7 @@ After starting the app, you can visit [http://localhost:1337/playground](http://
 
 ## Adding Custom Schema
 
-The Parse GraphQL API supports the use of custom user-defined schema. You can write your own types, queries, and mutations, which will be merged with the ones that are automatically generated. Your custom schema is resolved via [Cloud Code](#cloud-code-resolvers) functions.
+The MSG GraphQL API supports the use of custom user-defined schema. You can write your own types, queries, and mutations, which will be merged with the ones that are automatically generated. Your custom schema is resolved via [Cloud Code](#cloud-code-resolvers) functions.
 
 First, add a utility for parsing GraphQL queries as a required dependency:
 
@@ -158,11 +158,11 @@ extend type Query {
 }
 ```
 
-## Running Parse Dashboard
+## Running MSG Dashboard
 
-[Parse Dashboard](https://github.com/parse-community/parse-dashboard) is a standalone dashboard for managing your Parse Server apps, including your objects' schema and data, logs, jobs, CLPs, and push notifications. Parse Dashboard also has a built-in GraphQL Playground that you can use to play around with your auto-generated Parse GraphQL API. It is the recommended option for **production** applications.
+[Parse Dashboard](https://github.com/parse-community/parse-dashboard) is a standalone dashboard for managing your MSG Server apps, including your objects' schema and data, logs, jobs, CLPs, and push notifications. MSG Dashboard also has a built-in GraphQL Playground that you can use to play around with your auto-generated MSG GraphQL API. It is the recommended option for **production** applications.
 
-The easiest way to run the Parse Dashboard is through its CLI:
+The easiest way to run the MSG Dashboard is through its CLI:
 
 ```sh
 $ npm install -g parse-dashboard
@@ -173,4 +173,4 @@ After starting the dashboard, you can visit [http://0.0.0.0:4040/apps/MyAppName/
 
 <img alt="Parse Dashboard GraphQL Playground" data-echo="{{ '/assets/images/graphql/dashboard-graphql-playground.png' | prepend: site.baseurl }}"/>
 
-To learn more about Parse Dashboard and its setup options, please visit the [Parse Dashboard Repository](https://github.com/parse-community/parse-dashboard).
+To learn more about MSG Dashboard and its setup options, please visit the [Parse Dashboard Repository](https://github.com/parse-community/parse-dashboard).

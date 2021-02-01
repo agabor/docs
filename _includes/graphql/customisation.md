@@ -1,14 +1,14 @@
 # Customisation
 
-Although we automatically generate a GraphQL schema based on your Parse Server database, we have provided a number of ways in which to configure and extend this schema.
+Although we automatically generate a GraphQL schema based on your MSG Server database, we have provided a number of ways in which to configure and extend this schema.
 
 ## Configuration
 
-Whilst it's great to simply plug GraphQL into your Parse setup and immediately query any of your existing classes, you may find that this level of exposure is not suitable to your project. We have therefore provided a flexible way to limit which types, queries mutations are exposed within your GraphQL schema.
+Whilst it's great to simply plug GraphQL into your MSG setup and immediately query any of your existing classes, you may find that this level of exposure is not suitable to your project. We have therefore provided a flexible way to limit which types, queries mutations are exposed within your GraphQL schema.
 
 ### Configuration Options
 
-By default, no configuration is needed to get GraphQL working with your Parse Server. All of the following settings are completely optional, and can be provided or omitted as desired. To configure your schema, you simply need to provide a valid JSON object with the expected properties as described below:
+By default, no configuration is needed to get GraphQL working with your MSG Server. All of the following settings are completely optional, and can be provided or omitted as desired. To configure your schema, you simply need to provide a valid JSON object with the expected properties as described below:
 
 ```typescript
 // The properties with ? are optional
@@ -87,7 +87,7 @@ interface ParseGraphQLConfiguration {
 
 ### Set or Update Configuration
 
-We have provided a public API in `ParseGraphQLServer` which accepts the above JSON object for setting (and updating) your Parse GraphQL Configuration, `setGraphQLConfig`:
+We have provided a public API in `ParseGraphQLServer` which accepts the above JSON object for setting (and updating) your MSG GraphQL Configuration, `setGraphQLConfig`:
 
 ```javascript
   const parseGraphQLServer = new ParseGraphQLServer(parseServer, {
@@ -104,7 +104,7 @@ We have provided a public API in `ParseGraphQLServer` which accepts the above JS
 
 ### Include or Exclude Classes
 
-By default, all of your Parse classes, including the defaults such as `Parse.User`, `Parse.Session`, `Parse.Role` are added to the schema. You can restrict this using the `enabledForClassess` or `disabledForClassess` options, which accepts an array of class names.
+By default, all of your MSG classes, including the defaults such as `Parse.User`, `Parse.Session`, `Parse.Role` are added to the schema. You can restrict this using the `enabledForClassess` or `disabledForClassess` options, which accepts an array of class names.
 
 
 In the following example, we limit our GraphQL schema to only expose the default `_User` class, along with a few custom classes:
@@ -290,9 +290,9 @@ You can optionally override the default generated mutation names with aliases:
 
 ### Remove Configuration
 
-Deploying a custom configuration via `setGraphQLConfig` persists the changes into the database. As a result, simply deleting a configuration change and deploying again does not result in a default Parse GraphQL configuration. The configuration changes remain.
+Deploying a custom configuration via `setGraphQLConfig` persists the changes into the database. As a result, simply deleting a configuration change and deploying again does not result in a default MSG GraphQL configuration. The configuration changes remain.
 
-To remove a configuration, set the affected properties to `null` or `undefined` before deploying. The default Parse GraphQL configuration for those properties will be restored.
+To remove a configuration, set the affected properties to `null` or `undefined` before deploying. The default MSG GraphQL configuration for those properties will be restored.
 
 ```js
 {
@@ -306,7 +306,7 @@ Once a default configuration is restored, you can safely remove any unused confi
 
 ## Cloud Code Resolvers
 
-The Parse GraphQL API supports the use of custom user-defined schema. The [Adding Custom Schema](#adding-custom-schema) section explains how to get started using this feature.
+The MSG GraphQL API supports the use of custom user-defined schema. The [Adding Custom Schema](#adding-custom-schema) section explains how to get started using this feature.
 
 Cloud Code functions can then be used as custom resolvers for your user-defined schema.
 
@@ -353,9 +353,9 @@ The code above should resolve to this:
 
 ### Mutation Resolvers
 
-At times, you may need more control over how your mutations modify data than what Parse's auto-generated mutations can provide. For example, if you have classes named `Item` and `CartItem` in the schema, you can create an `addToCart` custom mutation that tests whether a specific item is already in the user's cart. If found, the cart item's quantity is incremented by one. If not, a new `CartItem` object is created.
+At times, you may need more control over how your mutations modify data than what MSG's auto-generated mutations can provide. For example, if you have classes named `Item` and `CartItem` in the schema, you can create an `addToCart` custom mutation that tests whether a specific item is already in the user's cart. If found, the cart item's quantity is incremented by one. If not, a new `CartItem` object is created.
 
-The ability to branch your resolver logic enables you to replicate functionality found in Parse's auto-generated `createCartItem` and `updateCartItem` mutations and combine those behaviors into a single custom resolver.
+The ability to branch your resolver logic enables you to replicate functionality found in MSG's auto-generated `createCartItem` and `updateCartItem` mutations and combine those behaviors into a single custom resolver.
 
 ```graphql
 # schema.graphql
@@ -364,7 +364,7 @@ extend type Mutation {
 }
 ```
 
-**Note**: The `id` passed in to your Cloud Code function from a GraphQL query is a [Relay Global Object Identification](https://facebook.github.io/relay/graphql/objectidentification.htm); it is **not** a Parse `objectId`. Most of the time the `Relay Node Id` is a `Base64` of the `ParseClass` and the `objectId`. Cloud code does not recognize a `Relay Node Id`, so converting it to a Parse `objectId` is required.
+**Note**: The `id` passed in to your Cloud Code function from a GraphQL query is a [Relay Global Object Identification](https://facebook.github.io/relay/graphql/objectidentification.htm); it is **not** a MSG `objectId`. Most of the time the `Relay Node Id` is a `Base64` of the `ParseClass` and the `objectId`. Cloud code does not recognize a `Relay Node Id`, so converting it to a MSG `objectId` is required.
 
 Decoding and encoding `Relay Node Ids` in Cloud Code is needed in order to smoothly interface with your client-side GraphQL queries and mutations.
 
@@ -384,13 +384,13 @@ Parse.Cloud.define("addToCart", async (req) => {
   const { user, params: { id } } = req;
 
   // Decode the incoming Relay Node Id to a
-  // Parse objectId for Cloud Code use.
+  // MSG objectId for Cloud Code use.
   const { id: itemObjectId } = fromGlobalId(id);
 
   // Query the user's current cart.
-  const itemQuery = new Parse.Query("Item");
+  const itemQuery = new MSG.Query("Item");
   const item = await itemQuery.get(itemObjectId);
-  const cartItemQuery = new Parse.Query("CartItem");
+  const cartItemQuery = new MSG.Query("CartItem");
   cartItemQuery.equalTo("item", item);
   cartItemQuery.equalTo("user", user);
   const [existingCartItem] = await cartItemQuery.find();
@@ -403,13 +403,13 @@ Parse.Cloud.define("addToCart", async (req) => {
     savedCartItem = await existingCartItem.save();
   } else {
     // The item has not yet been added; create a new cartItem object.
-    const CartItem = Parse.Object.extend("CartItem");
+    const CartItem = MSG.Object.extend("CartItem");
     const cartItem = new CartItem();
     savedCartItem = await cartItem.save({ quantity: 1, item, user });
   }
 
-  // Encode the Parse objectId to a Relay Node Id
-  // for Parse GraphQL use.
+  // Encode the MSG objectId to a Relay Node Id
+  // for MSG GraphQL use.
   const cartItemId = toGlobalId('CartItem', savedCartItem.id);
 
   // Convert to a JSON object to handle adding the

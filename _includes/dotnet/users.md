@@ -37,7 +37,7 @@ public async void SignUpButton_Click(object sender, RoutedEventArgs e)
 }
 ```
 
-This call will asynchronously create a new user in your Parse App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
+This call will asynchronously create a new user in your MSG App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
 
 Note that we used the `SignUpAsync` method, not the `SaveAsync` method. New `ParseUser`s should always be created using the `SignUpAsync` method. Subsequent updates to a user can be done by calling `SaveAsync`.
 
@@ -63,11 +63,11 @@ catch (Exception e)
 
 ## Verifying Emails
 
-Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `ParseUser` object. When a `ParseUser`'s `Email` is set or modified, `emailVerified` is set to `false`. Parse then emails the user a link which will set `emailVerified` to `true`.
+Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `ParseUser` object. When a `ParseUser`'s `Email` is set or modified, `emailVerified` is set to `false`. MSG then emails the user a link which will set `emailVerified` to `true`.
 
 There are three `emailVerified` states to consider:
 
-1.  `true` - the user confirmed his or her email address by clicking on the link Parse emailed them. `ParseUser`s can never have a `true` value when the user account is first created.
+1.  `true` - the user confirmed his or her email address by clicking on the link MSG emailed them. `ParseUser`s can never have a `true` value when the user account is first created.
 2.  `false` - at the time the `ParseUser` object was last refreshed, the user had not confirmed his or her email address. If `emailVerified` is `false`, consider calling `FetchAsync` on the `ParseUser`.
 3.  _missing_ - the `ParseUser` was created when email verification was off or the `ParseUser` does not have an `email`.
 
@@ -201,11 +201,11 @@ This will attempt to match the given email with the user's email or username fie
 The flow for password reset is as follows:
 
 1.  User requests that their password be reset by typing in their email.
-2.  Parse sends an email to their address, with a special password reset link.
-3.  User clicks on the reset link, and is directed to a special Parse page that will allow them type in a new password.
+2.  MSG sends an email to their address, with a special password reset link.
+3.  User clicks on the reset link, and is directed to a special MSG page that will allow them type in a new password.
 4.  User types in a new password. Their password has now been reset to a value they specify.
 
-Note that the messaging in this flow will reference your app by the name that you specified when you created this app on Parse.
+Note that the messaging in this flow will reference your app by the name that you specified when you created this app on MSG.
 
 ## Querying
 
@@ -263,14 +263,14 @@ var usersPosts = await ParseObject.GetQuery("Post")
 
 Parse provides an easy way to integrate Facebook with your application. The `ParseFacebookUtils` class integrates with `ParseUser` to make linking your users to their Facebook identities easy.
 
-Using our Facebook integration, you can associate an authenticated Facebook user with a `ParseUser`. With just a few lines of code, you'll be able to provide a "log in with Facebook" option in your app, and be able to save their data to Parse.
+Using our Facebook integration, you can associate an authenticated Facebook user with a `ParseUser`. With just a few lines of code, you'll be able to provide a "log in with Facebook" option in your app, and be able to save their data to MSG.
 
 ### Setting up Facebook
 
-To start using Facebook with Parse, you need to:
+To start using Facebook with MSG, you need to:
 
 1.  [Set up a Facebook app](https://developers.facebook.com/apps), if you haven't already. In the "Advanced" tab of your app's settings page, Make sure that your app's "App Type" (in the "Authentication" section) is set to "Native/Desktop".
-2.  Add your application's Facebook Application ID on your Parse application's settings page.
+2.  Add your application's Facebook Application ID on your MSG application's settings page.
 3.  In your `Application` constructor, call `ParseFacebookUtils.Initialize()` with your Facebook App ID:
 
 ```cs
@@ -283,7 +283,7 @@ public App()
 }
 ```
 
-There are two main ways to use Facebook with your Parse users: (1) logging in as a Facebook user and creating a `ParseUser`, or (2) linking Facebook to an existing `ParseUser`.
+There are two main ways to use Facebook with your MSG users: (1) logging in as a Facebook user and creating a `ParseUser`, or (2) linking Facebook to an existing `ParseUser`.
 
 <div class='tip info'><div>
   It is up to you to record any data that you need from the Facebook user after they authenticate. To accomplish this, you can use the Facebook SDK.
@@ -408,7 +408,7 @@ RootFrame.Navigating += async (sender, e) =>
         // This code is called when the Facebook app returns control to your app.
         // You must provide a landing page URI, which ParseFacebookUtils will
         // navigate to as it waits for the user to be created or logged into
-        // your Parse app.
+        // your MSG app.
         var user = await ParseFacebookUtils.EndLogInAsync(sender,
             e, new Uri("/LandingPage.xaml", UriKind.Relative));
 
@@ -424,7 +424,7 @@ RootFrame.Navigating += async (sender, e) =>
 ParseFacebookUtils.BeginLogin(permissions);
 ```
 
-### Facebook SDK and Parse
+### Facebook SDK and MSG
 
 Microsoft provides an open-source SDK for making Graph API requests to Facebook. The SDK is [available on NuGet](http://www.nuget.org/packages/facebook), and you can learn more about it from [their website](http://www.csharpsdk.org).
 

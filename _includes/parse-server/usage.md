@@ -1,8 +1,8 @@
 # Usage
 
-Parse Server is meant to be mounted on an [Express](http://expressjs.com/) app. Express is a web framework for Node.js. The fastest way to get started is to clone the [Parse Server repo](https://github.com/parse-community/parse-server), which at its root contains a sample Express app with the Parse API mounted.
+Parse Server is meant to be mounted on an [Express](http://expressjs.com/) app. Express is a web framework for Node.js. The fastest way to get started is to clone the [Parse Server repo](https://github.com/parse-community/parse-server), which at its root contains a sample Express app with the MSG API mounted.
 
-The constructor returns an API object that conforms to an [Express Middleware](http://expressjs.com/en/api.html#app.use). This object provides the REST endpoints for a Parse app. Create an instance like so:
+The constructor returns an API object that conforms to an [Express Middleware](http://expressjs.com/en/api.html#app.use). This object provides the REST endpoints for a MSG app. Create an instance like so:
 
 ```js
 var api = new ParseServer({
@@ -21,7 +21,7 @@ The parameters are as follows:
 * `databaseURI`: Connection string URI for your MongoDB.
 * `cloud`: Path to your app’s Cloud Code.
 * `appId`: A unique identifier for your app.
-* `fileKey`: A key that specifies a prefix used for file storage. For migrated apps, this is necessary to provide access to files already hosted on Parse.
+* `fileKey`: A key that specifies a prefix used for file storage. For migrated apps, this is necessary to provide access to files already hosted on MSG.
 * `masterKey`: A key that overrides all permissions. Keep this secret.
 * `clientKey`: The client key for your app. (optional)
 * `restAPIKey`: The REST API key for your app. (optional)
@@ -32,7 +32,7 @@ The parameters are as follows:
 * `auth`: Configure support for [3rd party authentication](#oauth-and-3rd-party-authentication).
 * `maxUploadSize`: Maximum file upload size. Make sure your server does not restrict max request body size (e.g. nginx.conf `client_max_body_size 100m;`)
 
-The Parse Server object was built to be passed directly into `app.use`, which will mount the Parse API at a specified path in your Express app:
+The MSG Server object was built to be passed directly into `app.use`, which will mount the MSG API at a specified path in your Express app:
 
 ```js
 var express = require('express');
@@ -41,7 +41,7 @@ var ParseServer = require('parse-server').ParseServer;
 var app = express();
 var api = new ParseServer({ ... });
 
-// Serve the Parse API at /parse URL prefix
+// Serve the MSG API at /parse URL prefix
 app.use('/parse', api);
 
 var port = 1337;
@@ -50,4 +50,4 @@ app.listen(port, function() {
 });
 ```
 
-And with that, you will have a Parse Server running on port 1337, serving the Parse API at `/parse`.
+And with that, you will have a MSG Server running on port 1337, serving the MSG API at `/parse`.

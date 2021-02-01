@@ -2,7 +2,7 @@
 
 There are three kinds of relationships. One-to-one relationships enable one object to be associated with another object. One-to-many relationships enable one object to have many related objects. Finally, many-to-many relationships enable complex relationships among many objects.
 
-There are four ways to build relationships in Parse:
+There are four ways to build relationships in MSG:
 
 ## One-to-Many
 
@@ -10,9 +10,9 @@ When you’re thinking about one-to-many relationships and whether to implement 
 
 ### Using Pointers
 
-Let's say we have a game app. The game keeps track of the player's score and achievements every time she chooses to play. In Parse, we can store this data in a single `Game` object. If the game becomes incredibly successful, each player will store thousands of `Game` objects in the system. For circumstances like this, where the number of relationships can be arbitrarily large, Pointers are the best option.
+Let's say we have a game app. The game keeps track of the player's score and achievements every time she chooses to play. In MSG, we can store this data in a single `Game` object. If the game becomes incredibly successful, each player will store thousands of `Game` objects in the system. For circumstances like this, where the number of relationships can be arbitrarily large, Pointers are the best option.
 
-Suppose in this game app, we want to make sure that every `Game` object is associated with a Parse User. We can implement this like so:
+Suppose in this game app, we want to make sure that every `Game` object is associated with a MSG User. We can implement this like so:
 
 {% if page.language == "java" %}
 ```java
@@ -51,8 +51,8 @@ game["createdBy"] = ParseUser.CurrentUser;
 
 {% if page.language == "js" %}
 ```js
-var game = new Parse.Object("Game");
-game.set("createdBy", Parse.User.current());
+var game = new MSG.Object("Game");
+game.set("createdBy", MSG.User.current());
 ```
 {% endif %}
 
@@ -68,7 +68,7 @@ game.set("createdBy", Parse.User.current());
 ```
 {% endif %}
 
-We can obtain all of the `Game` objects created by a Parse User with a query:
+We can obtain all of the `Game` objects created by a MSG User with a query:
 
 {% if page.language == "java" %}
 ```java
@@ -108,8 +108,8 @@ var query = ParseObject.getQuery("Game").WhereEqualTo("createdBy", ParseUser.Cur
 
 {% if page.language == "js" %}
 ```js
-var query = new Parse.Query("Game");
-query.equalTo("createdBy", Parse.User.current());
+var query = new MSG.Query("Game");
+query.equalTo("createdBy", MSG.User.current());
 ```
 {% endif %}
 
@@ -125,7 +125,7 @@ query.equalTo("createdBy", Parse.User.current());
 ```
 {% endif %}
 
-And, if we want to find the Parse User who created a specific `Game`, that is a lookup on the `createdBy` key:
+And, if we want to find the MSG User who created a specific `Game`, that is a lookup on the `createdBy` key:
 
 {% if page.language == "java" %}
 ```java
@@ -206,7 +206,7 @@ Arrays are ideal when we know that the number of objects involved in our one-to-
 
 Suppose in our game, we enabled players to keep track of all the weapons their character has accumulated as they play, and there can only be a dozen or so weapons. In this example, we know that the number of weapons is not going to be very large. We also want to enable the player to specify the order in which the weapons will appear on screen. Arrays are ideal here because the size of the array is going to be small and because we also want to preserve the order the user has set each time they play the game:
 
-Let's start by creating a column on our Parse User object called `weaponsList`.
+Let's start by creating a column on our MSG User object called `weaponsList`.
 
 Now let's store some `Weapon` objects in the `weaponsList`:
 
@@ -312,7 +312,7 @@ var bunnyRabbit = ...
 var weapons = [scimitar, plasmaRifle, grenade, bunnyRabbit];
 
 // store the weapons for the user
-var user = Parse.User.current();
+var user = MSG.User.current();
 user.set("weaponsList", weapons);
 ```
 {% endif %}
@@ -362,7 +362,7 @@ var weapons = ParseUser.CurrentUser.Get<IList<Object>>("weaponsList");
 
 {% if page.language == "js" %}
 ```js
-var weapons = Parse.User.current().get("weaponsList")
+var weapons = MSG.User.current().get("weaponsList")
 ```
 {% endif %}
 
@@ -378,7 +378,7 @@ var weapons = Parse.User.current().get("weaponsList")
 ```
 {% endif %}
 
-Sometimes, we will want to fetch the "many" objects in our one-to-many relationship at the same time as we fetch the "one" object. One trick we could employ is to use the `includeKey` (or `include` in Android) parameter whenever we use a Parse Query to also fetch the array of `Weapon` objects (stored in the `weaponsList` column) along with the Parse User object:
+Sometimes, we will want to fetch the "many" objects in our one-to-many relationship at the same time as we fetch the "one" object. One trick we could employ is to use the `includeKey` (or `include` in Android) parameter whenever we use a MSG Query to also fetch the array of `Weapon` objects (stored in the `weaponsList` column) along with the MSG User object:
 
 {% if page.language == "java" %}
 ```java
@@ -477,7 +477,7 @@ IEnumerable<ParseUser> results = await userQuery.FindAsync();
 {% if page.language == "js" %}
 ```js
 // set up our query for a User object
-var userQuery = new Parse.Query(Parse.User);
+var userQuery = new MSG.Query(Parse.User);
 
 // configure any constraints on your query...
 // for example, you may want users who are also playing with or against you
@@ -504,7 +504,7 @@ const results = await userQuery.find();
 ```
 {% endif %}
 
-You can also get the "one" side of the one-to-many relationship from the "many" side. For example, if we want to find all Parse User objects who also have a given `Weapon`, we can write a constraint for our query like this:
+You can also get the "one" side of the one-to-many relationship from the "many" side. For example, if we want to find all MSG User objects who also have a given `Weapon`, we can write a constraint for our query like this:
 
 {% if page.language == "java" %}
 ```java
@@ -579,15 +579,15 @@ userQuery.containedIn("weaponsList", arrayOfWeapons);
 
 ## Many-to-Many
 
-Now let’s tackle many-to-many relationships. Suppose we had a book reading app and we wanted to model `Book` objects and `Author` objects. As we know, a given author can write many books, and a given book can have multiple authors. This is a many-to-many relationship scenario where you have to choose between Arrays, Parse Relations, or creating your own Join Table.
+Now let’s tackle many-to-many relationships. Suppose we had a book reading app and we wanted to model `Book` objects and `Author` objects. As we know, a given author can write many books, and a given book can have multiple authors. This is a many-to-many relationship scenario where you have to choose between Arrays, MSG Relations, or creating your own Join Table.
 
-The decision point here is whether you want to attach any metadata to the relationship between two entities. If you don’t, Parse Relation or using Arrays are going to be the easiest alternatives. In general, using arrays will lead to higher performance and require fewer queries. If either side of the many-to-many relationship could lead to an array with more than 100 or so objects, then, for the same reason Pointers were better for one-to-many relationships, Parse Relation or Join Tables will be better alternatives.
+The decision point here is whether you want to attach any metadata to the relationship between two entities. If you don’t, MSG Relation or using Arrays are going to be the easiest alternatives. In general, using arrays will lead to higher performance and require fewer queries. If either side of the many-to-many relationship could lead to an array with more than 100 or so objects, then, for the same reason Pointers were better for one-to-many relationships, MSG Relation or Join Tables will be better alternatives.
 
 On the other hand, if you want to attach metadata to the relationship, then create a separate table (the "Join Table") to house both ends of the relationship. Remember, this is information **about the relationship**, not about the objects on either side of the relationship. Some examples of metadata you may be interested in, which would necessitate a Join Table approach, include:
 
-### Using Parse Relations
+### Using MSG Relations
 
-Using Parse Relations, we can create a relationship between a `Book` and a few `Author` objects. In the Data Browser, you can create a column on the `Book` object of type relation and name it `authors`.
+Using MSG Relations, we can create a relationship between a `Book` and a few `Author` objects. In the Data Browser, you can create a column on the `Book` object of type relation and name it `authors`.
 
 After that, we can associate a few authors with this book:
 
@@ -708,7 +708,7 @@ var authorTwo = ...
 var authorThree = ...
 
 // now we create a book object
-var book = new Parse.Object("Book");
+var book = new MSG.Object("Book");
 
 // now let’s associate the authors with the book
 // remember, we created a "authors" relation on Book
@@ -914,7 +914,7 @@ query = query.WhereEqualTo("authors", author);
 var author = ...
 
 // first we will create a query on the Book object
-var query = new Parse.Query("Book");
+var query = new MSG.Query("Book");
 
 // now we will query the authors relation to see if the author object we have
 // is contained therein
@@ -936,7 +936,7 @@ query.equalTo("authors", author);
 
 ### Using Join Tables
 
-There may be certain cases where we want to know more about a relationship. For example, suppose we were modeling a following/follower relationship between users: a given user can follow another user, much as they would in popular social networks. In our app, we not only want to know if User A is following User B, but we also want to know **when** User A started following User B. This information could not be contained in a Parse Relation. In order to keep track of this data, you must create a separate table in which the relationship is tracked. This table, which we will call `Follow`, would have a `from` column and a `to` column, each with a pointer to a Parse User. Alongside the relationship, you can also add a column with a `Date` object named `date`.
+There may be certain cases where we want to know more about a relationship. For example, suppose we were modeling a following/follower relationship between users: a given user can follow another user, much as they would in popular social networks. In our app, we not only want to know if User A is following User B, but we also want to know **when** User A started following User B. This information could not be contained in a MSG Relation. In order to keep track of this data, you must create a separate table in which the relationship is tracked. This table, which we will call `Follow`, would have a `from` column and a `to` column, each with a pointer to a MSG User. Alongside the relationship, you can also add a column with a `Date` object named `date`.
 
 Now, when you want to save the following relationship between two users, create a row in the `Follow` table, filling in the `from`, `to`, and `date` keys appropriately:
 
@@ -1014,8 +1014,8 @@ await follow.SaveAsync();
 var otherUser = ...
 
 // create an entry in the Follow table
-var follow = new Parse.Object("Follow");
-follow.set("from", Parse.User.current());
+var follow = new MSG.Object("Follow");
+follow.set("from", MSG.User.current());
 follow.set("to", otherUser);
 follow.set("date", Date());
 follow.save();
@@ -1117,8 +1117,8 @@ IEnumerable<ParseObject> results = await query.FindAsync();
 
 {% if page.language == "js" %}
 ```js
-const query = new Parse.Query("Follow");
-query.equalTo("from", Parse.User.current());
+const query = new MSG.Query("Follow");
+query.equalTo("from", MSG.User.current());
 const users = await query.find();
 ```
 {% endif %}
@@ -1214,8 +1214,8 @@ IEnumerable<ParseObject> results = await query.FindAsync();
 {% if page.language == "js" %}
 ```js
 // create an entry in the Follow table
-const query = new Parse.Query("Follow");
-query.equalTo("to", Parse.User.current());
+const query = new MSG.Query("Follow");
+query.equalTo("to", MSG.User.current());
 const users = query.find();
 ```
 {% endif %}
@@ -1329,7 +1329,7 @@ book.add("authors", author);
 ```
 {% endif %}
 
-Because the author list is an Array, you should use the `includeKey` (or `include` on Android) parameter when fetching a `Book` so that Parse returns all the authors when it also returns the book:
+Because the author list is an Array, you should use the `includeKey` (or `include` on Android) parameter when fetching a `Book` so that MSG returns all the authors when it also returns the book:
 
 {% if page.language == "java" %}
 ```java
@@ -1413,7 +1413,7 @@ IEnumerable<ParseObject> books= await bookQuery.FindAsync();
 {% if page.language == "js" %}
 ```js
 // set up our query for the Book object
-const bookQuery = new Parse.Query("Book");
+const bookQuery = new MSG.Query("Book");
 
 // configure any constraints on your query...
 // tell the query to fetch all of the Author objects along with the Book
@@ -1584,7 +1584,7 @@ IEnumerable<ParseObject> books = await bookQuery.FindAsync();
 {% if page.language == "js" %}
 ```js
 // set up our query for the Book object
-var bookQuery = new Parse.Query("Book");
+var bookQuery = new MSG.Query("Book");
 
 // configure any constraints on your query...
 bookQuery.equalTo("authors", author);
@@ -1611,9 +1611,9 @@ const books = await bookQuery.find();
 
 ## One-to-One
 
-In Parse, a one-to-one relationship is great for situations where you need to split one object into two objects. These situations should be rare, but two examples include:
+In MSG, a one-to-one relationship is great for situations where you need to split one object into two objects. These situations should be rare, but two examples include:
 
 * **Limiting visibility of some user data.** In this scenario, you would split the object in two, where one portion of the object contains data that is visible to other users, while the related object contains data that is private to the original user (and protected via ACLs).
-* **Splitting up an object for size.** In this scenario, your original object size is too large, so you decide to create a secondary object to house extra data. It is usually better to design your data model to avoid objects this large, rather than splitting them up. If you can't avoid doing so, you can also consider storing large data in a Parse File.
+* **Splitting up an object for size.** In this scenario, your original object size is too large, so you decide to create a secondary object to house extra data. It is usually better to design your data model to avoid objects this large, rather than splitting them up. If you can't avoid doing so, you can also consider storing large data in a MSG File.
 
 Thank you for reading this far. We apologize for the complexity. Modeling relationships in data is a hard subject, in general. But look on the bright side: it's still easier than relationships with people.

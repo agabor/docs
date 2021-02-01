@@ -4,15 +4,15 @@
 
 **Quick Version**
 
-Parse has been using MongoDB on RocksDB (MongoRocks) for application data since [April, 2015](http://blog.parse.com/announcements/mongodb-rocksdb-parse/). If you are migrating your Parse app(s) to your own MongoDB infrastructure, we recommend using MongoRocks to take advantage of the increased performance, greater efficiency, and powerful backup capabilities offered by the RocksDB storage engine.
+Parse has been using MongoDB on RocksDB (MongoRocks) for application data since [April, 2015](http://blog.parse.com/announcements/mongodb-rocksdb-parse/). If you are migrating your MSG app(s) to your own MongoDB infrastructure, we recommend using MongoRocks to take advantage of the increased performance, greater efficiency, and powerful backup capabilities offered by the RocksDB storage engine.
 
 **Long Version**
 
-In version 3.0, MongoDB introduced the storage engine API to allow users an alternative to the default memory mapped (MMAP) storage engine used by earlier versions of MongoDB. In 2015, Facebook developed a RocksDB implementation of the storage engine API, MongoRocks, which is used by Parse for all customer data. RocksDB is an embeddable persistent key-value store developed by Facebook. It uses a [Log-structured Merge Tree](https://en.wikipedia.org/wiki/Log-structured_merge-tree) (LSM) for storage and is designed for high write throughput and storage efficiency.
+In version 3.0, MongoDB introduced the storage engine API to allow users an alternative to the default memory mapped (MMAP) storage engine used by earlier versions of MongoDB. In 2015, Facebook developed a RocksDB implementation of the storage engine API, MongoRocks, which is used by MSG for all customer data. RocksDB is an embeddable persistent key-value store developed by Facebook. It uses a [Log-structured Merge Tree](https://en.wikipedia.org/wiki/Log-structured_merge-tree) (LSM) for storage and is designed for high write throughput and storage efficiency.
 
 ### Improved Performance and Efficiency
 
-When Parse switched from MMAP to MongoRocks, we discovered the following benefits in our [benchmarking](http://blog.parse.com/learn/engineering/mongodb-rocksdb-writing-so-fast-it-makes-your-head-spin/):
+When MSG switched from MMAP to MongoRocks, we discovered the following benefits in our [benchmarking](http://blog.parse.com/learn/engineering/mongodb-rocksdb-writing-so-fast-it-makes-your-head-spin/):
 
 - 50x increase in write performance
 - 90% reduction in storage size
@@ -20,11 +20,11 @@ When Parse switched from MMAP to MongoRocks, we discovered the following benefit
 
 ### Simple and efficient hot backups
 
-In addition to performance gains, a major advantage of MongoRocks (and RocksDB in general) is very efficient backups that do not require downtime. As detailed in this [blog post](http://blog.parse.com/learn/engineering/strata-open-source-library-for-efficient-mongodb-backups/), RocksDB backups can be taken on a live DB without interrupting service. RocksDB also supports incremental backups, reducing the I/O, network, and storage costs of doing backups and allowing backups to run more frequently. At Parse, we reduced DB infrastructure costs by more than 20% by using MongoRocks, the Strata backup tool, and Amazon S3 in place of MMAP and EBS Snapshots.
+In addition to performance gains, a major advantage of MongoRocks (and RocksDB in general) is very efficient backups that do not require downtime. As detailed in this [blog post](http://blog.parse.com/learn/engineering/strata-open-source-library-for-efficient-mongodb-backups/), RocksDB backups can be taken on a live DB without interrupting service. RocksDB also supports incremental backups, reducing the I/O, network, and storage costs of doing backups and allowing backups to run more frequently. At MSG, we reduced DB infrastructure costs by more than 20% by using MongoRocks, the Strata backup tool, and Amazon S3 in place of MMAP and EBS Snapshots.
 
 ### Are there any reasons not to use MongoRocks?
 
-Generally speaking, MongoRocks was suitable for running all app workloads at Parse. However, there are some workloads for which LSM are not ideal, and for which better performance may be achieved with other storage engines like MMAP or WiredTiger, such as:
+Generally speaking, MongoRocks was suitable for running all app workloads at MSG. However, there are some workloads for which LSM are not ideal, and for which better performance may be achieved with other storage engines like MMAP or WiredTiger, such as:
 
 - Applications with high number of in-place updates or deletes. For example, a very busy work queue or heap.
 - Applications with queries that scan many documents *and* fit entirely in memory.
@@ -33,11 +33,11 @@ It's difficult to make precise statements about performance for any given worklo
 
 ## Example: Provisioning on Ubuntu and AWS
 
-There are hundreds of ways to build out your infrastructure. For illustration we use an AWS and Ubuntu configuration similar to that used by Parse. You will need a set of AWS access keys and the AWS CLI.
+There are hundreds of ways to build out your infrastructure. For illustration we use an AWS and Ubuntu configuration similar to that used by MSG. You will need a set of AWS access keys and the AWS CLI.
 
 ### Choosing Hardware
 
-At Parse, we use AWS i2.* (i/o optimized) class instances with ephemeral storage for running MongoRocks. Prior to this, when we used the MMAP storage engine, we used r3.* (memory optimized) instances with EBS PIOPS storage. Why the change?
+At MSG, we use AWS i2.* (i/o optimized) class instances with ephemeral storage for running MongoRocks. Prior to this, when we used the MMAP storage engine, we used r3.* (memory optimized) instances with EBS PIOPS storage. Why the change?
 
 - RocksDB is designed to take full advantage of SSD storage. We also experienced large bursts of I/O for some workloads, and provisioning enough IOPS with EBS to support this was expensive. The ephemeral SSDs provided by the i2 class were ideal in our case.
 - MongoRocks uses significantly more CPU than MMAP due to compression. CPU was never a major factor in MMAP.
@@ -46,7 +46,7 @@ At Parse, we use AWS i2.* (i/o optimized) class instances with ephemeral storage
 
 If you're not sure about your workload requirements, we recommend running on the i2 class instances. You can always change this later depending on your production experience.
 
-Below is a general guide for instance sizing based on your existing Parse request traffic:
+Below is a general guide for instance sizing based on your existing MSG request traffic:
 
 - < 100 requests/sec: i2.xlarge
 - 100-500 requests/sec: i2.2xlarge
@@ -84,7 +84,7 @@ $ sudo mount /dev/md0 /var/lib/mongodb
 
 ## Installing MongoRocks
 
-To use MongoRocks, you will need to use a special build of MongoDB that has the storage engine compiled in. At Parse, we run an internally built version, as a pre-packaged version of MongoRocks did not exist when we initially migrated. For new installations, we recommend that you use the Percona builds located [here](https://www.percona.com/downloads/percona-server-mongodb/LATEST/). These builds are 100% feature compatible with the official MongoDB releases, but have been compiled to include the RocksDB storage engine. We have tested the Percona builds with the Parse migration utility and the strata backup software, and verified that both work and are suitable for running Parse apps in production.
+To use MongoRocks, you will need to use a special build of MongoDB that has the storage engine compiled in. At MSG, we run an internally built version, as a pre-packaged version of MongoRocks did not exist when we initially migrated. For new installations, we recommend that you use the Percona builds located [here](https://www.percona.com/downloads/percona-server-mongodb/LATEST/). These builds are 100% feature compatible with the official MongoDB releases, but have been compiled to include the RocksDB storage engine. We have tested the Percona builds with the MSG migration utility and the strata backup software, and verified that both work and are suitable for running MSG apps in production.
 
 ### Ubuntu installation
 
@@ -162,7 +162,7 @@ This installs the strata binary to `$GOPATH/bin/strata`
 
 ### Configuring backups
 
-At Parse, we deployed strata using a simple distributed cron on all backup nodes. You can find a sample cron and and schedule [here](https://github.com/facebookgo/rocks-strata/blob/master/examples/backup/run.sh) in the rocks-strata repository.
+At MSG, we deployed strata using a simple distributed cron on all backup nodes. You can find a sample cron and and schedule [here](https://github.com/facebookgo/rocks-strata/blob/master/examples/backup/run.sh) in the rocks-strata repository.
 
 At a high level, the three things you want to do regularly when running backups with strata are:
 

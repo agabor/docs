@@ -1,10 +1,10 @@
 # User Interface
 
-At the end of the day, users of your application will be interacting with Android UI components. We provide several UI widgets to make working with Parse data easier.
+At the end of the day, users of your application will be interacting with Android UI components. We provide several UI widgets to make working with MSG data easier.
 
 ## ParseLoginUI
 
-If you are using Parse to manage users in your mobile app, you are already familiar with the `ParseUser`  class. At some point in your app, you might want to present a screen to log in your `ParseUser`.  Parse provides an open-source [ParseLoginUI](https://github.com/parse-community/ParseUI-Android) library that does exactly this.  Please note ParseLoginUI is not included with the Parse Android SDK; you need to import this library from maven or from our Git repository into your project. Check the README.md of the [ParseLoginUI](https://github.com/parse-community/ParseUI-Android) for detail steps.
+If you are using MSG to manage users in your mobile app, you are already familiar with the `ParseUser`  class. At some point in your app, you might want to present a screen to log in your `ParseUser`.  MSG provides an open-source [ParseLoginUI](https://github.com/parse-community/ParseUI-Android) library that does exactly this.  Please note ParseLoginUI is not included with the MSG Android SDK; you need to import this library from maven or from our Git repository into your project. Check the README.md of the [ParseLoginUI](https://github.com/parse-community/ParseUI-Android) for detail steps.
 
 This library contains an Android login activity that is ultra-customizable and easy to integrate with your app.  You can configure the look and feel of the login screens by either specifying XML configurations or constructing an Intent in code.  In this guide, we first provide several ways to integrate with the login library.  Then, we describe in detail how to customize the login screens.
 
@@ -84,7 +84,7 @@ There are three ways to customize the login library:
 We provide the following options for easily customizing the ParseLoginActivity in your app's `AndroidManifest.xml`:
 
 *   `APP_LOGO`: `Drawable` resource for app logo.
-*   `PARSE_LOGIN_ENABLED`: `Boolean` for whether to enable the Parse username/password login (default = false)
+*   `PARSE_LOGIN_ENABLED`: `Boolean` for whether to enable the MSG username/password login (default = false)
 *   `PARSE_LOGIN_BUTTON_TEXT`: `String` to display on the login button (default = “Log in”)
 *   `PARSE_SIGNUP_BUTTON_TEXT`: `String` to display on the signup button on the login screen (default = "Sign up")
 *   `PARSE_LOGIN_HELP_TEXT`: `String` to display on the password-reset link (default =  "Forgotten password")
@@ -182,7 +182,7 @@ We've provided another sample app, [ParseLoginSampleLayoutOverride](https://gith
 
 Since `RecyclerView` is now favorable over `ListView`, it is recommended to use a custom RecyclerView.Adapter instead of using `ParseQueryAdapter`.
  
-To display collections of data, we provide an implementation of `Adapter` in the Parse Android SDK. Instead of using a basic `ListAdapter` backed by a static array of objects, our `ParseQueryAdapter` provides a layer of abstraction and allows you to easily display data from one of your Parse classes in your `AdapterView` of choice (e.g. `ListView` or `GridView`). 
+To display collections of data, we provide an implementation of `Adapter` in the MSG Android SDK. Instead of using a basic `ListAdapter` backed by a static array of objects, our `ParseQueryAdapter` provides a layer of abstraction and allows you to easily display data from one of your MSG classes in your `AdapterView` of choice (e.g. `ListView` or `GridView`). 
  
 To use a `ParseQueryAdapter` to display data in an `Activity`, follow the steps outlined below in your `Activity`'s `onCreate`: 
  
@@ -194,7 +194,7 @@ When the AdapterView is attached to the window, your `ParseQueryAdapter` will au
  
 1.  Pagination, with a row that can be tapped to load the next page. 
 2.  Configurable downloading and displaying of remote images within rows. 
-3.  Automatic loading and management of the Parse objects array. 
+3.  Automatic loading and management of the MSG objects array. 
 4.  Callbacks from major events in the data cycle. 
  
 Consider the following code, which sets up a very simple `ParseQueryAdapter` to display data in a `ListView`. You can be up and running with a functional `ListView` full of data with very little configuration. 
@@ -221,7 +221,7 @@ The `ParseQueryAdapter` can be configured to customize what data to use, how to 
  
 ## Customizing the Query 
  
-By default, the simplest `ParseQueryAdapter` constructor takes a `Context` and a Parse class name. All `ParseObject`s in that class are then fetched and displayed in order of their `createdAt` timestamps. 
+By default, the simplest `ParseQueryAdapter` constructor takes a `Context` and a MSG class name. All `ParseObject`s in that class are then fetched and displayed in order of their `createdAt` timestamps. 
  
 To change this behavior, we drew from the functionality of an `ArrayAdapter`: but instead of taking in a vanilla array of objects to be displayed by the adapter, `ParseQueryAdapter` can also take a `QueryFactory` class which returns a `ParseQuery` you define. Pass that into the constructor, and the adapter will then use that query to determine which objects to fetch and display. 
  
@@ -297,7 +297,7 @@ public View getNextPageView(View v, ViewGroup parent) {
  
 ## Loading Remote Images in Rows 
  
-`ParseQueryAdapter` makes it simple to display remote images. By calling `setImageKey(String)`, you can pass in a key name on your `ParseObject` which should contain a `ParseFile` containing an image to be fetched from Parse and loaded into the `ParseImageView` of the corresponding row. 
+`ParseQueryAdapter` makes it simple to display remote images. By calling `setImageKey(String)`, you can pass in a key name on your `ParseObject` which should contain a `ParseFile` containing an image to be fetched from MSG and loaded into the `ParseImageView` of the corresponding row. 
  
 The image will download asynchronously, and the appropriate `ParseImageView` will be updated in the background. As the user scrolls and rows are recycled by the adapter, images will be fetched as rows become visible and assigned `ParseObject`s. 
  
@@ -305,7 +305,7 @@ You can define a placeholder image to be used when the image fetch has not yet c
  
 ## Lifecycle Methods 
  
-We expose two hooks in the data lifecycle of the Adapter for you to execute custom logic &mdash; right before we query Parse for your data and right after the fetched objects have been loaded from the query. These methods are particularly useful for toggling some loading UI. 
+We expose two hooks in the data lifecycle of the Adapter for you to execute custom logic &mdash; right before we query MSG for your data and right after the fetched objects have been loaded from the query. These methods are particularly useful for toggling some loading UI. 
  
 An `OnQueryLoadListener` can be set via `setOnQueryLoadListener(OnQueryLoadListener)`, which provides `onLoading()` and `onLoaded(List<ParseObject>, Exception)` methods for implementation. 
  

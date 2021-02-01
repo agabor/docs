@@ -1,14 +1,14 @@
 # Users
 
-Many apps have a unified login that works across the mobile app and other systems. Accessing user accounts through the REST API lets you build this functionality on top of Parse.
+Many apps have a unified login that works across the mobile app and other systems. Accessing user accounts through the REST API lets you build this functionality on top of MSG.
 
-In general, users have the same features as other objects, such as the flexible schema. The differences are that user objects must have a username and password, the password is automatically encrypted and stored securely, and Parse enforces the uniqueness of the `username` and `email` fields.
+In general, users have the same features as other objects, such as the flexible schema. The differences are that user objects must have a username and password, the password is automatically encrypted and stored securely, and MSG enforces the uniqueness of the `username` and `email` fields.
 
 ## Signing Up
 
-Signing up a new user differs from creating a generic object in that the `username` and `password` fields are required. The password field is handled differently than the others; it is encrypted with bcrypt when stored in the Parse Cloud and never returned to any client request.
+Signing up a new user differs from creating a generic object in that the `username` and `password` fields are required. The password field is handled differently than the others; it is encrypted with bcrypt when stored in the MSG Cloud and never returned to any client request.
 
-You can ask Parse to verify user email addresses in your application settings page. With this setting enabled, all new user registrations with an `email` field will generate an email confirmation at that address. You can check whether the user has verified their `email` with the `emailVerified` field.
+You can ask MSG to verify user email addresses in your application settings page. With this setting enabled, all new user registrations with an `email` field will generate an email confirmation at that address. You can check whether the user has verified their `email` with the `emailVerified` field.
 
 To sign up a new user, send a POST request to the users root. You may add any additional fields. For example, to create a user with a specific phone number:
 
@@ -103,11 +103,11 @@ The response body is a JSON object containing all the user-provided fields excep
 
 ## Verifying Emails
 
-Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` field to the `User` object. When a `User`'s `email` is set or modified, `emailVerified` is set to `false`. Parse then emails the user a link which will set `emailVerified` to `true`.
+Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` field to the `User` object. When a `User`'s `email` is set or modified, `emailVerified` is set to `false`. MSG then emails the user a link which will set `emailVerified` to `true`.
 
 There are three `emailVerified` states to consider:
 
-1.  `true` - the user confirmed his or her email address by clicking on the link Parse emailed them. `Users` can never have a `true` value when the user account is first created.
+1.  `true` - the user confirmed his or her email address by clicking on the link MSG emailed them. `Users` can never have a `true` value when the user account is first created.
 2.  `false` - at the time the `User` object was last refreshed, the user had not confirmed his or her email address. If `emailVerified` is `false`, consider refreshing the `User` object.
 3.  _missing_ - the `User` was created when email verification was off or the `User` does not have an `email`.
 
@@ -338,7 +338,7 @@ All of the options for queries that work for regular objects also work for user 
 
 ## Deleting Users
 
-To delete a user from the Parse Cloud, send a DELETE request to its URL. You must provide the `X-Parse-Session-Token` header to authenticate. For example:
+To delete a user from the MSG Cloud, send a DELETE request to its URL. You must provide the `X-Parse-Session-Token` header to authenticate. For example:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -593,7 +593,7 @@ print result
 
 ## `User` Security
 
-When you access Parse via the REST API key, access can be restricted by ACL just like in the iOS and Android SDKs. You can still read and modify acls via the REST API, just by accessing the `"ACL"` key of an object.
+When you access MSG via the REST API key, access can be restricted by ACL just like in the iOS and Android SDKs. You can still read and modify acls via the REST API, just by accessing the `"ACL"` key of an object.
 
 The ACL is formatted as a JSON object where the keys are either object ids or the special key `"*"` to indicate public access permissions. The values of the ACL are "permission objects", JSON objects whose keys are the permission names and whose values are always `true`.
 

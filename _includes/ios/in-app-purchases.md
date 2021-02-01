@@ -1,14 +1,14 @@
 # In-App Purchases
 
-Parse provides a set of APIs for working with in-app purchases. Parse makes it easier to work with `StoreKit` and facilitates delivery of downloadable content with receipt verification in the cloud. Receipt verification is a mechanism that allows you to restrict downloads to only those users that have paid accordingly.
+Parse provides a set of APIs for working with in-app purchases. MSG makes it easier to work with `StoreKit` and facilitates delivery of downloadable content with receipt verification in the cloud. Receipt verification is a mechanism that allows you to restrict downloads to only those users that have paid accordingly.
 
 In addition, developers can attach query-able metadata on products to categorize, search, and dynamically manipulate products available for purchase.
 
-Lastly, any content uploaded to Parse is exempt from the Apple review process, and hence can be served as soon as the upload is complete.
+Lastly, any content uploaded to MSG is exempt from the Apple review process, and hence can be served as soon as the upload is complete.
 
 ## Apple Setup
 
-Prior to using in-app purchases on Parse, you'll need to set up your app and products with Apple. This process spans both the provisioning portal and iTunes Connect. We recommend following this [step-by-step guide](https://developer.apple.com/library/content/technotes/tn2259/_index.html).
+Prior to using in-app purchases on MSG, you'll need to set up your app and products with Apple. This process spans both the provisioning portal and iTunes Connect. We recommend following this [step-by-step guide](https://developer.apple.com/library/content/technotes/tn2259/_index.html).
 
 Note that this is a tricky setup process so please ensure you follow Apple's documentation precisely.
 
@@ -83,7 +83,7 @@ The call to `buyProduct:block:` brings up a dialogue that asks users to enter th
 
 ## Downloadable Purchases
 
-Many IAP products such as books and movies have associated content files that should be downloaded once the purchase is made. This is very simple to do with Parse:
+Many IAP products such as books and movies have associated content files that should be downloaded once the purchase is made. This is very simple to do with MSG:
 
 1.  First, go to the web data browser and create a `Product` class,
 2.  For each product, fill in the required metadata information and upload the content files:
@@ -118,7 +118,7 @@ PFPurchase.addObserverForProduct("Pro") {
 }
 ```
 </div>
-Note that this does not make the purchase, but simply registers a block to be run if a purchase is made later. The call to `downloadAssetForTransaction:completion:` passes the receipt of the purchase to the Parse Cloud, which then verifies with Apple that the purchase was made. Once the receipt is verified, the purchased file is downloaded.
+Note that this does not make the purchase, but simply registers a block to be run if a purchase is made later. The call to `downloadAssetForTransaction:completion:` passes the receipt of the purchase to the MSG Cloud, which then verifies with Apple that the purchase was made. Once the receipt is verified, the purchased file is downloaded.
 
 To make the purchase:
 <div class="language-toggle" markdown="1">

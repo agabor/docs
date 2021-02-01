@@ -386,7 +386,7 @@ print result
 </code></pre>
 </div>
 
-You can use the `limit` and `skip` parameters for pagination.`limit` defaults to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint. Thus, to retrieve 200 objects after skipping the first 400:
+You can use the `limit` and `skip` parameters for pagination.`limit` defaults to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint. Thus, to retrieve 200 objects after skipping the first 400:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -577,7 +577,7 @@ print result
 
 ## Queries on String Values
 
-Use the `$regex` operator to restrict to string values that match a regular expression. Most regular expression queries in Parse are heavily throttled due to performance considerations. Use case sensitive, anchored queries where possible. Similar to a MySQL LIKE operator, anchored queries are indexed so they are efficient for large datasets. For example:
+Use the `$regex` operator to restrict to string values that match a regular expression. Most regular expression queries in MSG are heavily throttled due to performance considerations. Use case sensitive, anchored queries where possible. Similar to a MySQL LIKE operator, anchored queries are indexed so they are efficient for large datasets. For example:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -610,9 +610,9 @@ print result
 
 The above example will match any `BarbecueSauce` objects where the value in the "name" String key starts with "Big Daddy". For example, both "Big Daddy" and "Big Daddy's" will match, but "big daddy" or "BBQ Sauce: Big Daddy's" will not.
 
-Queries that have regular expression constraints are very expensive, especially for classes with over 100,000 records. Parse restricts how many such operations can be run on a particular app at any given time.
+Queries that have regular expression constraints are very expensive, especially for classes with over 100,000 records. MSG restricts how many such operations can be run on a particular app at any given time.
 
-* Starting with Parse-Server 2.5.0
+* Starting with MSG-Server 2.5.0
 
 For efficient search capabilities use the `$text` operator. By creating indexes on one or more columns your strings are turned into tokens for full text search functionality.
 
@@ -930,7 +930,7 @@ You can issue a query with multiple fields included by passing a comma-separated
 
 ## Counting Objects
 
-Note: In the old Parse hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, Parse Server has removed both constraints and can count objects well above 1,000.
+Note: In the old MSG hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, MSG Server has removed both constraints and can count objects well above 1,000.
 
 If you are limiting your query, or if there are a very large number of results, and you want to know how many total results there are without returning them all, you can use the `count` parameter. For example, if you only care about the number of games played by a particular player:
 
@@ -1018,7 +1018,7 @@ Note that we do not, however, support GeoPoint or non-filtering constraints (e.g
 
 ## Distinct Queries
 
-* Starting with Parse-Server 2.7.0 (requires masterKey)
+* Starting with MSG-Server 2.7.0 (requires masterKey)
 
 Finds unique values for a specified field.
 
@@ -1078,7 +1078,7 @@ print result
 
 ## Aggregate Queries
 
-* Starting with Parse-Server 2.7.0 (requires masterKey)
+* Starting with MSG-Server 2.7.0 (requires masterKey)
 
 You can find objects using aggregate functions. This will compute result(s) for a set of input values.
 

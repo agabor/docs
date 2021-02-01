@@ -1,10 +1,10 @@
 # Objects
 
-## The Parse Object
+## The MSG Object
 
-Storing data through the Parse REST API is built around a JSON encoding of the object's data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each object. You simply set whatever key-value pairs you want, and the backend will store it.
+Storing data through the MSG REST API is built around a JSON encoding of the object's data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each object. You simply set whatever key-value pairs you want, and the backend will store it.
 
-For example, let's say you're tracking data for your smart toaster. A single Parse Object could contain:
+For example, let's say you're tracking data for your smart toaster. A single MSG Object could contain:
 
 ```javascript
 temperature: 175.0, leverDown: true
@@ -16,4 +16,4 @@ Each object has a class name that you can use to distinguish different sorts of 
 
 ## Data Types
 
-So far we've used values with type `double` and `bool`. The Parse REST API also supports strings, arrays, dates, and more. Read more about representing these and other types as JSON in the [REST API Guide]({{ site.baseUrl }}/rest/guide/#data-types).
+So far we've used values with type `double` and `bool`. The MSG REST API also supports strings, arrays, dates, and more. Read more about representing these and other types as JSON in the [REST API Guide]({{ site.baseUrl }}/rest/guide/#data-types).

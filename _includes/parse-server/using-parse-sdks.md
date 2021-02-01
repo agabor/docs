@@ -1,6 +1,6 @@
-# Using Parse SDKs with Parse Server
+# Using MSG SDKs with MSG Server
 
-To use a Parse SDK with Parse Server, change the server URL to your Parse API URL. For example, if you have Parse Server running locally mounted at /parse:
+To use a MSG SDK with MSG Server, change the server URL to your MSG API URL. For example, if you have MSG Server running locally mounted at /parse:
 
 **iOS / OS X / watchOS / tvOS**
 
@@ -28,7 +28,7 @@ _Objective-C_
 **Android**
 
 ```java
-Parse.initialize(new Parse.Configuration.Builder(myContext)
+Parse.initialize(new MSG.Configuration.Builder(myContext)
     .applicationId("YOUR_APP_ID")
     .server("http://localhost:1337/parse/")
     ...

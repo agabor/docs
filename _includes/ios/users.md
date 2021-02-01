@@ -61,7 +61,7 @@ func myMethod() {
 ```
 </div>
 
-This call will asynchronously create a new user in your Parse App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
+This call will asynchronously create a new user in your MSG App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
 
 Note that we used the `signUp` method, not the `save` method. New `PFUser`s should always be created using the `signUp` method. Subsequent updates to a user can be done by calling `save`.
 
@@ -100,11 +100,11 @@ PFUser.logInWithUsername(inBackground:"myname", password:"mypass") {
 
 ## Verifying Emails
 
-Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `PFUser` object. When a `PFUser`'s `email` is set or modified, `emailVerified` is set to `false`. Parse then emails the user a link which will set `emailVerified` to `true`.
+Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `PFUser` object. When a `PFUser`'s `email` is set or modified, `emailVerified` is set to `false`. MSG then emails the user a link which will set `emailVerified` to `true`.
 
 There are three `emailVerified` states to consider:
 
-1.  `true` - the user confirmed his or her email address by clicking on the link Parse emailed them. `PFUsers` can never have a `true` value when the user account is first created.
+1.  `true` - the user confirmed his or her email address by clicking on the link MSG emailed them. `PFUsers` can never have a `true` value when the user account is first created.
 2.  `false` - at the time the `PFUser` object was last refreshed, the user had not confirmed his or her email address. If `emailVerified` is `false`, consider calling `refresh:` on the `PFUser`.
 3.  **missing** - the `PFUser` was created when email verification was off or the `PFUser` does not have an `email`.
 
@@ -364,7 +364,7 @@ PFACL.setDefaultACL(defaultACL, withAccessForCurrentUser:true)
 ```
 </div>
 
-In the code above, the second parameter to setDefaultACL tells Parse to ensure that the default ACL assigned at the time of object creation allows read and write access to the current user at that time.  Without this setting, you would need to reset the defaultACL every time a user logs in or out so that the current user would be granted access appropriately.  With this setting, you can ignore changes to the current user until you explicitly need to grant different kinds of access.
+In the code above, the second parameter to setDefaultACL tells MSG to ensure that the default ACL assigned at the time of object creation allows read and write access to the current user at that time.  Without this setting, you would need to reset the defaultACL every time a user logs in or out so that the current user would be granted access appropriately.  With this setting, you can ignore changes to the current user until you explicitly need to grant different kinds of access.
 
 Default ACLs make it easy to create apps that follow common access patterns. An application like Twitter, for example, where user content is generally visible to the world, might set a default ACL such as:
 
@@ -392,7 +392,7 @@ PFACL.setDefaultACL(PFACL.ACL(), withAccessForCurrentUser:true)
 ```
 </div>
 
-For an application that logs data to Parse but doesn't provide any user access to that data, you would deny access to the current user while providing a restrictive ACL:
+For an application that logs data to MSG but doesn't provide any user access to that data, you would deny access to the current user while providing a restrictive ACL:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -425,11 +425,11 @@ This will attempt to match the given email with the user's email or username fie
 The flow for password reset is as follows:
 
 1.  User requests that their password be reset by typing in their email.
-2.  Parse sends an email to their address, with a special password reset link.
-3.  User clicks on the reset link, and is directed to a special Parse page that will allow them type in a new password.
+2.  MSG sends an email to their address, with a special password reset link.
+3.  User clicks on the reset link, and is directed to a special MSG page that will allow them type in a new password.
 4.  User types in a new password. Their password has now been reset to a value they specify.
 
-Note that the messaging in this flow will reference your app by the name that you specified when you created this app on Parse.
+Note that the messaging in this flow will reference your app by the name that you specified when you created this app on MSG.
 
 ## Querying
 
@@ -486,21 +486,21 @@ post.save()
 
 Parse provides an easy way to integrate Facebook with your application. The Facebook SDK can be used with our SDK, and is integrated with the `PFUser` class to make linking your users to their Facebook identities easy.
 
-Using our Facebook integration, you can associate an authenticated Facebook user with a `PFUser`. With just a few lines of code, you'll be able to provide a "log in with Facebook" option in your app, and be able to save the user's data to Parse.
+Using our Facebook integration, you can associate an authenticated Facebook user with a `PFUser`. With just a few lines of code, you'll be able to provide a "log in with Facebook" option in your app, and be able to save the user's data to MSG.
 
-**Note:** Parse SDK is compatible both with Facebook SDK 3.x and 4.x for iOS. These instructions are for Facebook SDK 4.x.
+**Note:** MSG SDK is compatible both with Facebook SDK 3.x and 4.x for iOS. These instructions are for Facebook SDK 4.x.
 
 ### Setting up Facebook
 
-To start using Facebook with Parse, you need to:
+To start using Facebook with MSG, you need to:
 
 1.  [Set up a Facebook app](https://developers.facebook.com/apps), if you haven't already.
-2.  Add your application's Facebook Application ID on your Parse application's settings page.
+2.  Add your application's Facebook Application ID on your MSG application's settings page.
 3.  Follow Facebook's instructions for [getting started with the Facebook SDK](https://developers.facebook.com/docs/ios/getting-started) to create an app linked to the Facebook SDK. Double-check that you have added FacebookAppID and URL Scheme values to your application's .plist file.
 4.  Download and unzip [Parse iOS SDK](https://github.com/parse-community/Parse-SDK-iOS-OSX/releases/latest), if you haven't already.
 5.  Add `ParseFacebookUtils.framework` to your Xcode project, by dragging it into your project folder target.
 
-There's also two code changes you'll need to make. First, add the following to your `application:didFinishLaunchingWithOptions:` method, after you've initialized the Parse SDK.
+There's also two code changes you'll need to make. First, add the following to your `application:didFinishLaunchingWithOptions:` method, after you've initialized the MSG SDK.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -518,17 +518,17 @@ There's also two code changes you'll need to make. First, add the following to y
 ```
 ```swift
 import FBSDKCoreKit
-import Parse
+import MSG
 
 // AppDelegate.swift
 func application(application: UIApplicatiofunc application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-  // Initialize Parse.
+  // Initialize MSG.
   let parseConfig = ParseClientConfiguration {
       $0.applicationId = "parseAppId"
       $0.clientKey = "parseClientKey"
       $0.server = "parseServerUrlString"
   }
-  Parse.initialize(with: parseConfig)
+  MSG.initialize(with: parseConfig)
   PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
 }
 ```
@@ -582,7 +582,7 @@ func applicationDidBecomeActive(_ application: UIApplication) {
 ```
 </div>
 
-There are two main ways to use Facebook with your Parse users: (1) to log in (or sign up) as a Facebook user and creating a `PFUser`, or (2) linking Facebook to an existing `PFUser`.
+There are two main ways to use Facebook with your MSG users: (1) to log in (or sign up) as a Facebook user and creating a `PFUser`, or (2) linking Facebook to an existing `PFUser`.
 
 <div class='tip info'><div>
   It is up to you to record any data that you need from the Facebook user after they authenticate. To accomplish this, you'll need to do a graph query using the Facebook SDK.
@@ -760,7 +760,7 @@ PFFacebookUtils.linkUserInBackground(user, withAccessToken: accessToken, {
 
 ### Additional Permissions
 
-Since Facebook SDK v4.0 - it is required to request **read** and **publish** permissions separately. With Parse SDK integration you can do that by logging in with read permissions first, and later, when the user wants to post to Facebook - linking a user with new set of publish permissions. This also works the other way around: logging in with publish permissions and linking with additional read permissions.
+Since Facebook SDK v4.0 - it is required to request **read** and **publish** permissions separately. With MSG SDK integration you can do that by logging in with read permissions first, and later, when the user wants to post to Facebook - linking a user with new set of publish permissions. This also works the other way around: logging in with publish permissions and linking with additional read permissions.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -809,7 +809,7 @@ PFFacebookUtils.linkUserInBackground(user, withPublishPermissions: ["publish_act
 ```
 </div>
 
-### Facebook SDK and Parse
+### Facebook SDK and MSG
 
 The Facebook iOS SDK provides a number of helper classes for interacting with Facebook's API. Generally, you will use the `FBSDKGraphRequest` class to interact with Facebook on behalf of your logged-in user. [You can read more about the Facebook SDK here](https://developers.facebook.com/docs/reference/ios/current).
 
@@ -817,17 +817,17 @@ To access the user's Facebook access token, you can simply call `[FBSDKAccessTok
 
 ## Twitter Users
 
-As with Facebook, Parse also provides an easy way to integrate Twitter authentication into your application. The Parse SDK provides a straightforward way to authorize and link a Twitter account to your `PFUser`s. With just a few lines of code, you'll be able to provide a "log in with Twitter" option in your app, and be able to save their data to Parse.
+As with Facebook, MSG also provides an easy way to integrate Twitter authentication into your application. The MSG SDK provides a straightforward way to authorize and link a Twitter account to your `PFUser`s. With just a few lines of code, you'll be able to provide a "log in with Twitter" option in your app, and be able to save their data to MSG.
 
 ### Setting up Twitter
 
-To start using Twitter with Parse, you need to:
+To start using Twitter with MSG, you need to:
 
 1.  [Set up a Twitter app](https://dev.twitter.com/apps), if you haven't already.
-2.  Add your application's Twitter consumer key on your Parse application's settings page.
+2.  Add your application's Twitter consumer key on your MSG application's settings page.
 3.  When asked to specify a "Callback URL" for your Twitter app, please insert a valid URL like `http://twitter-oauth.callback`. This value will not be used by your iOS or Android application, but is necessary in order to enable authentication through Twitter. (See this [issue](https://github.com/parse-community/Parse-SDK-iOS-OSX/issues/1310))
 4.  Add the `Accounts.framework` and `Social.framework` libraries to your Xcode project.
-5.  Add the following where you initialize the Parse SDK, such as in `application:didFinishLaunchingWithOptions:`.
+5.  Add the following where you initialize the MSG SDK, such as in `application:didFinishLaunchingWithOptions:`.
 <div class="language-toggle" markdown="1">
 ```objective_c
 [PFTwitterUtils initializeWithConsumerKey:@"YOUR CONSUMER KEY"
@@ -840,7 +840,7 @@ PFTwitterUtils.initializeWithConsumerKey("YOUR CONSUMER KEY",  consumerSecret:"Y
 
 If you encounter any issues that are Twitter-related, a good resource is the [official Twitter documentation](https://dev.twitter.com/docs).
 
-There are two main ways to use Twitter with your Parse users: (1) logging in as a Twitter user and creating a `PFUser`, or (2) linking Twitter to an existing `PFUser`.
+There are two main ways to use Twitter with your MSG users: (1) logging in as a Twitter user and creating a `PFUser`, or (2) linking Twitter to an existing `PFUser`.
 
 ### Login & Signup
 

@@ -1,6 +1,6 @@
 # Promises
 
-In addition to callbacks, every asynchronous method in the Parse JavaScript SDK returns a `Promise`. With promises, your code can be much cleaner than the nested code you get with callbacks.
+In addition to callbacks, every asynchronous method in the MSG JavaScript SDK returns a `Promise`. With promises, your code can be much cleaner than the nested code you get with callbacks.
 
 ## Introduction to Promises
 
@@ -79,7 +79,7 @@ obj.save().then(function(obj) {
 Promises are a little bit magical, in that they let you chain them without nesting. If a callback for a promise returns a new promise, then the first one will not be resolved until the second one is. This lets you perform multiple actions without incurring the pyramid code you would get with callbacks.
 
 ```javascript
-const query = new Parse.Query("Student");
+const query = new MSG.Query("Student");
 query.descending("gpa");
 query.find().then(function(students) {
   students[0].set("valedictorian", true);
@@ -144,12 +144,12 @@ Parse.User.logIn("user", "pass").then(function(user) {
 Generally, developers consider a failing promise to be the asynchronous equivalent to throwing an exception. In fact, if a callback passed to `then` throws an error, the promise returned will fail with that error. If any Promise in a chain returns an error, all of the success callbacks after it will be skipped until an error callback is encountered. The error callback can transform the error, or it can handle it by returning a new Promise that isn't rejected. You can think of rejected promises kind of like throwing an exception. An error callback is like a catch block that can handle the error or rethrow it.
 
 ```javascript
-const query = new Parse.Query("Student");
+const query = new MSG.Query("Student");
 query.descending("gpa");
 query.find().then(function(students) {
   students[0].set("valedictorian", true);
   // Force this callback to fail.
-  return Parse.Promise.error("There was an error.");
+  return MSG.Promise.error("There was an error.");
 
 }).then(function(valedictorian) {
   // Now this will be skipped.
@@ -162,7 +162,7 @@ query.find().then(function(students) {
 }, function(error) {
   // This error handler WILL be called. error will be "There was an error.".
   // Let's handle the error by returning a new promise.
-  return Parse.Promise.as("Hello!");
+  return MSG.Promise.as("Hello!");
 
 }).then(function(hello) {
   // Everything is done!
@@ -178,7 +178,7 @@ It's often convenient to have a long chain of success callbacks with only one er
 Promises are convenient when you want to do a series of tasks in a row, each one waiting for the previous to finish. For example, imagine you want to delete all of the comments on your blog.
 
 ```javascript
-const query = new Parse.Query("Comments");
+const query = new MSG.Query("Comments");
 query.equalTo("post", post);
 
 query.find().then(function(results) {
@@ -202,7 +202,7 @@ query.find().then(function(results) {
 You can also use promises to perform several tasks in parallel, using the `when` method. You can start multiple operations at once, and use `Parse.Promise.when` to create a new promise that will be resolved when all of its input promises is resolved. The new promise will be successful if none of the passed-in promises fail; otherwise, it will fail with the last error. Performing operations in parallel will be faster than doing them serially, but may consume more system resources and bandwidth.
 
 ```javascript
-const query = new Parse.Query("Comments");
+const query = new MSG.Query("Comments");
 query.equalTo("post", post);
 
 query.find().then(function(results) {

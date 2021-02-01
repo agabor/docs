@@ -40,7 +40,7 @@ try {
 }
 ```
 
-This call will asynchronously create a new user in your Parse App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
+This call will asynchronously create a new user in your MSG App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
 
 Note that we used the `signUp` method, not the `save` method. New `ParseUser`s should always be created using the `signUp` method. Subsequent updates to a user can be done by calling `save`.
 
@@ -63,11 +63,11 @@ try {
 
 ## Verifying Emails
 
-Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `ParseUser` object. When a `ParseUser`'s `email` is set or modified, `emailVerified` is set to `false`. Parse then emails the user a link which will set `emailVerified` to `true`.
+Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `ParseUser` object. When a `ParseUser`'s `email` is set or modified, `emailVerified` is set to `false`. MSG then emails the user a link which will set `emailVerified` to `true`.
 
 There are three `emailVerified` states to consider:
 
-1.  `true` - the user confirmed his or her email address by clicking on the link Parse emailed them. `ParseUsers` can never have a `true` value when the user account is first created.
+1.  `true` - the user confirmed his or her email address by clicking on the link MSG emailed them. `ParseUsers` can never have a `true` value when the user account is first created.
 2.  `false` - at the time the `ParseUser` object was last refreshed, the user had not confirmed his or her email address. If `emailVerified` is `false`, consider calling `fetch` on the `ParseUser`.
 3.  _missing_ - the `ParseUser` was created when email verification was off or the `ParseUser` does not have an `email`.
 
@@ -217,11 +217,11 @@ This will attempt to match the given email with the user's email or username fie
 The flow for password reset is as follows:
 
 1.  User requests that their password be reset by typing in their email.
-2.  Parse sends an email to their address, with a special password reset link.
-3.  User clicks on the reset link, and is directed to a special Parse page that will allow them type in a new password.
+2.  MSG sends an email to their address, with a special password reset link.
+3.  User clicks on the reset link, and is directed to a special MSG page that will allow them type in a new password.
 4.  User types in a new password. Their password has now been reset to a value they specify.
 
-Note that the messaging in this flow will reference your app by the name that you specified when you created this app on Parse.
+Note that the messaging in this flow will reference your app by the name that you specified when you created this app on MSG.
 
 ## Querying
 

@@ -12,11 +12,11 @@ Let's look at a slightly more complex example where Cloud Code is useful. One re
 
 If you wanted to find the average number of stars for The Matrix, you could query for all of the reviews, and average the stars on the device. However, this uses a lot of bandwidth when you only need a single number. With Cloud Code, we can just pass up the name of the movie, and return the average star rating.
 
-Cloud functions accept a JSON parameters dictionary on the `request` object, so we can use that to pass up the movie name. The entire Parse JavaScript SDK is available in the cloud environment, so we can use that to query over `Review` objects. Together, the code to implement `averageStars` looks like:
+Cloud functions accept a JSON parameters dictionary on the `request` object, so we can use that to pass up the movie name. The entire MSG JavaScript SDK is available in the cloud environment, so we can use that to query over `Review` objects. Together, the code to implement `averageStars` looks like:
 
 ```javascript
 Parse.Cloud.define("averageStars", async (request) => {
-  const query = new Parse.Query("Review");
+  const query = new MSG.Query("Review");
   query.equalTo("movie", request.params.movie);
   const results = await query.find();
   let sum = 0;
@@ -100,7 +100,7 @@ And finally, to call the same function from a JavaScript app:
 
 ```javascript
 const params =  { movie: "The Matrix" };
-const ratings = await Parse.Cloud.run("averageStars", params);
+const ratings = await MSG.Cloud.run("averageStars", params);
 // ratings should be 4.5
 ```
 
@@ -129,13 +129,13 @@ If there is an error, the response in the client looks like:
 
 *Available only on parse-server cloud code starting 4.4.0*
 
-It's important to make sure the parameters required for a Cloud function are provided, and are in the necessary format. Starting with Parse Server 4.4.0, you can now specify a validator function or object which will be called prior to your cloud function.
+It's important to make sure the parameters required for a Cloud function are provided, and are in the necessary format. Starting with MSG Server 4.4.0, you can now specify a validator function or object which will be called prior to your cloud function.
 
 Let's take a look at the `averageStars` example. If you wanted to make sure that `request.params.movie` is provided, and `averageStars` can only be called by logged in users, you could add a validator object to the function.
 
 ```javascript
 Parse.Cloud.define("averageStars", async (request) => {
-  const query = new Parse.Query("Review");
+  const query = new MSG.Query("Review");
   query.equalTo("movie", request.params.movie);
   const results = await query.find();
   let sum = 0;
@@ -158,7 +158,7 @@ Often, not only is it important that `request.params.movie` is defined, but also
 
 ```javascript
 Parse.Cloud.define("averageStars", async (request) => {
-  const query = new Parse.Query("Review");
+  const query = new MSG.Query("Review");
   query.equalTo("movie", request.params.movie);
   const results = await query.find();
   let sum = 0;
@@ -262,7 +262,7 @@ Sometimes you want to execute long running functions, and you don't want to wait
 ## Define a Job
 
 ```javascript
-    Parse.Cloud.job("myJob", (request) =>  {
+    MSG.Cloud.job("myJob", (request) =>  {
       // params: passed in the job call
       // headers: from the request that triggered the job
       // log: the ParseServer logger passed in the request
@@ -345,7 +345,7 @@ Parse.Cloud.beforeSave("Review", (request) => {
 ```
 
 ### Predefined Classes
-If you want to use `beforeSave` for a predefined class in the Parse JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
+If you want to use `beforeSave` for a predefined class in the MSG JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
 
 ```javascript
 Parse.Cloud.beforeSave(Parse.User, async (request) => {
@@ -361,7 +361,7 @@ In some cases, you may want to perform some action, such as a push, after an obj
 
 ```javascript
 Parse.Cloud.afterSave("Comment", (request) => {
-  const query = new Parse.Query("Post");
+  const query = new MSG.Query("Post");
   query.get(request.object.get("post").id)
     .then(function(post) {
       post.increment("comments");
@@ -381,7 +381,7 @@ You can use an `afterSave` handler to perform lengthy operations after sending a
 
 ### Predefined Classes
 
-If you want to use `afterSave` for a predefined class in the Parse JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
+If you want to use `afterSave` for a predefined class in the MSG JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
 
 ```javascript
 Parse.Cloud.afterSave(Parse.User, async (request) => {
@@ -426,7 +426,7 @@ You can run custom Cloud Code before an object is deleted. You can do this with 
 
 ```javascript
 Parse.Cloud.beforeDelete("Album", async (request) => {
-  const query = new Parse.Query("Photo");
+  const query = new MSG.Query("Photo");
   query.equalTo("album", request.object);
   const count = await query.count({useMasterKey:true})
   if (count > 0) {
@@ -438,7 +438,7 @@ Parse.Cloud.beforeDelete("Album", async (request) => {
 If the function throws, the `Album` object will not be deleted, and the client will get an error. Otherwise,the object will be deleted normally.
 
 ### Predefined Classes
-If you want to use `beforeDelete` for a predefined class in the Parse JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
+If you want to use `beforeDelete` for a predefined class in the MSG JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
 
 ```javascript
 Parse.Cloud.beforeDelete(Parse.User, async (request) => {
@@ -452,7 +452,7 @@ In some cases, you may want to perform some action, such as a push, after an obj
 
 ```javascript
 Parse.Cloud.afterDelete("Post", (request) => {
-  const query = new Parse.Query("Comment");
+  const query = new MSG.Query("Comment");
   query.equalTo("post", request.object);
   query.find()
     .then(Parse.Object.destroyAll)
@@ -467,7 +467,7 @@ The `afterDelete` handler can access the object that was deleted through `reques
 The client will receive a successful response to the delete request after the handler terminates, regardless of how the `afterDelete` terminates. For instance, the client will receive a successful response even if the handler throws an exception. Any errors that occurred while running the handler can be found in the Cloud Code log.
 
 ### Predefined Classes
-If you want to use `afterDelete` for a predefined class in the Parse JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
+If you want to use `afterDelete` for a predefined class in the MSG JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
 
 ```javascript
 Parse.Cloud.afterDelete(Parse.User, async (request) => {
@@ -488,20 +488,20 @@ With the `beforeSaveFile` method you can run custom Cloud Code before any file i
 Parse.Cloud.beforeSaveFile(async (request) => {
   const { file } = request;
   const fileData = await file.getData();
-  const newFile = new Parse.File('a-new-file-name.txt', { base64: fileData });
+  const newFile = new MSG.File('a-new-file-name.txt', { base64: fileData });
   return newFile;
 });
 
 // Returning an already saved file
 Parse.Cloud.beforeSaveFile((request) => {
   const { user } = request;
-  const avatar = user.get('avatar'); // this is a Parse.File that is already saved to the user object
+  const avatar = user.get('avatar'); // this is a MSG.File that is already saved to the user object
   return avatar;
 });
 
 // Saving a different file from uri
 Parse.Cloud.beforeSaveFile((request) => {
-  const newFile = new Parse.File('some-file-name.txt', { uri: 'www.somewhere.com/file.txt' });
+  const newFile = new MSG.File('some-file-name.txt', { uri: 'www.somewhere.com/file.txt' });
   return newFile;
 });
 ```
@@ -528,7 +528,7 @@ The `afterSaveFile` method is a great way to keep track of all of the files stor
 ```javascript
 Parse.Cloud.afterSaveFile(async (request) => {
   const { file, fileSize, user } = request;
-  const fileObject = new Parse.Object('FileObject');
+  const fileObject = new MSG.Object('FileObject');
   fileObject.set('file', file);
   fileObject.set('fileSize', fileSize);
   fileObject.set('createdBy', user);
@@ -544,7 +544,7 @@ You can run custom Cloud Code before any file gets deleted. For example, lets sa
 ```javascript
 Parse.Cloud.afterSaveFile(async (request) => {
   const { file, user } = request;
-  const fileObject = new Parse.Object('FileObject');
+  const fileObject = new MSG.Object('FileObject');
   fileObject.set('fileName', file.name());
   fileObject.set('createdBy', user);
   await fileObject.save(null, { useMasterKey: true );
@@ -552,7 +552,7 @@ Parse.Cloud.afterSaveFile(async (request) => {
 
 Parse.Cloud.beforeDeleteFile(async (request) => {
   const { file, user } = request;
-  const query = new Parse.Query('FileObject');
+  const query = new MSG.Query('FileObject');
   query.equalTo('fileName', file.name());
   const fileObject = await query.first({ useMasterKey: true });
   if (fileObject.get('createdBy').id !== user.id) {
@@ -568,7 +568,7 @@ In the above `beforeDeleteFile` example the `FileObject` collection is used to k
 ```javascript
 Parse.Cloud.afterDeleteFile(async (request) => {
   const { file } = request;
-  const query = new Parse.Query('FileObject');
+  const query = new MSG.Query('FileObject');
   query.equalTo('fileName', file.name());
   const fileObject = await query.first({ useMasterKey: true });
   await fileObject.destroy({ useMasterKey: true });
@@ -588,7 +588,7 @@ In some cases you may want to transform an incoming query, adding an additional 
 ```javascript
 // Properties available
 Parse.Cloud.beforeFind('MyObject', (req) => {
-  let query = req.query; // the Parse.Query
+  let query = req.query; // the MSG.Query
   let user = req.user; // the user
   let triggerName = req.triggerName; // beforeFind
   let isMaster = req.master; // if the query is run with masterKey
@@ -599,7 +599,7 @@ Parse.Cloud.beforeFind('MyObject', (req) => {
 
 // Selecting keys
 Parse.Cloud.beforeFind('MyObject', (req) => {
-  let query = req.query; // the Parse.Query
+  let query = req.query; // the MSG.Query
   // Force the selection on some keys
   query.select(['key1', 'key2']);
 });
@@ -616,22 +616,22 @@ Parse.Cloud.beforeFind('MyObject', (req) => {
 // Returning a different query
 Parse.Cloud.beforeFind('MyObject', (req) => {
   let query = req.query;
-  let otherQuery = new Parse.Query('MyObject');
+  let otherQuery = new MSG.Query('MyObject');
   otherQuery.equalTo('key', 'value');
-  return Parse.Query.or(query, otherQuery);
+  return MSG.Query.or(query, otherQuery);
 });
 
 // Rejecting a query
 Parse.Cloud.beforeFind('MyObject', (req) =>  {
   // throw an error
-  throw new Parse.Error(101, 'error');
+  throw new MSG.Error(101, 'error');
 
   // rejecting promise
   return Promise.reject('error');
 });
 
 // Setting the read preference for a query
-// -- as of Parse Server 2.5, Mongo Only
+// -- as of MSG Server 2.5, Mongo Only
 Parse.Cloud.beforeFind('MyObject2', (req) => {
   req.readPreference = 'SECONDARY_PREFERRED';
   req.subqueryReadPreference = 'SECONDARY';
@@ -642,7 +642,7 @@ Parse.Cloud.beforeFind('MyObject2', (req) => {
 
 ### Predefined Classes
 
-If you want to use `beforeFind` for a predefined class in the Parse JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
+If you want to use `beforeFind` for a predefined class in the MSG JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
 
 ```javascript
 Parse.Cloud.beforeFind(Parse.User, async (request) => {
@@ -664,7 +664,7 @@ Parse.Cloud.afterFind('MyCustomClass', async (request) => {
 
 ### Predefined Classes
 
-If you want to use `afterFind` for a predefined class in the Parse JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
+If you want to use `afterFind` for a predefined class in the MSG JavaScript SDK (e.g. [Parse.User]({{ site.apis.js }}classes/Parse.User.html)), you should not pass a String for the first argument. Instead, you should pass the class itself, for example:
 
 ```javascript
 Parse.Cloud.afterFind(Parse.User, async (request) => {
@@ -761,9 +761,9 @@ In some cases you may want to transform the incoming subscription query. Example
 ```javascript
 Parse.Cloud.beforeSubscribe('MyObject', request => {
     if (!request.user.get('Admin')) {
-        throw new Parse.Error(101, 'You are not authorized to subscribe to MyObject.');
+        throw new MSG.Error(101, 'You are not authorized to subscribe to MyObject.');
     }
-    let query = request.query; // the Parse.Query
+    let query = request.query; // the MSG.Query
     query.select("name","year")
 });
 ```
@@ -799,7 +799,7 @@ Parse.Cloud.afterLiveQueryEvent('MyObject', (request) => {
 });
 ```
 
-By default, ParseLiveQuery does not perform queries that require additional database operations. This is to keep your Parse Server as fast and effient as possible. If you require this functionality, you can perform these in `afterLiveQueryEvent`.  
+By default, ParseLiveQuery does not perform queries that require additional database operations. This is to keep your MSG Server as fast and effient as possible. If you require this functionality, you can perform these in `afterLiveQueryEvent`.  
 
 ```javascript
 // Including an object on LiveQuery event, on update only.
@@ -866,7 +866,7 @@ To learn more, read the [Parse LiveQuery Protocol Specification](https://github.
 * ws_disconnect
 * ws_disconnect_error
 
-"connect" differs from "ws_connect", the former means that the client completed the connect procedure as defined by Parse Live Query protocol, where "ws_connect" just means that a new websocket was created.
+"connect" differs from "ws_connect", the former means that the client completed the connect procedure as defined by MSG Live Query protocol, where "ws_connect" just means that a new websocket was created.
 
 # Using the Master Key in cloud code
 Set `useMasterKey:true` in the requests that require master key.

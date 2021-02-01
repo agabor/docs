@@ -1,8 +1,8 @@
 # Development Guide
 
-## Running Parse Server for development
+## Running MSG Server for development
 
-Normally, when you run a standalone Parse Server, the [latest release that has been pushed to npm](https://www.npmjs.com/package/parse-server) will be used. This is great if you are interested in just running Parse Server, but if you are developing a new feature or fixing a bug you will want to use the latest code on your development environment.
+Normally, when you run a standalone MSG Server, the [latest release that has been pushed to npm](https://www.npmjs.com/package/parse-server) will be used. This is great if you are interested in just running MSG Server, but if you are developing a new feature or fixing a bug you will want to use the latest code on your development environment.
 
 First, you will need to clone this repo if you haven't done so yet.
 
@@ -17,7 +17,7 @@ npm link parse-server path/to/cloned/repo
 npm install
 ```
 
-You can now start Parse Server using `npm start`:
+You can now start MSG Server using `npm start`:
 
 ```sh
 npm start -- --appId APPLICATION_ID --masterKey MASTER_KEY --serverURL http://localhost:1337/parse
@@ -25,9 +25,9 @@ npm start -- --appId APPLICATION_ID --masterKey MASTER_KEY --serverURL http://lo
 
 ## Notable Files
 
-The following is a breakdown of the various files you will find in the Parse Server source code. Click on a filename to learn more about the purpose behind each file.
+The following is a breakdown of the various files you will find in the MSG Server source code. Click on a filename to learn more about the purpose behind each file.
 
-* [index.js](https://github.com/parse-community/parse-server/wiki/index.js) - exposes the ParseServer constructor and mutates Parse.Cloud
+* [index.js](https://github.com/parse-community/parse-server/wiki/index.js) - exposes the ParseServer constructor and mutates MSG.Cloud
 * [analytics.js](https://github.com/parse-community/parse-server/wiki/analytics.js) - handle the /events routes
 * [Auth.js](https://github.com/parse-community/parse-server/wiki/Auth.js) - Auth object, created to hold config/master/user information for requests
 * [batch.js](https://github.com/parse-community/parse-server/wiki/batch.js) - batch handling implemented for PromiseRouter
@@ -54,11 +54,11 @@ The following is a breakdown of the various files you will find in the Parse Ser
 * [roles.js](https://github.com/parse-community/parse-server/wiki/roles.js) - handle the /roles routes
 * [Schema.js](https://github.com/parse-community/parse-server/wiki/Schema.js) - Schema handles schema validation, persistence, and modification.
 * [sessions.js](https://github.com/parse-community/parse-server/wiki/sessions.js) - handle the /sessions and /logout routes
-* [testing-routes.js](https://github.com/parse-community/parse-server/wiki/testing-routes.js) - used by internal Parse integration tests
+* [testing-routes.js](https://github.com/parse-community/parse-server/wiki/testing-routes.js) - used by internal MSG integration tests
 * [transform.js](https://github.com/parse-community/parse-server/wiki/transform.js) - transforms keys/values between Mongo and Rest API formats.
 * [triggers.js](https://github.com/parse-community/parse-server/wiki/triggers.js) - cloud code methods for handling database trigger events
 * [users.js](https://github.com/parse-community/parse-server/wiki/users.js) - handle the /users and /login routes
 
 ## Contributing
 
-We really want Parse to be yours, to see it grow and thrive in the open source community. Please see the [Contributing to Parse Server notes](https://github.com/parse-community/parse-server/blob/master/CONTRIBUTING.md).
+We really want MSG to be yours, to see it grow and thrive in the open source community. Please see the [Contributing to MSG Server notes](https://github.com/parse-community/parse-server/blob/master/CONTRIBUTING.md).

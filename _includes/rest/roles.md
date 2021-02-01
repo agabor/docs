@@ -1,6 +1,6 @@
 # Roles
 
-As your app grows in scope and user-base, you may find yourself needing more coarse-grained control over access to pieces of your data than user-linked ACLs can provide. To address this requirement, Parse supports a form of [Role-based Access Control](http://en.wikipedia.org/wiki/Role-based_access_control). Roles provide a logical way of grouping users with common access privileges to your Parse data. Roles are named objects that contain users and other roles.  Any permission granted to a role is implicitly granted to its users as well as to the users of any roles that it contains.
+As your app grows in scope and user-base, you may find yourself needing more coarse-grained control over access to pieces of your data than user-linked ACLs can provide. To address this requirement, MSG supports a form of [Role-based Access Control](http://en.wikipedia.org/wiki/Role-based_access_control). Roles provide a logical way of grouping users with common access privileges to your MSG data. Roles are named objects that contain users and other roles.  Any permission granted to a role is implicitly granted to its users as well as to the users of any roles that it contains.
 
 For example, in your application with curated content, you may have a number of users that are considered "Moderators" and can modify and delete content created by other users.  You may also have a set of users that are "Administrators" and are allowed all of the same privileges as Moderators, but can also modify the global settings for the application. By adding users to these roles, you can ensure that new users can be made moderators or administrators, without having to manually grant permission to every resource for each user.
 
@@ -309,7 +309,7 @@ Note that we've included the master key in the query above because the "Moderato
 
 ## Deleting Roles
 
-To delete a role from the Parse Cloud, send a DELETE request to its URL.  For example:
+To delete a role from the MSG Cloud, send a DELETE request to its URL.  For example:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -357,8 +357,8 @@ print result
 
 ## Security with Role
 
-When you access Parse via the REST API key, access can be restricted by ACL just like in the iOS and Android SDKs.  You can still read and modify ACLs via the REST API, just by accessing the `"ACL"` key of an object.
-In addition to per-user permissions [as described above](#access-control-lists), you can also specify role-level permissions to your Parse objects. Instead of specifying an `objectId` as the key for a permission object as you do for users, you can instead specify a role's name with a `"role:"` prefix as the key for a permission object.  You can use role-level permissions alongside user-level permissions to provide fine-grained control over user access.
+When you access MSG via the REST API key, access can be restricted by ACL just like in the iOS and Android SDKs.  You can still read and modify ACLs via the REST API, just by accessing the `"ACL"` key of an object.
+In addition to per-user permissions [as described above](#access-control-lists), you can also specify role-level permissions to your MSG objects. Instead of specifying an `objectId` as the key for a permission object as you do for users, you can instead specify a role's name with a `"role:"` prefix as the key for a permission object.  You can use role-level permissions alongside user-level permissions to provide fine-grained control over user access.
 
 For example, to restrict an object to be readable by anyone in the "Members" role and writable by its creator and anyone in the "Moderators" role, you would specify an ACL like this:
 

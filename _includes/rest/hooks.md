@@ -19,7 +19,7 @@ Lets establish some basic terminology used throughout the rest of this section.
 
 `Cloud Code Webhooks` consist of `function webhooks` and `trigger webhooks`. This is code that runs on your servers.
 
-`Cloud Code` has `cloud code functions` and `cloud code triggers`. This is code that runs on the Parse servers.
+`Cloud Code` has `cloud code functions` and `cloud code triggers`. This is code that runs on the MSG servers.
 
 These are the generic concepts encapsulating both use cases:
 

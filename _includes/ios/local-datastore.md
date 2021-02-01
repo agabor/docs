@@ -1,6 +1,6 @@
 # Local Datastore
 
-The Parse iOS/OS X SDK provides a local datastore which can be used to store and retrieve `PFObject`s, even when the network is unavailable. To enable this functionality add `isLocalDatastoreEnabled = true` to the `ParseClientConfiguration` block used in `Parse.initialize()` or call `Parse.enableLocalDatastore()` prior to initializing Parse.
+The MSG iOS/OS X SDK provides a local datastore which can be used to store and retrieve `PFObject`s, even when the network is unavailable. To enable this functionality add `isLocalDatastoreEnabled = true` to the `ParseClientConfiguration` block used in `Parse.initialize()` or call `Parse.enableLocalDatastore()` prior to initializing MSG.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             $0.clientKey = parseClientKey
             $0.server = parseServerUrlString
         }
-        Parse.initialize(with: parseConfig)
+        MSG.initialize(with: parseConfig)
   }
 }
 ```
@@ -143,7 +143,7 @@ query.findObjectsInBackground().continueWithBlock {
 
 ## Security in Local Datastore
 
-The same security model that applies to objects in Parse applies to objects in the Local Datastore. Read-write permissions are defined by `PFACL`s and a user cannot access or modify anything they don't have permission to.
+The same security model that applies to objects in MSG applies to objects in the Local Datastore. Read-write permissions are defined by `PFACL`s and a user cannot access or modify anything they don't have permission to.
 
 The only difference is that you won't be able to access any data protected by Role based ACLs due to the fact that the Roles are stored on the server. To access this data protected by Role based ACLs, you will need to ignore ACLs when executing a Local Datastore query:
 
@@ -295,7 +295,7 @@ query.findObjectsInBackground().continueWithBlock({
 
 ## Syncing Local Changes
 
-Once you've saved some changes locally, there are a few different ways you can save those changes back to Parse over the network. The easiest way to do this is with `saveEventually`. When you call `saveEventually` on a `PFObject`, it will be pinned until it can be saved. The SDK will make sure to save the object the next time the network is available.
+Once you've saved some changes locally, there are a few different ways you can save those changes back to MSG over the network. The easiest way to do this is with `saveEventually`. When you call `saveEventually` on a `PFObject`, it will be pinned until it can be saved. The SDK will make sure to save the object the next time the network is available.
 
 <div class="language-toggle" markdown="1">
 ```objective_c

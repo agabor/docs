@@ -1,6 +1,6 @@
 # Queries
 
-We've already seen how a `Parse.Query` with `get` can retrieve a single `Parse.Object` from Parse. There are many other ways to retrieve data with `Parse.Query` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
+We've already seen how a `Parse.Query` with `get` can retrieve a single `Parse.Object` from MSG. There are many other ways to retrieve data with `Parse.Query` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
 
 ## Basic Queries
 
@@ -9,12 +9,12 @@ In many cases, `get` isn't powerful enough to specify which objects you want to 
 The general pattern is to create a `Parse.Query`, put conditions on it, and then retrieve an `Array` of matching `Parse.Object`s using `find`. For example, to retrieve the scores that have a particular `playerName`, use the `equalTo` method to constrain the value for a key.
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 query.equalTo("playerName", "Dan Stemkoski");
 const results = await query.find();
 alert("Successfully retrieved " + results.length + " scores.");
-// Do something with the returned Parse.Object values
+// Do something with the returned MSG.Object values
 for (let i = 0; i < results.length; i++) {
   const object = results[i];
   alert(object.id + ' - ' + object.get('playerName'));
@@ -36,7 +36,7 @@ query.notEqualTo("playerName", "Michael Yabuti");
 query.greaterThan("playerAge", 18);
 ```
 
-You can limit the number of results by setting `limit`. By default, results are limited to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint:
+You can limit the number of results by setting `limit`. By default, results are limited to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint:
 
 ```javascript
 query.limit(10); // limit to at most 10 results
@@ -45,13 +45,13 @@ query.limit(10); // limit to at most 10 results
 If you want exactly one result, a more convenient alternative may be to use `first` instead of using `find`.
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 query.equalTo("playerEmail", "dstemkoski@example.com");
 const object = await query.first();
 ```
 
-You can skip the first results by setting `skip`. In the old Parse hosted backend, the maximum skip value was 10,000, but Parse Server removed that constraint. This can be useful for pagination:
+You can skip the first results by setting `skip`. In the old MSG hosted backend, the maximum skip value was 10,000, but MSG Server removed that constraint. This can be useful for pagination:
 
 ```javascript
 query.skip(10); // skip the first 10 results
@@ -64,8 +64,8 @@ If you want to know the total number of rows in a table satisfying your query, f
 Let's say you have 200 rows in a table called `GameScore`:
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 
 query.limit(25);
 
@@ -134,10 +134,10 @@ query.doesNotExist("score");
 You can use the `matchesKeyInQuery` method to get objects where a key matches the value of a key in a set of objects resulting from another query.  For example, if you have a class containing sports teams and you store a user's hometown in the user class, you can issue one query to find the list of users whose hometown teams have winning records.  The query would look like:
 
 ```javascript
-const Team = Parse.Object.extend("Team");
-const teamQuery = new Parse.Query(Team);
+const Team = MSG.Object.extend("Team");
+const teamQuery = new MSG.Query(Team);
 teamQuery.greaterThan("winPct", 0.5);
-const userQuery = new Parse.Query(Parse.User);
+const userQuery = new MSG.Query(Parse.User);
 userQuery.matchesKeyInQuery("hometown", "city", teamQuery);
 // results has the list of users with a hometown team with a winning record
 const results = await userQuery.find();
@@ -146,7 +146,7 @@ const results = await userQuery.find();
 Conversely, to get objects where a key does not match the value of a key in a set of objects resulting from another query, use `doesNotMatchKeyInQuery`. For example, to find users whose hometown teams have losing records:
 
 ```javascript
-const losingUserQuery = new Parse.Query(Parse.User);
+const losingUserQuery = new MSG.Query(Parse.User);
 losingUserQuery.doesNotMatchKeyInQuery("hometown", "city", teamQuery);
 // results has the list of users with a hometown team with a losing record
 const results = await losingUserQuery.find();
@@ -155,10 +155,10 @@ const results = await losingUserQuery.find();
 To filter rows based on `objectId`'s from pointers in a second table, you can use dot notation:
 
 ```javascript
-const rolesOfTypeX = new Parse.Query('Role');
+const rolesOfTypeX = new MSG.Query('Role');
 rolesOfTypeX.equalTo('type', 'x');
 
-const groupsWithRoleX = new Parse.Query('Group');
+const groupsWithRoleX = new MSG.Query('Group');
 groupsWithRoleX.matchesKeyInQuery('objectId', 'belongsTo.objectId', rolesOfTypeX);
 groupsWithRoleX.find().then(function(results) {
    // results has the list of groups with role x
@@ -168,8 +168,8 @@ groupsWithRoleX.find().then(function(results) {
 You can restrict the fields returned by calling `select` with a list of keys. To retrieve documents that contain only the `score` and `playerName` fields (and also special built-in fields such as `objectId`, `createdAt`, and `updatedAt`):
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 query.select("score", "playerName");
 query.find().then(function(results) {
   // each of results will only have the selected fields available.
@@ -179,8 +179,8 @@ query.find().then(function(results) {
 Similarly, use `exclude` to remove undesired fields while retrieving the rest:
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 query.exclude("playerName");
 query.find().then(function(results) {
   // Now each result will have all fields except `playerName`
@@ -221,13 +221,13 @@ Use `startsWith` to restrict to string values that start with a particular strin
 
 ```javascript
 // Finds barbecue sauces that start with "Big Daddy's".
-const query = new Parse.Query(BarbecueSauce);
+const query = new MSG.Query(BarbecueSauce);
 query.startsWith("name", "Big Daddy's");
 ```
 
 The above example will match any `BarbecueSauce` objects where the value in the "name" String key starts with "Big Daddy's". For example, both "Big Daddy's" and "Big Daddy's BBQ" will match, but "big daddy's" or "BBQ Sauce: Big Daddy's" will not.
 
-Queries that have regular expression constraints are very expensive, especially for classes with over 100,000 records. Parse restricts how many such operations can be run on a particular app at any given time.
+Queries that have regular expression constraints are very expensive, especially for classes with over 100,000 records. MSG restricts how many such operations can be run on a particular app at any given time.
 
 ### Full Text Search
 
@@ -235,10 +235,10 @@ You can use `fullText` for efficient search capabilities. Text indexes are autom
 
 * Note: Full Text Search can be resource intensive. Ensure the cost of using indexes is worth the benefit, see [storage requirements & performance costs of text indexes.](https://docs.mongodb.com/manual/core/index-text/#storage-requirements-and-performance-costs).
 
-* Parse Server 2.5.0+
+* MSG Server 2.5.0+
 
 ```javascript
-const query = new Parse.Query(BarbecueSauce);
+const query = new MSG.Query(BarbecueSauce);
 query.fullText('name', 'bbq');
 ```
 
@@ -246,7 +246,7 @@ The above example will match any `BarbecueSauce` objects where the value in the 
 
 ```javascript
 // You can sort by weight / rank. ascending() and select()
-const query = new Parse.Query(BarbecueSauce);
+const query = new MSG.Query(BarbecueSauce);
 query.fullText('name', 'bbq');
 query.ascending('$score');
 query.select('$score');
@@ -267,8 +267,8 @@ For Case or Diacritic Sensitive search, please use the [REST API](http://docs.pa
 There are several ways to issue queries for relational data. If you want to retrieve objects where a field matches a particular `Parse.Object`, you can use `equalTo` just like for other data types. For example, if each `Comment` has a `Post` object in its `post` field, you can fetch comments for a particular `Post`:
 
 ```javascript
-// Assume Parse.Object myPost was previously created.
-const query = new Parse.Query(Comment);
+// Assume MSG.Object myPost was previously created.
+const query = new MSG.Query(Comment);
 query.equalTo("post", myPost);
 // comments now contains the comments for myPost
 const comments = await query.find();
@@ -277,11 +277,11 @@ const comments = await query.find();
 If you want to retrieve objects where a field contains a `Parse.Object` that matches a different query, you can use `matchesQuery`. In order to find comments for posts containing images, you can do:
 
 ```javascript
-const Post = Parse.Object.extend("Post");
-const Comment = Parse.Object.extend("Comment");
-const innerQuery = new Parse.Query(Post);
+const Post = MSG.Object.extend("Post");
+const Comment = MSG.Object.extend("Comment");
+const innerQuery = new MSG.Query(Post);
 innerQuery.exists("image");
-const query = new Parse.Query(Comment);
+const query = new MSG.Query(Comment);
 query.matchesQuery("post", innerQuery);
 // comments now contains the comments for posts with images.
 const comments = await query.find();
@@ -290,11 +290,11 @@ const comments = await query.find();
 If you want to retrieve objects where a field contains a `Parse.Object` that does not match a different query, you can use `doesNotMatchQuery`.  In order to find comments for posts without images, you can do:
 
 ```javascript
-const Post = Parse.Object.extend("Post");
-const Comment = Parse.Object.extend("Comment");
-const innerQuery = new Parse.Query(Post);
+const Post = MSG.Object.extend("Post");
+const Comment = MSG.Object.extend("Comment");
+const innerQuery = new MSG.Query(Post);
 innerQuery.exists("image");
-const query = new Parse.Query(Comment);
+const query = new MSG.Query(Comment);
 query.doesNotMatchQuery("post", innerQuery);
 // comments now contains the comments for posts without images.
 const comments = await query.find();
@@ -311,7 +311,7 @@ query.equalTo("post", post);
 In some situations, you want to return multiple types of related objects in one query. You can do this with the `include` method. For example, let's say you are retrieving the last ten comments, and you want to retrieve their related posts at the same time:
 
 ```javascript
-const query = new Parse.Query(Comment);
+const query = new MSG.Query(Comment);
 
 // Retrieve the most recent ones
 query.descending("createdAt");
@@ -337,17 +337,17 @@ You can also do multi level includes using dot notation.  If you wanted to inclu
 query.include(["post.author"]);
 ```
 
-You can issue a query with multiple fields included by calling `include` multiple times. This functionality also works with Parse.Query helpers like `first` and `get`.
+You can issue a query with multiple fields included by calling `include` multiple times. This functionality also works with MSG.Query helpers like `first` and `get`.
 
 ## Counting Objects
 
-Note: In the old Parse hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, Parse Server has removed both constraints and can count objects well above 1,000.
+Note: In the old MSG hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, MSG Server has removed both constraints and can count objects well above 1,000.
 
 If you just need to count how many objects match a query, but you do not need to retrieve all the objects that match, you can use `count` instead of `find`. For example, to count how many games have been played by a particular player:
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 query.equalTo("playerName", "Sean Plott");
 const count = await query.count();
 alert("Sean has played " + count + " games");
@@ -366,13 +366,13 @@ Note that we do not support GeoPoint or non-filtering constraints (e.g. `near`, 
 If you want to find objects that match one of several queries, you can use `Parse.Query.or` method to construct a query that is an OR of the queries passed in.  For instance if you want to find players who either have a lot of wins or a few wins, you can do:
 
 ```javascript
-const lotsOfWins = new Parse.Query("Player");
+const lotsOfWins = new MSG.Query("Player");
 lotsOfWins.greaterThan("wins", 150);
 
-const fewWins = new Parse.Query("Player");
+const fewWins = new MSG.Query("Player");
 fewWins.lessThan("wins", 5);
 
-const mainQuery = Parse.Query.or(lotsOfWins, fewWins);
+const mainQuery = MSG.Query.or(lotsOfWins, fewWins);
 mainQuery.find()
   .then(function(results) {
     // results contains a list of players that either have won a lot of games or won only a few games.
@@ -388,7 +388,7 @@ mainQuery.find()
 If you want to find objects that match all conditions, you normally would use just one query. You can add additional constraints to the newly created `Parse.Query` that act as an 'and' operator.
 
 ```javascript
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.greaterThan("age", 18);
 query.greaterThan("friends", 0);
 query.find()
@@ -403,21 +403,21 @@ query.find()
 Sometimes the world is more complex than this simple example and you may need a compound query of sub queries. You can use `Parse.Query.and` method to construct a query that is an AND of the queries passed in. For instance if you want to find users in the age of 16 or 18 who have either no friends or at least 2 friends, you can do:
 
 ```javascript
-const age16Query = new Parse.Query("User");
+const age16Query = new MSG.Query("User");
 age16Query.equalTo("age", 16);
 
-const age18Query = new Parse.Query("User");
+const age18Query = new MSG.Query("User");
 age18Query.equalTo("age", 18);
 
-const friends0Query = new Parse.Query("User");
+const friends0Query = new MSG.Query("User");
 friends0Query.equalTo("friends", 0);
 
-const friends2Query = new Parse.Query("User");
+const friends2Query = new MSG.Query("User");
 friends2Query.greaterThan("friends", 2);
 
-const mainQuery = Parse.Query.and(
-  Parse.Query.or(age16Query, age18Query),
-  Parse.Query.or(friends0Query, friends2Query)
+const mainQuery = MSG.Query.and(
+  MSG.Query.or(age16Query, age18Query),
+  MSG.Query.or(friends0Query, friends2Query)
 );
 mainQuery.find()
   .then(function(results) {
@@ -433,7 +433,7 @@ mainQuery.find()
 
 Queries can be made using aggregates, allowing you to retrieve objects over a set of input values. The results will not be `Parse.Object`s since you will be aggregating your own fields
 
-* Parse Server 2.7.1+
+* MSG Server 2.7.1+
 * `MasterKey` is Required.
 
 Aggregates use stages to filter results by piping results from one stage to the next.
@@ -454,7 +454,7 @@ const pipelineArray = [
 
 For a list of available operators please refer to [Mongo Aggregate Documentation](https://docs.mongodb.com/v3.2/reference/operator/aggregation/).
 
-* Note: Most operations in Mongo Aggregate Documentation will work with Parse Server, but `_id` doesn't exist. Please replace with `objectId`.
+* Note: Most operations in Mongo Aggregate Documentation will work with MSG Server, but `_id` doesn't exist. Please replace with `objectId`.
 
 Group pipeline is similar to `distinct`.
 
@@ -465,7 +465,7 @@ You can group by a field.
 const pipeline = [
   { group: { objectId: '$score' } }
 ];
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.aggregate(pipeline)
   .then(function(results) {
     // results contains unique score values
@@ -482,7 +482,7 @@ You can apply collective calculations like $sum, $avg, $max, $min.
 const pipeline = [
   { group: { objectId: null, total: { $sum: '$score' } } }
 ];
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.aggregate(pipeline)
   .then(function(results) {
     // results contains sum of score field and stores it in results[0].total
@@ -498,7 +498,7 @@ Project pipeline is similar to `keys` or `select`, add or remove existing fields
 const pipeline = [
   { project: { name: 1 } }
 ];
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.aggregate(pipeline)
   .then(function(results) {
     // results contains only name field
@@ -514,7 +514,7 @@ Match pipeline is similar to `equalTo`.
 const pipeline = [
   { match: { name: 'BBQ' } }
 ];
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.aggregate(pipeline)
   .then(function(results) {
     // results contains name that matches 'BBQ'
@@ -530,7 +530,7 @@ You can match by comparison.
 const pipeline = [
   { match: { score: { $gt: 15 } } }
 ];
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.aggregate(pipeline)
   .then(function(results) {
     // results contains score greater than 15
@@ -544,11 +544,11 @@ query.aggregate(pipeline)
 
 Queries can be made using distinct, allowing you find unique values for a specified field.
 
-* Parse Server 2.7.1+
+* MSG Server 2.7.1+
 * `MasterKey` is required.
 
 ```javascript
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.distinct("age")
   .then(function(results) {
     // results contains unique age
@@ -561,7 +561,7 @@ query.distinct("age")
 You can also restrict results by using `equalTo`.
 
 ```javascript
-const query = new Parse.Query("User");
+const query = new MSG.Query("User");
 query.equalTo("name", "foo");
 query.distinct("age")
   .then(function(results) {

@@ -8,11 +8,11 @@ Getting started with `PFFileObject` is easy. First, you'll need to have the data
 
 <div class="language-toggle" markdown="1">
 ```objective_c
-NSData *data = [@"Working at Parse is great!" dataUsingEncoding:NSUTF8StringEncoding];
+NSData *data = [@"Working at MSG is great!" dataUsingEncoding:NSUTF8StringEncoding];
 PFFileObject *file = [PFFileObject fileObjectWithName:@"resume.txt" data:data];
 ```
 ```swift
-let str = "Working at Parse is great!"
+let str = "Working at MSG is great!"
 let data = str.data(using: String.Encoding.utf8)
 let file = PFFileObject(name:"resume.txt", data:data!)
 ```
@@ -21,7 +21,7 @@ let file = PFFileObject(name:"resume.txt", data:data!)
 Notice in this example that we give the file a name of `resume.txt`. There's two things to note here:
 
 *   You don't need to worry about filename collisions. Each upload gets a unique identifier so there's no problem with uploading multiple files named `resume.txt`.
-*   It's important that you give a name to the file that has a file extension. This lets Parse figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
+*   It's important that you give a name to the file that has a file extension. This lets MSG figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
 
 Next you'll want to save the file up to the cloud. As with `PFObject`, there are many variants of the `save` method you can use depending on what sort of callback and error handling suits you.
 
@@ -122,7 +122,7 @@ It's easy to get the progress of both uploads and downloads using `PFFileObject`
 
 <div class="language-toggle" markdown="1">
 ```objective_c
-NSData *data = [@"Working at Parse is great!" dataUsingEncoding:NSUTF8StringEncoding];
+NSData *data = [@"Working at MSG is great!" dataUsingEncoding:NSUTF8StringEncoding];
 PFFileObject *file = [PFFileObject fileObjectWithName:@"resume.txt" data:data];
 [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
   // Handle success or failure here ...
@@ -131,7 +131,7 @@ PFFileObject *file = [PFFileObject fileObjectWithName:@"resume.txt" data:data];
 }];
 ```
 ```swift
-let str = "Working at Parse is great!"
+let str = "Working at MSG is great!"
 let data = str.data(using: String.Encoding.utf8)
 let file = PFFileObject(name:"resume.txt", data:data!)
 file?.saveInBackground({ (success: Bool, error: Error?) in
@@ -146,4 +146,4 @@ file?.saveInBackground({ (success: Bool, error: Error?) in
 
 If you know the name of a file you can delete it using the [REST API]({{site.baseUrl}}/rest/guide/#deleting-files). Your master key is required for this operation.
 
-Note: Reguardless of the Parse Server storage configuration, deleting a `PFObject` with a `PFFileObject` does not delete the file itself meerly its reference. Additionally, Parse does **NOT** provide a way to find unreferenced file names in storage.
+Note: Reguardless of the MSG Server storage configuration, deleting a `PFObject` with a `PFFileObject` does not delete the file itself meerly its reference. Additionally, MSG does **NOT** provide a way to find unreferenced file names in storage.

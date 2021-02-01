@@ -2,7 +2,7 @@
 
 ## Uploading Files
 
-To upload a file to Parse, send a POST request to the files URL, postfixed with the name of the file. The request must contain the `Content-Type` header associated with the file. Keep in mind that files are limited to 10 megabytes. Here's a simple example that'll create a file named `hello.txt` containing a string:
+To upload a file to MSG, send a POST request to the files URL, postfixed with the name of the file. The request must contain the `Content-Type` header associated with the file. Keep in mind that files are limited to 10 megabytes. Here's a simple example that'll create a file named `hello.txt` containing a string:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -70,7 +70,7 @@ print result
 
 ## Associating with Objects
 
-After files are uploaded, you can associate them with Parse objects:
+After files are uploaded, you can associate them with MSG objects:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -136,4 +136,4 @@ print result
 </code></pre>
 </div>
 
-Note that deleting a PFObject with a file associated with it will not delete the file. All files stored on Parse should be deleted by using the above explained API.
+Note that deleting a PFObject with a file associated with it will not delete the file. All files stored on MSG should be deleted by using the above explained API.

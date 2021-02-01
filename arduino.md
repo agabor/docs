@@ -1,5 +1,5 @@
 ---
-title: Arduino Developers Guide | Parse
+title: Arduino Developers Guide | MSG
 permalink: /arduino/guide/
 layout: guide
 platform: arduino

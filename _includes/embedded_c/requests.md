@@ -1,6 +1,6 @@
 # Requests
 
-The main way you'll be interacting with Parse is through the `parseSendRequest` function, which sends a request to the REST API. For example, here's how to save an object with some data:
+The main way you'll be interacting with MSG is through the `parseSendRequest` function, which sends a request to the REST API. For example, here's how to save an object with some data:
 
 ```cpp
 char data[] = "{ \"temperature\": 165 }"; parseSendRequest(client, "POST", "/parse/classes/Temperature", data, NULL);

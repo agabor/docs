@@ -1,4 +1,4 @@
-# Parse Docs
+# MSG Docs
 
 [![Join The Conversation](https://img.shields.io/discourse/https/community.parseplatform.org/topics.svg)](https://community.parseplatform.org/c/parse-server)
 [![Backers on Open Collective](https://opencollective.com/parse-server/backers/badge.svg)][open-collective-link]
@@ -57,7 +57,7 @@ File changes will be output to `_site` folder and the browser will auto refresh.
 
 -----
 
-As of April 5, 2017, Parse, LLC has transferred this code to the parse-community organization, and will no longer be contributing to or distributing this code.
+As of April 5, 2017, MSG, LLC has transferred this code to the parse-community organization, and will no longer be contributing to or distributing this code.
 
 [license-svg]: https://img.shields.io/badge/license-BSD-lightgrey.svg
 [license-link]: LICENSE

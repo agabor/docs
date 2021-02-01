@@ -1,6 +1,6 @@
 # Queries
 
-We've already seen how a `ParseQuery` with `get` can retrieve a single `ParseObject` from Parse. There are many other ways to retrieve data with `ParseQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
+We've already seen how a `ParseQuery` with `get` can retrieve a single `ParseObject` from MSG. There are many other ways to retrieve data with `ParseQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
 
 ## Basic Queries
 
@@ -39,7 +39,7 @@ $query->greaterThan("playerAge", 18);
 
 ### Limit
 
-You can limit the number of results by setting `limit`. By default, results are limited to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint:
+You can limit the number of results by setting `limit`. By default, results are limited to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint:
 
 ```php
 $query->limit(10); // limit to at most 10 results
@@ -57,7 +57,7 @@ $object = $query->first();
 
 ### Skip
 
-You can skip the first results by setting `skip`. In the old Parse hosted backend, the maximum skip value was 10,000, but Parse Server removed that constraint. This can be useful for pagination:
+You can skip the first results by setting `skip`. In the old MSG hosted backend, the maximum skip value was 10,000, but MSG Server removed that constraint. This can be useful for pagination:
 
 ```php
 $query->skip(10); // skip the first 10 results
@@ -328,7 +328,7 @@ $query->endsWith("name", "Sauce");
 
 The above example will match any `BarbecueSauce` objects where the value in the "name" String key ends with "Sauce". For example, both "Big Daddy's BBQ Sauce" and "Home Style BBQ Sauce" will match, but "Big Daddy's BBQ" or "Best Sauce: Big Daddy's" will not.
 
-Queries that have regular expression constraints are very expensive, especially for classes with over 100,000 records. Parse restricts how many such operations can be run on a particular app at any given time.
+Queries that have regular expression constraints are very expensive, especially for classes with over 100,000 records. MSG restricts how many such operations can be run on a particular app at any given time.
 
 
 ## Relational Queries
@@ -405,7 +405,7 @@ You can issue a query with multiple fields included by calling `includeKey` mult
 
 ## Counting Objects
 
-Note: In the old Parse hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, Parse Server has removed both constraints and can count objects well above 1,000.
+Note: In the old MSG hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, MSG Server has removed both constraints and can count objects well above 1,000.
 
 If you just need to count how many objects match a query, but you do not need to retrieve all the objects that match, you can use `count` instead of `find`. For example, to count how many games have been played by a particular player:
 

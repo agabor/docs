@@ -7,14 +7,14 @@
 Getting started with `ParseFile` is easy. First, you'll need to have the data in `byte[]` form and then create a `ParseFile` with it. In this example, we'll just use a string:
 
 ```java
-byte[] data = "Working at Parse is great!".getBytes();
+byte[] data = "Working at MSG is great!".getBytes();
 ParseFile file = new ParseFile("resume.txt", data);
 ```
 
 Notice in this example that we give the file a name of `resume.txt`. There's two things to note here:
 
 *   You don't need to worry about filename collisions. Each upload gets a unique identifier so there's no problem with uploading multiple files named `resume.txt`.
-*   It's important that you give a name to the file that has a file extension. This lets Parse figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
+*   It's important that you give a name to the file that has a file extension. This lets MSG figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
 
 Next you'll want to save the file up to the cloud. As with `ParseObject`, there are many variants of the `save` method you can use depending on what sort of callback and error handling suits you.
 
@@ -53,7 +53,7 @@ Just like on `ParseObject`, you will most likely want to use the background vers
 It's easy to get the progress of both uploads and downloads using ParseFile by passing a ProgressCallback to `saveInBackground` and `getDataInBackground`. For example:
 
 ```java
-byte[] data = "Working at Parse is great!".getBytes();
+byte[] data = "Working at MSG is great!".getBytes();
 ParseFile file = new ParseFile("resume.txt", data);
 
 file.saveInBackground(new SaveCallback() {

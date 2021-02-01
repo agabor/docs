@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of Parse to send push notifications.
+Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of MSG to send push notifications.
 
 <div class='tip info'><div>
 The PHP SDK does not currently support receiving pushes. It can only be used to send notifications to iOS and Android applications and to check the status of recent pushes.
@@ -14,7 +14,7 @@ There is no setup required to use the PHP SDK for sending push notifications. If
 
 ## Installations
 
-Every Parse application installed on a device registered for push notifications has an associated `Installation` object. The `Installation` object is where you store all the data needed to target push notifications. For example, in a baseball app, you could store the teams a user is interested in to send updates about their performance.
+Every MSG application installed on a device registered for push notifications has an associated `Installation` object. The `Installation` object is where you store all the data needed to target push notifications. For example, in a baseball app, you could store the teams a user is interested in to send updates about their performance.
 
 Note that `Installation` data can only be modified by the client SDKs, the data browser, or the REST API.
 
@@ -24,14 +24,14 @@ This class has several special fields that help you manage and target devices.
 *   **`channels`**: An array of the channels to which a device is currently subscribed.
 *   **`timeZone`**: The current time zone where the target device is located. This value is synchronized every time an `Installation` object is saved from the device _(readonly)_.
 *   **`deviceType`**: The type of device, "ios" or "android" _(readonly)_.
-*   **`installationId`**: Unique Id for the device used by Parse _(readonly)_.
+*   **`installationId`**: Unique Id for the device used by MSG _(readonly)_.
 *   **`deviceToken`**: The Apple generated token used for iOS devices _(readonly)_.
 
 ## Sending Pushes
 
-There are two ways to send push notifications using Parse: [channels](#using-channels) and [advanced targeting]({{ site.baseUrl }}/php/guide/#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
+There are two ways to send push notifications using MSG: [channels](#using-channels) and [advanced targeting]({{ site.baseUrl }}/php/guide/#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
 
-You can view your past push notifications on the Parse Dashboard push console for up to 30 days after creating your push. For pushes scheduled in the future, you can delete the push on the web console as long as no sends have happened yet. After you send the push, the web console shows push analytics graphs.
+You can view your past push notifications on the MSG Dashboard push console for up to 30 days after creating your push. For pushes scheduled in the future, you can delete the push on the web console as long as no sends have happened yet. After you send the push, the web console shows push analytics graphs.
 
 ### Using Channels
 
@@ -56,9 +56,9 @@ ParsePush::send(array(
 
 ### Using Advanced Targeting
 
-While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. Parse allows you to write a query for any subset of your `Installation` objects using the [querying API]({{ site.baseUrl }}/php/guide/#queries) and to send them a push.
+While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. MSG allows you to write a query for any subset of your `Installation` objects using the [querying API]({{ site.baseUrl }}/php/guide/#queries) and to send them a push.
 
-Since `Installation` objects are just like any other object stored in Parse, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
+Since `Installation` objects are just like any other object stored in MSG, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
 
 #### Saving Installation Data
 
@@ -109,7 +109,7 @@ $pushQuery->matchesQuery('user', $userQuery);
 ParsePush::send(array(
   "where" => $pushQuery,
   "data" => array(
-    "alert" => "Free hotdogs at the Parse concession stand!"
+    "alert" => "Free hotdogs at the MSG concession stand!"
   )
 ), true);
 ```
@@ -205,7 +205,7 @@ ParsePush::send(array(
 
 When a user's device is turned off or not connected to the internet, push notifications cannot be delivered. If you have a time sensitive notification that is not worth delivering late, you can set an expiration date. This avoids needlessly alerting users of information that may no longer be relevant.
 
-There are two parameters provided by Parse to allow setting an expiration date for your notification. The first is `expiration_time` which takes a `DateTime` specifying when Parse should stop trying to send the notification.
+There are two parameters provided by MSG to allow setting an expiration date for your notification. The first is `expiration_time` which takes a `DateTime` specifying when MSG should stop trying to send the notification.
 
 Alternatively, you can use the `expiration_interval` parameter to specify a duration of time before your notification expires. This value is relative to the `push_time` parameter used to [schedule notifications]({{ site.baseUrl }}/js/guide/#scheduling-pushes). This means that a push notification scheduled to be sent out in 1 day and an expiration interval of 6 days can be received up to a week from now.
 

@@ -7,16 +7,16 @@
 Getting started with `ParseFile` is easy. First, you'll need to have the data in `byte[]` or `Stream` form and then create a `ParseFile` with it. In this example, we'll just use a string:
 
 ```cs
-byte[] data = System.Text.Encoding.UTF8.GetBytes("Working at Parse is great!");
+byte[] data = System.Text.Encoding.UTF8.GetBytes("Working at MSG is great!");
 ParseFile file = new ParseFile("resume.txt", data);
 ```
 
 Notice in this example that we give the file a name of `resume.txt`. There's two things to note here:
 
 *   You don't need to worry about filename collisions. Each upload gets a unique identifier so there's no problem with uploading multiple files named `resume.txt`.
-*   It's important that you give a name to the file that has a file extension. This lets Parse figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
+*   It's important that you give a name to the file that has a file extension. This lets MSG figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
 
-Next you'll want to save the file up to the cloud. As with `ParseObject`, you can call `SaveAsync` to save the file to Parse.
+Next you'll want to save the file up to the cloud. As with `ParseObject`, you can call `SaveAsync` to save the file to MSG.
 
 ```cs
 await file.SaveAsync();
@@ -43,7 +43,7 @@ string resumeText = await new HttpClient().GetStringAsync(applicantResumeFile.Ur
 It's easy to get the progress of `ParseFile` uploads by passing a `Progress` object to `SaveAsync`. For example:
 
 ```cs
-byte[] data = System.Text.Encoding.UTF8.GetBytes("Working at Parse is great!");
+byte[] data = System.Text.Encoding.UTF8.GetBytes("Working at MSG is great!");
 ParseFile file = new ParseFile("resume.txt", data);
 
 await file.SaveAsync(new Progress<ParseUploadProgressEventArgs>(e => {

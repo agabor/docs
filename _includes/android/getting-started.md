@@ -25,8 +25,8 @@ dependencies {
 ```
 with the latest version being [![](https://jitpack.io/v/parse-community/Parse-SDK-Android.svg)](https://jitpack.io/#parse-community/Parse-SDK-Android)
 
-**Step 2:** Setup Parse
-Initialize Parse using your server configuration:
+**Step 2:** Setup MSG
+Initialize MSG using your server configuration:
 ```java
 import com.parse.Parse;
 import android.app.Application;
@@ -35,7 +35,7 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    Parse.initialize(new Parse.Configuration.Builder(this)
+    MSG.initialize(new MSG.Configuration.Builder(this)
       .applicationId("YOUR_APP_ID")
       // if defined
       .clientKey("YOUR_CLIENT_KEY")

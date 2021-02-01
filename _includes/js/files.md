@@ -1,6 +1,6 @@
 # Files
 
-## Creating a Parse.File
+## Creating a MSG.File
 
 `Parse.File` lets you store application files in the cloud that would otherwise be too large or cumbersome to fit into a regular `Parse.Object`. The most common use case is storing images, but you can also use it for documents, videos, music, and any other binary data.
 
@@ -8,20 +8,20 @@ Getting started with `Parse.File` is easy. There are a couple of ways to create 
 
 ```javascript
 const base64 = "V29ya2luZyBhdCBQYXJzZSBpcyBncmVhdCE=";
-const file = new Parse.File("myfile.txt", { base64: base64 });
+const file = new MSG.File("myfile.txt", { base64: base64 });
 ```
 
 Alternatively, you can create a file from an array of byte values:
 
 ```javascript
 const bytes = [ 0xBE, 0xEF, 0xCA, 0xFE ];
-const file = new Parse.File("myfile.txt", bytes);
+const file = new MSG.File("myfile.txt", bytes);
 ```
 
 Parse will auto-detect the type of file you are uploading based on the file extension, but you can specify the `Content-Type` with a third parameter:
 
 ```javascript
-const file = new Parse.File("myfile.zzz", fileData, "image/png");
+const file = new MSG.File("myfile.zzz", fileData, "image/png");
 ```
 
 ### Client Side
@@ -39,22 +39,22 @@ if (fileUploadControl.files.length > 0) {
   const file = fileUploadControl.files[0];
   const name = "photo.jpg";
 
-  const parseFile = new Parse.File(name, file);
+  const parseFile = new MSG.File(name, file);
 }
 ```
 
 Notice in this example that we give the file a name of `photo.jpg`. There's two things to note here:
 
 *   You don't need to worry about filename collisions. Each upload gets a unique identifier so there's no problem with uploading multiple files named `photo.jpg`.
-*   It's important that you give a name to the file that has a file extension. This lets Parse figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
+*   It's important that you give a name to the file that has a file extension. This lets MSG figure out the file type and handle it accordingly. So, if you're storing PNG images, make sure your filename ends with `.png`.
 
 Next you'll want to save the file up to the cloud. As with `Parse.Object`, there are many variants of the `save` method you can use depending on what sort of callback and error handling suits you.
 
 ```javascript
 parseFile.save().then(function() {
-  // The file has been saved to Parse.
+  // The file has been saved to MSG.
 }, function(error) {
-  // The file either could not be read, or could not be saved to Parse.
+  // The file either could not be read, or could not be saved to MSG.
 });
 ```
 
@@ -63,7 +63,7 @@ In Cloud Code you can fetch images or other files and store them as a `Parse.Fil
 
 ```js
 const request = require('request-promise');
-const Parse = require('parse/node');
+const MSG = require('parse/node');
 
 ....
 
@@ -77,7 +77,7 @@ request(options)
   .then((response) => {
     const data = Array.from(Buffer.from(response.body, 'binary'));
     const contentType = response.headers['content-type'];
-    const file = new Parse.File('logo', data, contentType);
+    const file = new MSG.File('logo', data, contentType);
     return file.save();
   })
   .then((file => console.log(file.url())))
@@ -88,7 +88,7 @@ request(options)
 Finally, after the save completes, you can associate a `Parse.File` with a `Parse.Object` just like any other piece of data:
 
 ```javascript
-const jobApplication = new Parse.Object("JobApplication");
+const jobApplication = new MSG.Object("JobApplication");
 jobApplication.set("applicantName", "Joe Smith");
 jobApplication.set("applicantResumeFile", parseFile);
 jobApplication.save();
@@ -120,7 +120,7 @@ const profilePhoto = profile.get("photoFile");
 await profilePhoto.destroy({ useMasterKey: true });
 ```
 
-#### Parse Server <4.2.0
+#### MSG Server <4.2.0
 
 Use the [REST API]({{ site.baseUrl }}/rest/guide/#deleting-files) to delete a file.
 
@@ -134,10 +134,10 @@ Note: not all storage adapters support metadata and tags. Check the documentatio
 // Init with metadata and tags
 const metadata = { createdById: 'some-user-id' };
 const tags = { groupId: 'some-group-id' };
-const file = new Parse.File('myfile.zzz', fileData, 'image/png', metadata, tags);
+const file = new MSG.File('myfile.zzz', fileData, 'image/png', metadata, tags);
 
 // Add metadata and tags
-const file = new Parse.File('myfile.zzz', fileData, 'image/png');
+const file = new MSG.File('myfile.zzz', fileData, 'image/png');
 file.addMetadata('createdById', 'some-user-id');
 file.addTag('groupId', 'some-group-id');
 ```

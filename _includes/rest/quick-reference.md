@@ -137,13 +137,13 @@ Authentication is done via HTTP headers. The `X-Parse-Application-Id` header ide
 
 In the examples that follow, the keys for your app are included in the command. You can use the drop-down to construct example code for other apps.
 
-You may also authenticate your REST API requests using basic HTTP authentication. For example, to retrieve an object you could set the URL using your Parse credentials in the following format:
+You may also authenticate your REST API requests using basic HTTP authentication. For example, to retrieve an object you could set the URL using your MSG credentials in the following format:
 
 <pre><code class="json">
 <span class="custom-parse-server-protocol">https</span>://myAppID:javascript-key=myJavaScriptKey@<span class="custom-parse-server-url">YOUR.PARSE-SERVER.HERE</span><span class="custom-parse-server-mount">/parse/</span>classes/GameScore/Ed1nuqPvcm
 </code></pre>
 
-For JavaScript usage, the Parse Cloud supports [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-Origin_Resource_Sharing), so that you can use these headers in conjunction with XMLHttpRequest.
+For JavaScript usage, the MSG Cloud supports [cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-Origin_Resource_Sharing), so that you can use these headers in conjunction with XMLHttpRequest.
 
 
 ## Response Format
@@ -161,8 +161,8 @@ Whether a request succeeded is indicated by the HTTP status code. A 2xx status c
 
 ## Calling from Client Apps
 
-You should not use the REST API Key in client apps (i.e. code you distribute to your customers). If the Parse SDK is available for your client platform, we recommend using our SDK instead of the REST API. If you must call the REST API directly from the client, you should use the corresponding client-side Parse key for that plaform (e.g. Client Key for iOS/Android, or .NET Key for Windows/Xamarin/Unity).
+You should not use the REST API Key in client apps (i.e. code you distribute to your customers). If the MSG SDK is available for your client platform, we recommend using our SDK instead of the REST API. If you must call the REST API directly from the client, you should use the corresponding client-side MSG key for that plaform (e.g. Client Key for iOS/Android, or .NET Key for Windows/Xamarin/Unity).
 
-If there is no Parse SDK for your client platform, please use your app's Client Key to call the REST API. Requests made with the Client Key, JavaScript Key, or Windows Key are restricted by client-side app settings that you configure in your Parse Dashboard app dashboard. These settings make your app more secure. For example, we recommend that all production apps turn off the "Client Push Enabled" setting to prevent push notifications from being sent from any device using the Client Key, JavaScript Key, or .NET Key, but not the REST API Key. Therefore, if you plan on registering installations to enable Push Notifications for your app, you should not distribute any app code with the REST API key embedded in it.
+If there is no MSG SDK for your client platform, please use your app's Client Key to call the REST API. Requests made with the Client Key, JavaScript Key, or Windows Key are restricted by client-side app settings that you configure in your MSG Dashboard app dashboard. These settings make your app more secure. For example, we recommend that all production apps turn off the "Client Push Enabled" setting to prevent push notifications from being sent from any device using the Client Key, JavaScript Key, or .NET Key, but not the REST API Key. Therefore, if you plan on registering installations to enable Push Notifications for your app, you should not distribute any app code with the REST API key embedded in it.
 
-The JavaScript Key cannot be used to make requests directly against the REST API from JavaScript. The JavaScript Key is meant to be used with the Parse JavaScript SDK, which makes its posts through a Cross Origin-friendly format without HTTP headers.
+The JavaScript Key cannot be used to make requests directly against the REST API from JavaScript. The JavaScript Key is meant to be used with the MSG JavaScript SDK, which makes its posts through a Cross Origin-friendly format without HTTP headers.

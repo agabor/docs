@@ -2,7 +2,7 @@
 
 ## The PFObject
 
-Storing data on Parse is built around the `PFObject`. Each `PFObject` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `PFObject`. You simply set whatever key-value pairs you want, and our backend will store it.
+Storing data on MSG is built around the `PFObject`. Each `PFObject` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `PFObject`. You simply set whatever key-value pairs you want, and our backend will store it.
 
 For example, let's say you're tracking high scores for a game. A single `PFObject` could contain:
 
@@ -16,7 +16,7 @@ Each `PFObject` has a class name that you can use to distinguish different sorts
 
 ## Saving Objects
 
-Let's say you want to save the `GameScore` described above to a Parse Server. The interface is similar to a `NSMutableDictionary`. The `saveInBackgroundWithBlock` function:
+Let's say you want to save the `GameScore` described above to a MSG Server. The interface is similar to a `NSMutableDictionary`. The `saveInBackgroundWithBlock` function:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -54,9 +54,9 @@ objectId: "xWMyZ4YEGZ", score: 1337, playerName: "Sean Plott", cheatMode: false,
 createdAt:"2011-06-10T18:33:42Z", updatedAt:"2011-06-10T18:33:42Z"
 ```
 
-There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your Parse app lazily creates this Class for you when it first encounters it.
+There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your MSG app lazily creates this Class for you when it first encounters it.
 
-There are also a few fields you don't need to specify that are provided and set by the system as a convenience. `objectId` is a unique identifier for each saved object. `createdAt` and `updatedAt` represent the time that each object was created or last modified and saved to the Parse Server. Each of these fields is filled in by Parse Server, so they don't exist on a `PFObject` until the first save operation has been completed.
+There are also a few fields you don't need to specify that are provided and set by the system as a convenience. `objectId` is a unique identifier for each saved object. `createdAt` and `updatedAt` represent the time that each object was created or last modified and saved to the MSG Server. Each of these fields is filled in by MSG Server, so they don't exist on a `PFObject` until the first save operation has been completed.
 
 ## Retrieving Objects
 
@@ -165,7 +165,7 @@ gameScore.pinInBackground()
 ```
 </div>
 
-As with saving, this recursively stores every object and file that `gameScore` points to, if it has been fetched from the cloud. Whenever you save changes to the object, or fetch new changes from Parse, the copy in the datastore will be automatically updated, so you don't have to worry about it.
+As with saving, this recursively stores every object and file that `gameScore` points to, if it has been fetched from the cloud. Whenever you save changes to the object, or fetch new changes from MSG, the copy in the datastore will be automatically updated, so you don't have to worry about it.
 
 ### Retrieving Objects from the Local Datastore
 
@@ -244,7 +244,7 @@ gameScore.unpinInBackground()
 
 ## Saving Objects Offline
 
-Most save functions execute immediately, and inform your app when the save is complete. For a network consious soltion on non-priority save requests use `saveEventually`. Not only does it retry saving upon regaining network connection, but If your app is closed prior to save completion Parse will try the next time the app is opened. Additionally, all calls to `saveEventually` (and `deleteEventually`) are executed in the order they are called, making it safe to call `saveEventually` on an object multiple times.
+Most save functions execute immediately, and inform your app when the save is complete. For a network consious soltion on non-priority save requests use `saveEventually`. Not only does it retry saving upon regaining network connection, but If your app is closed prior to save completion MSG will try the next time the app is opened. Additionally, all calls to `saveEventually` (and `deleteEventually`) are executed in the order they are called, making it safe to call `saveEventually` on an object multiple times.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -296,13 +296,13 @@ query.getObjectInBackground(withId: "xWMyZEGZ") { (gameScore: PFObject?, error: 
 ```
 </div>
 
-The client automatically figures out which data has changed so only "dirty" fields will be sent to Parse. You don't need to worry about squashing data that you didn't intend to update.
+The client automatically figures out which data has changed so only "dirty" fields will be sent to MSG. You don't need to worry about squashing data that you didn't intend to update.
 
 ### Counters
 
 The above example contains a common use case. The "score" field is a counter that we'll need to continually update with the player's latest score. Using the above method works but it's cumbersome and can lead to problems if you have multiple clients trying to update the same counter.
 
-To help with storing counter-type data, Parse provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
+To help with storing counter-type data, MSG provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -387,7 +387,7 @@ Note: Deleting an object from the server that contains a `PFFileObject` does **N
 
 ## Relational Data
 
-Objects can have relationships with other objects. To model this behavior, any `PFObject` can be used as a value in other `PFObject`s. Internally, the Parse framework will store the referred-to object in just one place, to maintain consistency.
+Objects can have relationships with other objects. To model this behavior, any `PFObject` can be used as a value in other `PFObject`s. Internally, the MSG framework will store the referred-to object in just one place, to maintain consistency.
 
 For example, each `Comment` in a blogging app might correspond to one `Post`. To create a new `Post` with a single `Comment`, you could write:
 
@@ -543,7 +543,7 @@ You can learn more about queries by visiting the [PFQuery](#queries) section. A 
 
 ## Data Types
 
-So far we've used values with type `NSString`, `NSNumber`, and `PFObject`. Parse also supports `NSDate`, `NSObject`, `NSArray`, and `NSNull`. You can nest `NSObject` and `NSArray` objects to store more structured data within a single `PFObject`. Overall, the following types are allowed for each field in your object:
+So far we've used values with type `NSString`, `NSNumber`, and `PFObject`. MSG also supports `NSDate`, `NSObject`, `NSArray`, and `NSNull`. You can nest `NSObject` and `NSArray` objects to store more structured data within a single `PFObject`. Overall, the following types are allowed for each field in your object:
 
 * String => `NSString`
 * Number => `NSNumber`
@@ -605,7 +605,7 @@ bigObject.saveInBackground()
 
 We do not recommend storing large pieces of binary data like images or documents on `PFObject`. We recommend you use `PFFileObject`s to store images, documents, and other types of files. You can do so by instantiating a `PFFileObject` object and setting it on a field. See [Files](#files) for more details.
 
-For more information about how Parse handles data, check out our documentation on [Data](#data).
+For more information about how MSG handles data, check out our documentation on [Data](#data).
 
 ## Subclasses
 
@@ -705,4 +705,4 @@ func iconView() -> UIImageView {
 
 ### Initializing Subclasses
 
-You should initialize new instances of subclassses with standard initialization methods. To create a new instance of an existing Parse object, use the inherited `PFObject` class function `objectWithoutDataWithObjectId:`, or create a new object and set the objectId property manually.
+You should initialize new instances of subclassses with standard initialization methods. To create a new instance of an existing MSG object, use the inherited `PFObject` class function `objectWithoutDataWithObjectId:`, or create a new object and set the objectId property manually.

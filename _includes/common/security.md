@@ -1,30 +1,30 @@
 # Security
 
-As your app development progresses, you will want to use Parse's security features in order to safeguard data. This document explains the ways in which you can secure your apps.
+As your app development progresses, you will want to use MSG's security features in order to safeguard data. This document explains the ways in which you can secure your apps.
 
 If your app is compromised, it's not only you as the developer who suffers, but potentially the users of your app as well. Continue reading for our suggestions for sensible defaults and precautions to take before releasing your app into the wild.
 
 ## Client vs. Server
 
-When an app first connects to Parse, it identifies itself with an Application ID and a Client key (or REST Key, or .NET Key, or JavaScript Key, depending on which platform you're using). These are not secret and by themselves they do not secure an app. These keys are shipped as a part of your app, and anyone can decompile your app or proxy network traffic from their device to find your client key. This exploit is even easier with JavaScript — one can simply "view source" in the browser and immediately find your client key.
+When an app first connects to MSG, it identifies itself with an Application ID and a Client key (or REST Key, or .NET Key, or JavaScript Key, depending on which platform you're using). These are not secret and by themselves they do not secure an app. These keys are shipped as a part of your app, and anyone can decompile your app or proxy network traffic from their device to find your client key. This exploit is even easier with JavaScript — one can simply "view source" in the browser and immediately find your client key.
 
-This is why Parse has many other security features to help you secure your data. The client key is given out to your users, so anything that can be done with just the client key is doable by the general public, even malicious hackers.
+This is why MSG has many other security features to help you secure your data. The client key is given out to your users, so anything that can be done with just the client key is doable by the general public, even malicious hackers.
 
 The master key, on the other hand, is definitely a security mechanism. Using the master key allows you to bypass all of your app's security mechanisms, such as [class-level permissions](#class-level-permissions) and [ACLs](#object-level-access-control). Having the master key is like having root access to your app's servers, and you should guard your master key with the same zeal with which you would guard your production machines' root password.
 
 The overall philosophy is to limit the power of your clients (using client keys), and to perform any sensitive actions requiring the master key in Cloud Code. You'll learn how to best wield this power in the section titled [Implementing Business Logic in Cloud Code](#implementing-business-logic-in-cloud-code).
 
-A final note: It is recommended to setup HTTPS and SSL in your server, to avoid man-in-the-middle attacks, but Parse works fine as well with non-HTTPS connections.  
+A final note: It is recommended to setup HTTPS and SSL in your server, to avoid man-in-the-middle attacks, but MSG works fine as well with non-HTTPS connections.  
 
 ## Class-Level Permissions
 
-The second level of security is at the schema and data level. Enforcing security measures at this level will restrict how and when client applications can access and create data on Parse. When you first begin developing your Parse application, all of the defaults are set so that you can be a more productive developer. For example:
+The second level of security is at the schema and data level. Enforcing security measures at this level will restrict how and when client applications can access and create data on MSG. When you first begin developing your MSG application, all of the defaults are set so that you can be a more productive developer. For example:
 
-*   A client application can create new classes on Parse
+*   A client application can create new classes on MSG
 *   A client application can add fields to classes
-*   A client application can modify or query for objects on Parse
+*   A client application can modify or query for objects on MSG
 
-You can configure any of these permissions to apply to everyone, no one, or to specific users or roles in your app. Roles are groups that contain users or other roles, which you can assign to an object to restrict its use. Any permission granted to a role is also granted to any of its children, whether they are users or other roles, enabling you to create an access hierarchy for your apps. Each of [the Parse guides]({{ site.baseUrl }}/) includes a detailed description of employing Roles in your apps.
+You can configure any of these permissions to apply to everyone, no one, or to specific users or roles in your app. Roles are groups that contain users or other roles, which you can assign to an object to restrict its use. Any permission granted to a role is also granted to any of its children, whether they are users or other roles, enabling you to create an access hierarchy for your apps. Each of [the MSG guides]({{ site.baseUrl }}/) includes a detailed description of employing Roles in your apps.
 
 Once you are confident that you have the right classes and relationships between classes in your app, you should begin to lock it down by doing the following:
 
@@ -32,7 +32,7 @@ Almost every class that you create should have these permissions tweaked to some
 
 ### Restricting class creation
 
-As a start, you can configure your application so that clients cannot create new classes on Parse. This is done by setting the key `allowClientClassCreation` to `false` in your ParseServer configuration.  See the project Readme for an overview of [Configuring your ParseServer](https://github.com/parse-community/parse-server#configuration).   Once restricted, classes may only be created from the Data Browser or with a the `masterKey`. This will prevent attackers from filling your database with unlimited, arbitrary new classes.
+As a start, you can configure your application so that clients cannot create new classes on MSG. This is done by setting the key `allowClientClassCreation` to `false` in your ParseServer configuration.  See the project Readme for an overview of [Configuring your ParseServer](https://github.com/parse-community/parse-server#configuration).   Once restricted, classes may only be created from the Data Browser or with a the `masterKey`. This will prevent attackers from filling your database with unlimited, arbitrary new classes.
 
 ### Configuring Class-Level Permissions
 
@@ -54,7 +54,7 @@ You can configure the client's ability to perform each of the following operatio
 
   * **Delete**: With this permission, people can delete any object in the table that doesn't have an ACL. All they need is its objectId.
 
-* **Add fields**: Parse classes have schemas that are inferred when objects are created. While you're developing your app, this is great, because you can add a new field to your object without having to make any changes on the backend. But once you ship your app, it's very rare to need to add new fields to your classes automatically. You should pretty much always turn off this permission for all of your classes when you submit your app to the public.
+* **Add fields**: MSG classes have schemas that are inferred when objects are created. While you're developing your app, this is great, because you can add a new field to your object without having to make any changes on the backend. But once you ship your app, it's very rare to need to add new fields to your classes automatically. You should pretty much always turn off this permission for all of your classes when you submit your app to the public.
 
 For each of the above actions, you can grant permission to all users (which is the default), or lock permissions down to a list of roles and users. For example, a class that should be available to all users would be set to read-only by only enabling get and find. A logging class could be set to write-only by only allowing creates. You could enable moderation of user-generated content by providing update and delete access to a particular set of users or roles.
 
@@ -64,13 +64,13 @@ Once you've locked down your schema and class-level permissions, it's time to th
 
 Parse also supports the notion of anonymous users for those apps that want to store and protect user-specific data without requiring explicit login.
 
-When a user logs into an app, they initiate a session with Parse. Through this session they can add and modify their own data but are prevented from modifying other users' data.
+When a user logs into an app, they initiate a session with MSG. Through this session they can add and modify their own data but are prevented from modifying other users' data.
 
 ### Access Control Lists
 
 The easiest way to control who can access which data is through access control lists, commonly known as ACLs. The idea behind an ACL is that each object has a list of users and roles along with what permissions that user or role has. A user needs read permissions (or must belong to a role that has read permissions) in order to retrieve an object's data, and a user needs write permissions (or must belong to a role that has write permissions) in order to update or delete that object.
 
-Once you have a User, you can start using ACLs. Remember: Users can be created through traditional username/password sign up, through a third-party login system like Facebook or Twitter, or even by using Parse's [automatic anonymous users]({{ site.baseUrl }}/ios/guide/#anonymous-users) functionality. To set an ACL on the current user's data to not be publicly readable, all you have to do is:
+Once you have a User, you can start using ACLs. Remember: Users can be created through traditional username/password sign up, through a third-party login system like Facebook or Twitter, or even by using MSG's [automatic anonymous users]({{ site.baseUrl }}/ios/guide/#anonymous-users) functionality. To set an ACL on the current user's data to not be publicly readable, all you have to do is:
 
 {% if page.language == "objective_c-swift" %}
 <div class="language-toggle" markdown="1">
@@ -95,8 +95,8 @@ user.setACL(new ParseACL(user));
 
 {% if page.language == "js" %}
 ```js
-var user = Parse.User.current();
-user.setACL(new Parse.ACL(user));
+var user = MSG.User.current();
+user.setACL(new MSG.ACL(user));
 ```
 {% endif %}
 
@@ -211,8 +211,8 @@ ParseUser.getCurrentUser().put("privateData", privateData);
 
 {% if page.language == "js" %}
 ```js
-var privateData = Parse.Object.extend("PrivateUserData");
-privateData.setACL(new Parse.ACL(Parse.User.current()));
+var privateData = MSG.Object.extend("PrivateUserData");
+privateData.setACL(new MSG.ACL(Parse.User.current()));
 privateData.set("phoneNumber", "555-5309");
 
 Parse.User.current().set("privateData", privateData);
@@ -280,7 +280,7 @@ acl.setWriteAccess(ParseUser.getCurrentUser(), true);
 
 {% if page.language == "js" %}
 ```js
-var acl = new Parse.ACL();
+var acl = new MSG.ACL();
 acl.setPublicReadAccess(true);
 acl.setWriteAccess(Parse.User.current().id, true);
 ```
@@ -343,7 +343,7 @@ acl.setRoleWriteAccess("admins", true);
 
 {% if page.language == "js" %}
 ```js
-var acl = new Parse.ACL();
+var acl = new MSG.ACL();
 acl.setPublicReadAccess(true);
 acl.setRoleWriteAccess("admins", true);
 ```
@@ -480,7 +480,7 @@ Because of the complex interaction between CLPs, Pointer Permissions, and ACLs, 
 
 ### Security Edge Cases
 
-There are some special classes in Parse that don't follow all of the same security rules as every other class. Not all classes follow [Class-Level Permissions (CLPs)](#class-level-permissions) or [Access Control Lists (ACLs)](#object-level-access-control) exactly how they are defined, and here those exceptions are documented. Here "normal behavior" refers to CLPs and ACLs working normally, while any other special behaviors are described in the footnotes.
+There are some special classes in MSG that don't follow all of the same security rules as every other class. Not all classes follow [Class-Level Permissions (CLPs)](#class-level-permissions) or [Access Control Lists (ACLs)](#object-level-access-control) exactly how they are defined, and here those exceptions are documented. Here "normal behavior" refers to CLPs and ACLs working normally, while any other special behaviors are described in the footnotes.
 
 ||`_User`|`_Installation`|
 | --- | --- |
@@ -509,7 +509,7 @@ There are some special classes in Parse that don't follow all of the same securi
 
 For most apps, care around keys, class-level permissions, and object-level ACLs are all you need to keep your app and your users' data safe. Sometimes, though, you'll run into an edge case where they aren't quite enough. For everything else, there's [Cloud Code]({{ site.baseUrl }}/cloudcode/guide/).
 
-Cloud Code allows you to upload JavaScript to Parse's servers, where we will run it for you. Unlike client code running on users' devices that may have been tampered with, Cloud Code is guaranteed to be the code that you've written, so it can be trusted with more responsibility.
+Cloud Code allows you to upload JavaScript to MSG's servers, where we will run it for you. Unlike client code running on users' devices that may have been tampered with, Cloud Code is guaranteed to be the code that you've written, so it can be trusted with more responsibility.
 
 One particularly common use case for Cloud Code is preventing invalid data from being stored. For this sort of situation, it's particularly important that a malicious client not be able to bypass the validation logic.
 
@@ -524,7 +524,7 @@ Parse.Cloud.beforeSave(Parse.User, request => {
 });
 ```
 
-Validations can lock down your app so that only certain values are acceptable. You can also use `afterSave` validations to normalize your data (e.g. formatting all phone numbers or currency identically). You get to retain most of the productivity benefits of accessing Parse data directly from your client applications, but you can also enforce certain invariants for your data on the fly.
+Validations can lock down your app so that only certain values are acceptable. You can also use `afterSave` validations to normalize your data (e.g. formatting all phone numbers or currency identically). You get to retain most of the productivity benefits of accessing MSG data directly from your client applications, but you can also enforce certain invariants for your data on the fly.
 
 Common scenarios that warrant validation include:
 
@@ -547,7 +547,7 @@ The master key should be used carefully. setting `useMasterKey` to `true` only i
 
 ```js
 Parse.Cloud.define("like", async request => {
-  var post = new Parse.Object("Post");
+  var post = new MSG.Object("Post");
   post.id = request.params.postId;
   post.increment("likes");
   await post.save(null, { useMasterKey: true })
@@ -556,11 +556,11 @@ Parse.Cloud.define("like", async request => {
 
 One very common use case for Cloud Code is sending push notifications to particular users. In general, clients can't be trusted to send push notifications directly, because they could modify the alert text, or push to people they shouldn't be able to. Your app's settings will allow you to set whether "client push" is enabled or not; we recommend that you make sure it's disabled. Instead, you should write Cloud Code functions that validate the data to be pushed and sent before sending a push.
 
-## Parse Security Summary
+## MSG Security Summary
 
 Parse provides a number of ways for you to secure data in your app. As you build your app and evaluate the kinds of data you will be storing, you can make the decision about which implementation to choose.
 
-It is worth repeating that that the Parse User object is readable by all other users by default. You will want to set the ACL on your User object accordingly if you wish to prevent data contained in the User object (for example, the user's email address) from being visible by other users.
+It is worth repeating that that the MSG User object is readable by all other users by default. You will want to set the ACL on your User object accordingly if you wish to prevent data contained in the User object (for example, the user's email address) from being visible by other users.
 
 Most classes in your app will fall into one of a couple of easy-to-secure categories. For fully public data, you can use class-level permissions to lock down the table to put publicly readable and writeable by no one. For fully private data, you can use ACLs to make sure that only the user who owns the data can read it. But occasionally, you'll run into situations where you don't want data that’s fully public or fully private. For example, you may have a social app, where you have data for a user that should be readable only to friends whom they’ve approved. For this you'll need to a combination of the techniques discussed in this guide to enable exactly the sharing rules you desire.
 

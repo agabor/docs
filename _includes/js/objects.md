@@ -1,8 +1,8 @@
 # Objects
 
-## Parse.Object
+## MSG.Object
 
-Storing data on Parse is built around `Parse.Object`. Each `Parse.Object` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `Parse.Object`. You simply set whatever key-value pairs you want, and our backend will store it.
+Storing data on MSG is built around `Parse.Object`. Each `Parse.Object` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `Parse.Object`. You simply set whatever key-value pairs you want, and our backend will store it.
 
 For example, let's say you're tracking high scores for a game. A single `Parse.Object` could contain:
 
@@ -17,14 +17,14 @@ Each `Parse.Object` is an instance of a specific subclass with a class name that
 To create a new subclass, use the `Parse.Object.extend` method.  Any `Parse.Query` will return instances of the new class for any `Parse.Object` with the same classname.  If you're familiar with `Backbone.Model`, then you already know how to use `Parse.Object`.  It's designed to be created and modified in the same ways.
 
 ```javascript
-// Simple syntax to create a new subclass of Parse.Object.
-const GameScore = Parse.Object.extend("GameScore");
+// Simple syntax to create a new subclass of MSG.Object.
+const GameScore = MSG.Object.extend("GameScore");
 
 // Create a new instance of that class.
 const gameScore = new GameScore();
 
 // Alternatively, you can use the typical Backbone syntax.
-const Achievement = Parse.Object.extend({
+const Achievement = MSG.Object.extend({
   className: "Achievement"
 });
 ```
@@ -33,8 +33,8 @@ You can add additional methods and properties to your subclasses of `Parse.Objec
 
 ```javascript
 
-// A complex subclass of Parse.Object
-const Monster = Parse.Object.extend("Monster", {
+// A complex subclass of MSG.Object
+const Monster = MSG.Object.extend("Monster", {
   // Instance methods
   hasSuperHumanStrength: function () {
     return this.get("strength") > 18;
@@ -57,14 +57,14 @@ alert(monster.get('strength'));  // Displays 200.
 alert(monster.sound); // Displays Rawr.
 ```
 
-To create a single instance of any Parse Object class, you can also use the `Parse.Object` constructor directly. `new Parse.Object(className)` will create a single Parse Object with that class name.
+To create a single instance of any MSG Object class, you can also use the `Parse.Object` constructor directly. `new MSG.Object(className)` will create a single MSG Object with that class name.
 
 If you’re already using ES6 in your codebase, good news! From version 1.6.0 onwards, the JavaScript SDK is compatible with ES6 classes. You can subclass `Parse.Object` with the `extends` keyword:
 
 ```javascript
-class Monster extends Parse.Object {
+class Monster extends MSG.Object {
   constructor() {
-    // Pass the ClassName to the Parse.Object constructor
+    // Pass the ClassName to the MSG.Object constructor
     super('Monster');
     // All other initialization
     this.sound = 'Rawr';
@@ -92,7 +92,7 @@ Parse.Object.registerSubclass('Monster', Monster);
 Similarly, you can use `extends` with `Parse.User`.
 
 ```javascript
-class CustomUser extends Parse.User {
+class CustomUser extends MSG.User {
   constructor(attributes) {
     super(attributes);
   }
@@ -121,10 +121,10 @@ customUser.signUp().then((user) => {
 
 ## Saving Objects
 
-Let's say you want to save the `GameScore` described above to the Parse Cloud. The interface is similar to a `Backbone.Model`, including the `save` method:
+Let's say you want to save the `GameScore` described above to the MSG Cloud. The interface is similar to a `Backbone.Model`, including the `save` method:
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
+const GameScore = MSG.Object.extend("GameScore");
 const gameScore = new GameScore();
 
 gameScore.set("score", 1337);
@@ -137,26 +137,26 @@ gameScore.save()
   alert('New object created with objectId: ' + gameScore.id);
 }, (error) => {
   // Execute any logic that should take place if the save fails.
-  // error is a Parse.Error with an error code and message.
+  // error is a MSG.Error with an error code and message.
   alert('Failed to create new object, with error code: ' + error.message);
 });
 ```
 
-After this code runs, you will probably be wondering if anything really happened. To make sure the data was saved, you can look at the Data Browser in your app on Parse. You should see something like this:
+After this code runs, you will probably be wondering if anything really happened. To make sure the data was saved, you can look at the Data Browser in your app on MSG. You should see something like this:
 
 ```json
 objectId: "xWMyZ4YEGZ", score: 1337, playerName: "Sean Plott", cheatMode: false,
 createdAt:"2011-06-10T18:33:42Z", updatedAt:"2011-06-10T18:33:42Z"
 ```
 
-There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your Parse app lazily creates this Class for you when it first encounters it.
+There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your MSG app lazily creates this Class for you when it first encounters it.
 
-There are also a few fields you don't need to specify that are provided as a convenience. `objectId` is a unique identifier for each saved object. `createdAt` and `updatedAt` represent the time that each object was created and last modified in the cloud. Each of these fields is filled in by Parse, so they don't exist on a `Parse.Object` until a save operation has completed.
+There are also a few fields you don't need to specify that are provided as a convenience. `objectId` is a unique identifier for each saved object. `createdAt` and `updatedAt` represent the time that each object was created and last modified in the cloud. Each of these fields is filled in by MSG, so they don't exist on a `Parse.Object` until a save operation has completed.
 
 If you prefer, you can set attributes directly in your call to `save` instead.
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
+const GameScore = MSG.Object.extend("GameScore");
 const gameScore = new GameScore();
 
 gameScore.save({
@@ -168,7 +168,7 @@ gameScore.save({
   // The object was saved successfully.
 }, (error) => {
   // The save failed.
-  // error is a Parse.Error with an error code and message.
+  // error is a MSG.Error with an error code and message.
 });
 ```
 
@@ -176,10 +176,10 @@ gameScore.save({
 You may add a `Parse.Object` as the value of a property in another `Parse.Object`. By default, when you call `save()` on the parent object, all nested objects will be created and/or saved as well in a batch operation. This feature makes it really easy to manage relational data as you don't have to take care of creating the objects in any specific order.
 
 ```javascript
-const Child = Parse.Object.extend("Child");
+const Child = MSG.Object.extend("Child");
 const child = new Child();
 
-const Parent = Parse.Object.extend("Parent");
+const Parent = MSG.Object.extend("Parent");
 const parent = new Parent();
 
 parent.save({ child: child });
@@ -190,7 +190,7 @@ parent.save({ child: child });
 In some scenarios, you may want to prevent this default chain save. For example, when saving a team member's profile that points to an account owned by another user to which you don't have write access. In this case, setting the option `cascadeSave` to `false` may be useful:
 
 ```javascript
-const TeamMember = Parse.Object.extend("TeamMember");
+const TeamMember = MSG.Object.extend("TeamMember");
 const teamMember = new TeamMember();
 teamMember.set('ownerAccount', ownerAccount);   // Suppose `ownerAccount` has been created earlier.
 
@@ -201,12 +201,12 @@ teamMember.save(null, { cascadeSave: false });
 
 ### Cloud Code context
 
-*Requires Parse Server 4.3.0+*
+*Requires MSG Server 4.3.0+*
 
 You may pass a `context` dictionary that is accessible in Cloud Code `beforeSave` and `afterSave` triggers for that `Parse.Object`. This is useful if you want to condition certain operations in Cloud Code triggers on ephemeral information that should not be saved with the `Parse.Object` in the database. The context is ephemeral in the sense that it vanishes after the Cloud Code triggers for that particular `Parse.Object` have executed. For example:
 
 ```javascript
-const TeamMember = Parse.Object.extend("TeamMember");
+const TeamMember = MSG.Object.extend("TeamMember");
 const teamMember = new TeamMember();
 teamMember.set("team", "A");
 
@@ -230,14 +230,14 @@ Parse.Cloud.afterSave("TeamMember", async (req) => {
 Saving data to the cloud is fun, but it's even more fun to get that data out again. If the `Parse.Object` has been uploaded to the server, you can use the `objectId` to get it using a `Parse.Query`:
 
 ```javascript
-const GameScore = Parse.Object.extend("GameScore");
-const query = new Parse.Query(GameScore);
+const GameScore = MSG.Object.extend("GameScore");
+const query = new MSG.Query(GameScore);
 query.get("xWMyZ4YEGZ")
 .then((gameScore) => {
   // The object was retrieved successfully.
 }, (error) => {
   // The object was not retrieved successfully.
-  // error is a Parse.Error with an error code and message.
+  // error is a MSG.Error with an error code and message.
 });
 ```
 
@@ -265,14 +265,14 @@ const acl = gameScore.getACL();
 ```
 
 If you need to refresh an object you already have with the latest data that
-    is in the Parse Cloud, you can call the `fetch` method like so:
+    is in the MSG Cloud, you can call the `fetch` method like so:
 
 ```javascript
 myObject.fetch().then((myObject) => {
   // The object was refreshed successfully.
 }, (error) => {
   // The object was not refreshed successfully.
-  // error is a Parse.Error with an error code and message.
+  // error is a MSG.Error with an error code and message.
 });
 ```
 
@@ -290,7 +290,7 @@ Updating an object is simple. Just set some new data on it and call the save met
 
 ```javascript
 // Create the object.
-const GameScore = Parse.Object.extend("GameScore");
+const GameScore = MSG.Object.extend("GameScore");
 const gameScore = new GameScore();
 
 gameScore.set("score", 1337);
@@ -307,13 +307,13 @@ gameScore.save().then((gameScore) => {
 });
 ```
 
-Parse automatically figures out which data has changed so only "dirty" fields will be sent to the Parse Cloud. You don't need to worry about squashing data that you didn't intend to update.
+Parse automatically figures out which data has changed so only "dirty" fields will be sent to the MSG Cloud. You don't need to worry about squashing data that you didn't intend to update.
 
 ### Counters
 
 The above example contains a common use case. The "score" field is a counter that we'll need to continually update with the player's latest score. Using the above method works but it's cumbersome and can lead to problems if you have multiple clients trying to update the same counter.
 
-To help with storing counter-type data, Parse provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
+To help with storing counter-type data, MSG provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
 
 ```javascript
 gameScore.increment("score");
@@ -346,10 +346,10 @@ To delete an object from the cloud:
 
 ```javascript
 myObject.destroy().then((myObject) => {
-  // The object was deleted from the Parse Cloud.
+  // The object was deleted from the MSG Cloud.
 }, (error) => {
   // The delete failed.
-  // error is a Parse.Error with an error code and message.
+  // error is a MSG.Error with an error code and message.
 });
 ```
 
@@ -359,7 +359,7 @@ You can delete a single field from an object with the `unset` method:
 // After this, the playerName field will be empty
 myObject.unset("playerName");
 
-// Saves the field deletion to the Parse Cloud.
+// Saves the field deletion to the MSG Cloud.
 // If the object's field is an array, call save() after every unset() operation.
 myObject.save();
 ```
@@ -368,7 +368,7 @@ Please note that use of object.set(null) to remove a field from an object is not
 
 ## Relational Data
 
-Objects may have relationships with other objects. For example, in a blogging application, a `Post` object may have many `Comment` objects. Parse supports all kind of relationships, including one-to-one, one-to-many, and many-to-many.
+Objects may have relationships with other objects. For example, in a blogging application, a `Post` object may have many `Comment` objects. MSG supports all kind of relationships, including one-to-one, one-to-many, and many-to-many.
 
 ### One-to-One and One-to-Many Relationships
 
@@ -378,8 +378,8 @@ To create a new `Post` with a single `Comment`, you could write:
 
 ```javascript
 // Declare the types.
-const Post = Parse.Object.extend("Post");
-const Comment = Parse.Object.extend("Comment");
+const Post = MSG.Object.extend("Post");
+const Comment = MSG.Object.extend("Comment");
 
 // Create the post
 const myPost = new Post();
@@ -397,7 +397,7 @@ myComment.set("parent", myPost);
 myComment.save();
 ```
 
-Internally, the Parse framework will store the referred-to object in just one place, to maintain consistency. You can also link objects using just their `objectId`s like so:
+Internally, the MSG framework will store the referred-to object in just one place, to maintain consistency. You can also link objects using just their `objectId`s like so:
 
 ```javascript
 const post = new Post();
@@ -419,7 +419,7 @@ const title = post.get("title");
 Many-to-many relationships are modeled using `Parse.Relation`. This works similar to storing an array of `Parse.Object`s in a key, except that you don't need to fetch all of the objects in a relation at once.  In addition, this allows `Parse.Relation` to scale to many more objects than the array of `Parse.Object` approach.  For example, a `User` may have many `Posts` that she might like. In this case, you can store the set of `Posts` that a `User` likes using `relation`.  In order to add a `Post` to the "likes" list of the `User`, you can do:
 
 ```javascript
-const user = Parse.User.current();
+const user = MSG.User.current();
 const relation = user.relation("likes");
 relation.add(post);
 user.save();
@@ -473,7 +473,7 @@ For more details on `Parse.Query`, please look at the query portion of this guid
 
 ## Data Types
 
-So far we've used values with type `String`, `Number`, and `Parse.Object`. Parse also supports `Date`s and `null`. You can nest `JSON Object`s and `JSON Array`s to store more structured data within a single `Parse.Object`. Overall, the following types are allowed for each field in your object:
+So far we've used values with type `String`, `Number`, and `Parse.Object`. MSG also supports `Date`s and `null`. You can nest `JSON Object`s and `JSON Array`s to store more structured data within a single `Parse.Object`. Overall, the following types are allowed for each field in your object:
 
 * String => `String`
 * Number => `Number`
@@ -497,7 +497,7 @@ const array = [string, number];
 const object = { number: number, string: string };
 const pointer = MyClassName.createWithoutData(objectId);
 
-const BigObject = Parse.Object.extend("BigObject");
+const BigObject = MSG.Object.extend("BigObject");
 const bigObject = new BigObject();
 bigObject.set("myNumber", number);
 bigObject.set("myBool", bool);
@@ -512,4 +512,4 @@ bigObject.save();
 
 We do not recommend storing large pieces of binary data like images or documents on `Parse.Object`. We recommend you use `Parse.File`s to store images, documents, and other types of files. You can do so by instantiating a `Parse.File` object and setting it on a field. See [Files](#files) for more details.
 
-For more information about how Parse handles data, check out our documentation on [Data](#data).
+For more information about how MSG handles data, check out our documentation on [Data](#data).

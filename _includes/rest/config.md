@@ -1,6 +1,6 @@
 # Config
 
-`Parse Config` is a way to configure your applications remotely by storing a single configuration object on Parse. It enables you to add things like feature gating or a simple "Message of the day". To start using `Parse Config` you need to add a few key/value pairs (parameters) to your app on the Parse Config Dashboard.
+`Parse Config` is a way to configure your applications remotely by storing a single configuration object on MSG. It enables you to add things like feature gating or a simple "Message of the day". To start using `Parse Config` you need to add a few key/value pairs (parameters) to your app on the MSG Config Dashboard.
 
 <img alt="" data-echo="{{ '/assets/images/config_editor.png' | prepend: site.baseurl }}"/>
 
@@ -51,10 +51,10 @@ curl -X PUT \
 var request = require('request');
 return request({
   method: 'PUT',
-  url: Parse.serverURL + '/config',
+  url: MSG.serverURL + '/config',
   headers: {
-    'X-Parse-Application-Id': Parse.applicationId,
-    'X-Parse-Master-Key': Parse.masterKey
+    'X-Parse-Application-Id': MSG.applicationId,
+    'X-Parse-Master-Key': MSG.masterKey
   },
   json: true,
   body: {

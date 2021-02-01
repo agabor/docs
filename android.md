@@ -1,5 +1,5 @@
 ---
-title: Android Developers Guide | Parse
+title: Android Developers Guide | MSG
 permalink: /android/guide/
 layout: guide
 platform: android

@@ -2,7 +2,7 @@
 
 ## The ParseObject
 
-Storing data on Parse is built around the `ParseObject`. Each `ParseObject` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `ParseObject`. You simply set whatever key-value pairs you want, and our backend will store it.
+Storing data on MSG is built around the `ParseObject`. Each `ParseObject` contains key-value pairs of JSON-compatible data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each `ParseObject`. You simply set whatever key-value pairs you want, and our backend will store it.
 
 For example, let's say you're tracking high scores for a game. A single `ParseObject` could contain:
 
@@ -17,7 +17,7 @@ Each `ParseObject` has a class name that you can use to distinguish different so
 
 ## Saving Objects
 
-Let's say you want to save the `GameScore` described above to your Parse Server. The interface is similar to an `IDictionary<string, object>`, plus the `SaveAsync` method:
+Let's say you want to save the `GameScore` described above to your MSG Server. The interface is similar to an `IDictionary<string, object>`, plus the `SaveAsync` method:
 
 ```cs
 ParseObject gameScore = new ParseObject("GameScore");
@@ -26,20 +26,20 @@ gameScore["playerName"] = "Sean Plott";
 await gameScore.SaveAsync();
 ```
 
-After this code runs, you will probably be wondering if anything really happened. To make sure the data was saved, you can look at the Data Browser in your app on Parse. You should see something like this:
+After this code runs, you will probably be wondering if anything really happened. To make sure the data was saved, you can look at the Data Browser in your app on MSG. You should see something like this:
 
 ```javascript
 objectId: "xWMyZ4YEGZ", score: 1337, playerName: "Sean Plott", cheatMode: false,
 createdAt:"2011-06-10T18:33:42Z", updatedAt:"2011-06-10T18:33:42Z"
 ```
 
-There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your Parse app lazily creates this Class for you when it first encounters it.
+There are two things to note here. You didn't have to configure or set up a new Class called `GameScore` before running this code. Your MSG app lazily creates this Class for you when it first encounters it.
 
-There are also a few fields you don't need to specify that are provided as a convenience. `ObjectId` is a unique identifier for each saved object. `CreatedAt` and `UpdatedAt` represent the time that each object was created and last modified in your Parse Server. Each of these fields is filled in by Parse, so they don't exist on a `ParseObject` until a save operation has completed.
+There are also a few fields you don't need to specify that are provided as a convenience. `ObjectId` is a unique identifier for each saved object. `CreatedAt` and `UpdatedAt` represent the time that each object was created and last modified in your MSG Server. Each of these fields is filled in by MSG, so they don't exist on a `ParseObject` until a save operation has completed.
 
 ## Data Types
 
-So far we've used values with type `string` and `int` assigned to fields of a `ParseObject`. Parse also supports `double`, `DateTime`, and `null`. You can also nest `IDictionary<string, T>` and `IList<T>` objects to store more structured data within a single `ParseObject`. Overall, the following types are allowed for each field in your object:
+So far we've used values with type `string` and `int` assigned to fields of a `ParseObject`. MSG also supports `double`, `DateTime`, and `null`. You can also nest `IDictionary<string, T>` and `IList<T>` objects to store more structured data within a single `ParseObject`. Overall, the following types are allowed for each field in your object:
 
 * String => `string`
 * Number => primitive numeric values such as `double`s, `long`s, or `float`s
@@ -76,7 +76,7 @@ await bigObject.SaveAsync();
 
 We do not recommend storing large pieces of binary data like images or documents on `ParseObject`. We recommend you use `ParseFile`s to store images, documents, and other types of files. You can do so by instantiating a `ParseFile` object and setting it on a field. See [Files](#files) for more details.
 
-For more information about how Parse handles data, check out our documentation on [Data](#data).
+For more information about how MSG handles data, check out our documentation on [Data](#data).
 
 ## Retrieving Objects
 
@@ -104,7 +104,7 @@ DateTime? createdAt = gameScore.CreatedAt;
 ParseACL? acl = gameScore.ACL;
 ```
 
-If you need to get an object's latest data from Parse, you can call the `FetchAsync` method like so:
+If you need to get an object's latest data from MSG, you can call the `FetchAsync` method like so:
 
 ```cs
 await myObject.FetchAsync();
@@ -132,13 +132,13 @@ gameScore["score"] = 1338;
 await gameScore.SaveAsync();
 ```
 
-The client automatically figures out which data has changed so only "dirty" fields will be sent to Parse. You don't need to worry about squashing data that you didn't intend to update.
+The client automatically figures out which data has changed so only "dirty" fields will be sent to MSG. You don't need to worry about squashing data that you didn't intend to update.
 
 ### Counters
 
 The above example contains a common use case. The "score" field is a counter that we'll need to continually update with the player's latest score. Using the above method works but it's cumbersome and can lead to problems if you have multiple clients trying to update the same counter.
 
-To help with storing counter-type data, Parse provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
+To help with storing counter-type data, MSG provides methods that atomically increment (or decrement) any number field. So, the same update can be rewritten as:
 
 ```cs
 gameScore.Increment("score");
@@ -178,13 +178,13 @@ You can delete a single field from an object with the `Remove` method:
 // After this, the playerName field will be empty
 myObject.Remove("playerName");
 
-// Saves the field deletion to Parse Server
+// Saves the field deletion to MSG Server
 await myObject.SaveAsync();
 ```
 
 ## Relational Data
 
-Objects can have relationships with other objects. To model one-to-many relationships, any `ParseObject` can be used as a value in other `ParseObject`s. Internally, the Parse framework will store the referred-to object in just one place to maintain consistency.
+Objects can have relationships with other objects. To model one-to-many relationships, any `ParseObject` can be used as a value in other `ParseObject`s. Internally, the MSG framework will store the referred-to object in just one place to maintain consistency.
 
 For example, each `Comment` in a blogging app might correspond to one `Post`. To create a new `Post` with a single `Comment`, you could write:
 
@@ -308,7 +308,7 @@ To create a `ParseObject` subclass:
 
 ```cs
 // Armor.cs
-using Parse;
+using MSG;
 
 [ParseClassName("Armor")]
 public class Armor : ParseObject
@@ -316,7 +316,7 @@ public class Armor : ParseObject
 }
 
 // App.xaml.cs
-using Parse;
+using MSG;
 
 public class App : Application
 {
@@ -332,7 +332,7 @@ public class App : Application
 
 Adding methods and properties to your `ParseObject` subclass helps encapsulate logic about the class. You can keep all your logic about a subject in one place rather than using separate classes for business logic and storage/transmission logic.
 
-You can add properties for the fields of your `ParseObject` easily. Declare the getter and setter for the field as you normally would, but implement them in terms of `GetProperty<T>()` and `SetProperty<T>()`. Finally, add a `ParseFieldName` attribute to the property to fully integrate the property with Parse, enabling functionality like LINQ support and automatically raising `INotifyPropertyChanged` notifications. The following example creates a `displayName` field in the `Armor` class:
+You can add properties for the fields of your `ParseObject` easily. Declare the getter and setter for the field as you normally would, but implement them in terms of `GetProperty<T>()` and `SetProperty<T>()`. Finally, add a `ParseFieldName` attribute to the property to fully integrate the property with MSG, enabling functionality like LINQ support and automatically raising `INotifyPropertyChanged` notifications. The following example creates a `displayName` field in the `Armor` class:
 
 ```cs
 // Armor.cs
@@ -379,7 +379,7 @@ public void TakeDamage(int amount) {
 
 ### Initializing Subclasses
 
-You should create new instances of your subclasses using the constructors you have defined. Your subclass must define a public default constructor that does not modify fields of the `ParseObject`, which will be used throughout the Parse SDK to create strongly-typed instances of your subclass.
+You should create new instances of your subclasses using the constructors you have defined. Your subclass must define a public default constructor that does not modify fields of the `ParseObject`, which will be used throughout the MSG SDK to create strongly-typed instances of your subclass.
 
 To create a reference to an existing object, use `ParseObject.CreateWithoutData<T>()`:
 

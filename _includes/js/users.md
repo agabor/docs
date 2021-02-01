@@ -21,12 +21,12 @@ We'll go through each of these in detail as we run through the various use cases
 The first thing your app will do is probably ask the user to sign up. The following code illustrates a typical sign up:
 
 ```javascript
-const user = new Parse.User();
+const user = new MSG.User();
 user.set("username", "my name");
 user.set("password", "my pass");
 user.set("email", "email@example.com");
 
-// other fields can be set just like with Parse.Object
+// other fields can be set just like with MSG.Object
 user.set("phone", "415-392-0202");
 try {
   await user.signUp();
@@ -37,7 +37,7 @@ try {
 }
 ```
 
-This call will asynchronously create a new user in your Parse App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
+This call will asynchronously create a new user in your MSG App. Before it does this, it also checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
 
 Note that we used the `signUp` method, not the `save` method. New `Parse.User`s should always be created using the `signUp` method. Subsequent updates to a user can be done by calling `save`.
 
@@ -50,7 +50,7 @@ You are free to use an email address as the username. Simply ask your users to e
 Of course, after you allow users to sign up, you need to let them log in to their account in the future. To do this, you can use the class method `logIn`.
 
 ```javascript
-const user = await Parse.User.logIn("myname", "mypass");
+const user = await MSG.User.logIn("myname", "mypass");
 // Do stuff after successful login.
 ```
 
@@ -58,18 +58,18 @@ By default, the SDK uses the GET HTTP method. If you would like to override this
 
 
 ```javascript
-const user = await Parse.User.logIn("myname", "mypass", { usePost: true });
+const user = await MSG.User.logIn("myname", "mypass", { usePost: true });
 // Do stuff after successful login.
 ```
 > Available with SDK version 2.17.0 and later
 
 ## Verifying Emails
 
-Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `Parse.User` object. When a `Parse.User`'s `email` is set or modified, `emailVerified` is set to `false`. Parse then emails the user a link which will set `emailVerified` to `true`.
+Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `Parse.User` object. When a `Parse.User`'s `email` is set or modified, `emailVerified` is set to `false`. MSG then emails the user a link which will set `emailVerified` to `true`.
 
 There are three `emailVerified` states to consider:
 
-1.  `true` - the user confirmed his or her email address by clicking on the link Parse emailed them. `Parse.Users` can never have a `true` value when the user account is first created.
+1.  `true` - the user confirmed his or her email address by clicking on the link MSG emailed them. `Parse.Users` can never have a `true` value when the user account is first created.
 2.  `false` - at the time the `Parse.User` object was last refreshed, the user had not confirmed his or her email address. If `emailVerified` is `false`, consider calling `fetch` on the `Parse.User`.
 3.  _missing_ - the `Parse.User` was created when email verification was off or the `Parse.User` does not have an `email`.
 
@@ -82,7 +82,7 @@ Please note that this functionality is disabled by default on Node.js environmen
 Whenever you use any signup or login methods, the user is cached in localStorage, or in any storage you configured via the `Parse.setAsyncStorage` method. You can treat this cache as a session, and automatically assume the user is logged in:
 
 ```javascript
-const currentUser = Parse.User.current();
+const currentUser = MSG.User.current();
 if (currentUser) {
     // do stuff with the user
 } else {
@@ -102,7 +102,7 @@ You can clear the current user by logging them out:
 
 ```javascript
 Parse.User.logOut().then(() => {
-  const currentUser = Parse.User.current();  // this will now be null
+  const currentUser = MSG.User.current();  // this will now be null
 });
 ```
 
@@ -127,17 +127,17 @@ Specifically, you are not able to invoke any of the `save` or `delete` methods u
 The following illustrates this security policy:
 
 ```javascript
-const user = await Parse.User.logIn("my_username", "my_password");
+const user = await MSG.User.logIn("my_username", "my_password");
 user.set("username", "my_new_username");
 await user.save();
 // This succeeds, since the user was authenticated on the device
 
 // Get the user from a non-authenticated method
-const query = new Parse.Query(Parse.User);
+const query = new MSG.Query(Parse.User);
 const userAgain = await query.get(user.objectId);
 userAgain.set("username", "another_username");
 await userAgain.save().catch(error => {
-  // This will error, since the Parse.User is not authenticated
+  // This will error, since the MSG.User is not authenticated
 });
 ```
 
@@ -165,13 +165,13 @@ You can check if this feature is enabled with the function `Parse.isEncryptedUse
 
 The same security model that applies to the `Parse.User` can be applied to other objects. For any object, you can specify which users are allowed to read the object, and which users are allowed to modify an object. To support this type of security, each object has an [access control list](http://en.wikipedia.org/wiki/Access_control_list), implemented by the `Parse.ACL` class.
 
-The simplest way to use a `Parse.ACL` is to specify that an object may only be read or written by a single user. This is done by initializing a Parse.ACL with a `Parse.User`: `new Parse.ACL(user)` generates a `Parse.ACL` that limits access to that user. An object's ACL is updated when the object is saved, like any other property. Thus, to create a private note that can only be accessed by the current user:
+The simplest way to use a `Parse.ACL` is to specify that an object may only be read or written by a single user. This is done by initializing a MSG.ACL with a `Parse.User`: `new MSG.ACL(user)` generates a `Parse.ACL` that limits access to that user. An object's ACL is updated when the object is saved, like any other property. Thus, to create a private note that can only be accessed by the current user:
 
 ```javascript
-const Note = Parse.Object.extend("Note");
+const Note = MSG.Object.extend("Note");
 const privateNote = new Note();
 privateNote.set("content", "This note is private!");
-privateNote.setACL(new Parse.ACL(Parse.User.current()));
+privateNote.setACL(new MSG.ACL(Parse.User.current()));
 privateNote.save();
 ```
 
@@ -180,9 +180,9 @@ This note will then only be accessible to the current user, although it will be 
 Permissions can also be granted on a per-user basis. You can add permissions individually to a `Parse.ACL` using `setReadAccess` and `setWriteAccess`. For example, let's say you have a message that will be sent to a group of several users, where each of them have the rights to read and delete that message:
 
 ```javascript
-const Message = Parse.Object.extend("Message");
+const Message = MSG.Object.extend("Message");
 const groupMessage = new Message();
-const groupACL = new Parse.ACL();
+const groupACL = new MSG.ACL();
 
 // userList is an array with the users we are sending this message to.
 for (let i = 0; i < userList.length; i++) {
@@ -198,7 +198,7 @@ You can also grant permissions to all users at once using `setPublicReadAccess` 
 
 ```javascript
 const publicPost = new Post();
-const postACL = new Parse.ACL(Parse.User.current());
+const postACL = new MSG.ACL(Parse.User.current());
 postACL.setPublicReadAccess(true);
 publicPost.setACL(postACL);
 publicPost.save();
@@ -227,18 +227,18 @@ This will attempt to match the given email with the user's email or username fie
 The flow for password reset is as follows:
 
 1.  User requests that their password be reset by typing in their email.
-2.  Parse sends an email to their address, with a special password reset link.
-3.  User clicks on the reset link, and is directed to a special Parse page that will allow them type in a new password.
+2.  MSG sends an email to their address, with a special password reset link.
+3.  User clicks on the reset link, and is directed to a special MSG page that will allow them type in a new password.
 4.  User types in a new password. Their password has now been reset to a value they specify.
 
-Note that the messaging in this flow will reference your app by the name that you specified when you created this app on Parse.
+Note that the messaging in this flow will reference your app by the name that you specified when you created this app on MSG.
 
 ## Querying
 
 To query for users, you can simple create a new `Parse.Query` for `Parse.User`s:
 
 ```javascript
-const query = new Parse.Query(Parse.User);
+const query = new MSG.Query(Parse.User);
 query.equalTo("gender", "female");  // find all the women
 const women = await query.find();
 ```
@@ -248,17 +248,17 @@ const women = await query.find();
 Associations involving a `Parse.User` work right of the box. For example, let's say you're making a blogging app. To store a new post for a user and retrieve all their posts:
 
 ```javascript
-const user = Parse.User.current();
+const user = MSG.User.current();
 
 // Make a new post
-const Post = Parse.Object.extend("Post");
+const Post = MSG.Object.extend("Post");
 const post = new Post();
 post.set("title", "My New Post");
 post.set("body", "This is some great content.");
 post.set("user", user);
 await post.save();
 // Find all posts by the current user
-const query = new Parse.Query(Post);
+const query = new MSG.Query(Post);
 query.equalTo("user", user);
 const userPosts = await query.find();
 // userPosts contains all of the posts by the current user.
@@ -269,29 +269,29 @@ const userPosts = await query.find();
 
 Parse provides an easy way to integrate Facebook with your application. The `Parse.FacebookUtils` class integrates `Parse.User` and the Facebook Javascript SDK to make linking your users to their Facebook identities easy.
 
-Using our Facebook integration, you can associate an authenticated Facebook user with a `Parse.User`. With just a few lines of code, you'll be able to provide a "log in with Facebook" option in your app, and be able to save their data to Parse.
+Using our Facebook integration, you can associate an authenticated Facebook user with a `Parse.User`. With just a few lines of code, you'll be able to provide a "log in with Facebook" option in your app, and be able to save their data to MSG.
 
 
 ### Setting up Facebook
 
-To start using Facebook with Parse, you need to:
+To start using Facebook with MSG, you need to:
 
 1.  [Create a Facebook Developer account](https://developers.facebook.com/).
 2.  [Create an app](https://developers.facebook.com/apps).
 3.  In your app Dashboard, add a product -> Facebook Login.
-4.  [Add appIds to Parse Server auth configuration](http://docs.parseplatform.org/parse-server/guide/#oauth-and-3rd-party-authentication) or pass `facebookAppIds` into configuration
+4.  [Add appIds to MSG Server auth configuration](http://docs.parseplatform.org/parse-server/guide/#oauth-and-3rd-party-authentication) or pass `facebookAppIds` into configuration
 
 ```html
 <script>
-  // Initialize Parse
-  Parse.initialize("$PARSE_APPLICATION_ID", "$PARSE_JAVASCRIPT_KEY");
-  Parse.serverURL = 'http://YOUR_PARSE_SERVER:1337/parse';
+  // Initialize MSG
+  MSG.initialize("$PARSE_APPLICATION_ID", "$PARSE_JAVASCRIPT_KEY");
+  MSG.serverURL = 'http://YOUR_PARSE_SERVER:1337/parse';
 
   window.fbAsyncInit = function() {
-    Parse.FacebookUtils.init({
+    MSG.FacebookUtils.init({
       appId      : '{facebook-app-id}', // Facebook App ID
       status     : true,  // check Facebook Login status
-      cookie     : true,  // enable cookies to allow Parse to access the session
+      cookie     : true,  // enable cookies to allow MSG to access the session
       xfbml      : true,  // initialize Facebook social plugins on the page
       version    : 'v2.3' // point to the latest Facebook Graph API version
     });
@@ -314,7 +314,7 @@ The function assigned to `fbAsyncInit` is run as soon as the Facebook JavaScript
 
 If you encounter any issues that are Facebook-related, a good resource is the [official getting started guide from Facebook](https://developers.facebook.com/docs/reference/javascript/).
 
-There are two main ways to use Facebook with your Parse users: (1) [logging in as a Facebook user](#login--signup) and creating a `Parse.User`, or (2) [linking Facebook](#linking) to an existing `Parse.User`.
+There are two main ways to use Facebook with your MSG users: (1) [logging in as a Facebook user](#login--signup) and creating a `Parse.User`, or (2) [linking Facebook](#linking) to an existing `Parse.User`.
 
 ### Login & Signup
 
@@ -322,7 +322,7 @@ There are two main ways to use Facebook with your Parse users: (1) [logging in a
 
 ```javascript
 try {
-  const users = await Parse.FacebookUtils.logIn();
+  const users = await MSG.FacebookUtils.logIn();
   if (!user.existed()) {
     alert("User signed up and logged in through Facebook!");
   } else {
@@ -342,7 +342,7 @@ When this code is run, the following happens:
 You may optionally provide a comma-delimited string that specifies what [permissions](https://developers.facebook.com/docs/authentication/permissions/) your app requires from the Facebook user. For example:
 
 ```javascript
-const user = await Parse.FacebookUtils.logIn("user_likes,email");
+const user = await MSG.FacebookUtils.logIn("user_likes,email");
 ```
 
 
@@ -358,7 +358,7 @@ If you want to associate an existing `Parse.User` to a Facebook account, you can
 ```javascript
 if (!Parse.FacebookUtils.isLinked(user)) {
   try  {
-    await Parse.FacebookUtils.link(user);
+    await MSG.FacebookUtils.link(user);
     alert("Woohoo, user logged in with Facebook!");
   } catch(error) {}
     alert("User cancelled the Facebook login or ddid not fully authorize.");
@@ -373,15 +373,15 @@ For advanced API: If you have a Facebook `access_token`, you can use [linkWith()
 If you want to unlink Facebook from a user, simply do this:
 
 ```javascript
-await Parse.FacebookUtils.unlink(user);
+await MSG.FacebookUtils.unlink(user);
 alert("The user is no longer associated with their Facebook account.");
 ```
 
-### Facebook SDK and Parse
+### Facebook SDK and MSG
 
 The Facebook Javascript SDK provides a main `FB` object that is the starting point for many of the interactions with Facebook's API. [You can read more about their SDK here](https://developers.facebook.com/docs/reference/javascript/).
 
-Facebook login using the Parse SDK requires that the Facebook SDK already be loaded before calling `Parse.FacebookUtils.init()`.
+Facebook login using the MSG SDK requires that the Facebook SDK already be loaded before calling `Parse.FacebookUtils.init()`.
 
 Our library manages the `FB` object for you. The `FB` singleton is synchronized with the current user by default, so any methods you call on it will be acting on the Facebook user associated with the current `Parse.User`. Calling `FB.login()` or `FB.logOut()` explicitly will cause the `Parse.User` and `FB` object to fall out of synchronization, and is not recommended.
 
@@ -401,7 +401,7 @@ Signing a user up with a linked service and logging them in with that service us
 const myAuthData = {
   id: '12345678'  // Required field. Used to uniquely identify the linked account.
 };
-const user = new Parse.User();
+const user = new MSG.User();
 await user.linkWith('providerName', { authData: myAuthData });
 ```
 
@@ -450,11 +450,11 @@ To create a link to an un-authenticated user (for example in cloud code), option
 
 ```javascript
 const myAuthData = {
-  id: xzx5tt123,  // The id key is required in the authData-object. Otherwise Parse Server will throw the Error 252 'This authentication method is unsupported'.
+  id: xzx5tt123,  // The id key is required in the authData-object. Otherwise MSG Server will throw the Error 252 'This authentication method is unsupported'.
   access: token
 }
 
-const user = await Parse.Query(Parse.User).get(userId);
+const user = await MSG.Query(Parse.User).get(userId);
 
 await user.linkWith(
   'providerName',
@@ -466,7 +466,7 @@ await user.linkWith(
 On rest, web, mobile, or TV clients, users can then login using the `CustomAdapter` by passing `myAuthData`:
 
 ```javascript
-const loggedIn = await Parse.User.logInWith('CustomAdapter', { authData: myAuthData});
+const loggedIn = await MSG.User.logInWith('CustomAdapter', { authData: myAuthData});
 
 ```
 
@@ -474,7 +474,7 @@ const loggedIn = await Parse.User.logInWith('CustomAdapter', { authData: myAuthD
 
 Parse Server supports many [3rd Party Authenications]({{ site.baseUrl }}/parse-server/guide/#oauth-and-3rd-party-authentication).
 It is possible to `linkWith` any 3rd Party Authentication by creating a custom authentication module. A custom authentication module normally consists of a client-side AuthProvider object and a back-end AuthAdapter. The client-side object should implement the [AuthProvider interface](https://github.com/parse-community/Parse-SDK-JS/blob/master/src/interfaces/AuthProvider.js). The backend AuthAdapter should implement the the functions `validateAuthData` and `validateAppId`, check out this [AuthAdapter example](https://github.com/parse-community/parse-server/blob/master/src/Adapters/Auth/AuthAdapter.js).
-When calling the `linkWith` function **without** an `authData` object the client side authenticate-method from the provider object will be called. In the other case the `authData` object will be sent directly to Parse Server for authentication using the backend module.
+When calling the `linkWith` function **without** an `authData` object the client side authenticate-method from the provider object will be called. In the other case the `authData` object will be sent directly to MSG Server for authentication using the backend module.
 
 Note: The following is a minimal example implementing AuthProvider client-side and AuthAdapter on the backend.
 
@@ -545,7 +545,7 @@ const provider = {
 };
 // Must register before linking
 Parse.User._registerAuthenticationProvider(provider);
-const user = new Parse.User();
+const user = new MSG.User();
 user.setUsername('Alice');
 user.setPassword('sekrit');
 await user.signUp();

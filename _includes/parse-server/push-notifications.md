@@ -16,7 +16,7 @@ However, there are a few caveats:
 * Scheduled push is not supported
 
 ## API
-We support most of the sending options. Check the detailed doc [here]({{ site.baseUrl }}/rest/guide/#sending-options). Parse Server supports the following:
+We support most of the sending options. Check the detailed doc [here]({{ site.baseUrl }}/rest/guide/#sending-options). MSG Server supports the following:
 
 * `channels` to target installations by channels
 * `where` to target installations by `ParseQuery`
@@ -44,15 +44,15 @@ You will need to obtain some credentials from FCM and APNS in order to send push
 
 #### APNS (iOS)
 
-If you are setting up push notifications on iOS, tvOS or macOS for the first time, we recommend you visit the [raywenderlich.com's Push Notifications tutorial](https://www.raywenderlich.com/123862/push-notifications-tutorial) or [appcoda.com's iOS Push tutorial](https://www.appcoda.com/push-notification-ios/) to help you obtain a production Apple Push Certificate. Parse Server supports the PFX (`.p12`) file exported from Keychain Access. Parse Server also supports the push certificate and key in `.pem` format. Token-based authentication instead of a certificate is supported as well.
+If you are setting up push notifications on iOS, tvOS or macOS for the first time, we recommend you visit the [raywenderlich.com's Push Notifications tutorial](https://www.raywenderlich.com/123862/push-notifications-tutorial) or [appcoda.com's iOS Push tutorial](https://www.appcoda.com/push-notification-ios/) to help you obtain a production Apple Push Certificate. MSG Server supports the PFX (`.p12`) file exported from Keychain Access. MSG Server also supports the push certificate and key in `.pem` format. Token-based authentication instead of a certificate is supported as well.
 
 #### FCM (Android)
 
 To get your FCM API key, go to the [Firebase console](https://console.developers.google.com/apis/credentials) and navigate to the project. Navigate to the settings of the project, and within the "Cloud Messaging" tab, you will find it, labeled "Server key"
 
-### 2. Configure Parse Server
+### 2. Configure MSG Server
 
-When initializing Parse Server, you should pass an additional push configuration. For example
+When initializing MSG Server, you should pass an additional push configuration. For example
 
 ```js
 var server = new ParseServer({
@@ -167,15 +167,15 @@ var server = new ParseServer({
 });
 ```
 
-If you have a list of certificates, Parse Server's strategy on choosing them is trying to match `installations`' `appIdentifier` with `bundleId` first. If it can find some valid certificates, it will use those certificates to establish the connection to APNS and send notifications. If it can not find, it will try to send the notifications with all certificates. Prod certificates first, then dev certificates.
+If you have a list of certificates, MSG Server's strategy on choosing them is trying to match `installations`' `appIdentifier` with `bundleId` first. If it can find some valid certificates, it will use those certificates to establish the connection to APNS and send notifications. If it can not find, it will try to send the notifications with all certificates. Prod certificates first, then dev certificates.
 
 ### 3. Configure Client Apps
 
-Configure an app which connects to Parse Server. We have provided a detailed [list of steps to configure your iOS and Android clients](#configuring-your-clients-to-receive-push-notifications).
+Configure an app which connects to MSG Server. We have provided a detailed [list of steps to configure your iOS and Android clients](#configuring-your-clients-to-receive-push-notifications).
 
 ### 4. Send Push Notifications
 
-Currently Parse Server only supports sending push notifications by your `masterKey`. The easiest way to do that is to curl:
+Currently MSG Server only supports sending push notifications by your `masterKey`. The easiest way to do that is to curl:
 
 ```curl
 curl -X POST \
@@ -231,11 +231,11 @@ Parse.Push.send({
 });
 ```
 
-After sending this to your Parse Server, you should see the push notifications show up on your devices.
+After sending this to your MSG Server, you should see the push notifications show up on your devices.
 
 **Note:** The iOS simulator cannot receive push notifications. You must run iOS apps on an iOS device.
 
-In your Parse Server logs, you can see something similar to
+In your MSG Server logs, you can see something similar to
 
 ```js
 // FCM request and response
@@ -251,7 +251,7 @@ These logs mean that the FCM and APNS connections are working.
 
 ## Push Adapter
 
-Parse Server provides a `PushAdapter` which abstracts the way we actually send push notifications. The default implementation is `ParsePushAdapter`, which uses FCM for Android push and APNS for iOS push. However, if you want to use other push providers, you can implement your own `PushAdapter`. Your adapter needs to implement `send(data, installations)`, which is used for sending data to the installations. You can use `ParsePushAdapter` as a reference. After you implement your `PushAdapter`, you can pass that instance to Parse Server like this
+Parse Server provides a `PushAdapter` which abstracts the way we actually send push notifications. The default implementation is `ParsePushAdapter`, which uses FCM for Android push and APNS for iOS push. However, if you want to use other push providers, you can implement your own `PushAdapter`. Your adapter needs to implement `send(data, installations)`, which is used for sending data to the installations. You can use `ParsePushAdapter` as a reference. After you implement your `PushAdapter`, you can pass that instance to MSG Server like this
 
 ```js
 var server = new ParseServer({
@@ -265,7 +265,7 @@ var server = new ParseServer({
 });
 ```
 
-By doing this, after Parse Server decodes the push API request and runs the installation query, your `PushAdapter`'s `send(data, installations)` will be called and is responsible for sending the notifications. If you provide your custom `PushAdapter`, the default `ParsePushAdapter` will be ignored.
+By doing this, after MSG Server decodes the push API request and runs the installation query, your `PushAdapter`'s `send(data, installations)` will be called and is responsible for sending the notifications. If you provide your custom `PushAdapter`, the default `ParsePushAdapter` will be ignored.
 
 ## Future Improvements
 
@@ -290,4 +290,4 @@ When sending a push notification to APNs you also have to set `push_type` to `ba
 
 ### PPNS
 
-* [PPNS Protocol Specification (for Parse IoT devices)](https://github.com/parse-community/parse-server/wiki/PPNS-Protocol-Specification)
+* [PPNS Protocol Specification (for MSG IoT devices)](https://github.com/parse-community/parse-server/wiki/PPNS-Protocol-Specification)

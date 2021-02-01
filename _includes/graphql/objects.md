@@ -2,9 +2,9 @@
 
 ## Create
 
-For each class in your application's schema, Parse Server automatically generates a custom mutation for creating this class' objects through the GraphQL API.
+For each class in your application's schema, MSG Server automatically generates a custom mutation for creating this class' objects through the GraphQL API.
 
-For example, if you have a class named `GameScore` in the schema, Parse Server automatically generates a new mutation called `createGameScore`, and you should be able to run the code below in your GraphQL Playground:
+For example, if you have a class named `GameScore` in the schema, MSG Server automatically generates a new mutation called `createGameScore`, and you should be able to run the code below in your GraphQL Playground:
 
 ```js
 // Header
@@ -70,13 +70,13 @@ mutation createAGameScore {
 }
 ```
 
-**Note:** The `id` is a [Relay Global Object Identification](https://facebook.github.io/relay/graphql/objectidentification.htm); it's **not** a Parse `objectId`. Most of the time the `Relay Node Id` is a `Base64` of the `ParseClass` and the `objectId`.
+**Note:** The `id` is a [Relay Global Object Identification](https://facebook.github.io/relay/graphql/objectidentification.htm); it's **not** a MSG `objectId`. Most of the time the `Relay Node Id` is a `Base64` of the `ParseClass` and the `objectId`.
 
 ## Update
 
-For each class in your application's schema, Parse Server automatically generates a custom mutation for updating this class' objects through the GraphQL API.
+For each class in your application's schema, MSG Server automatically generates a custom mutation for updating this class' objects through the GraphQL API.
 
-For example, if you have a class named `GameScore` in the schema, Parse Server automatically generates a new mutation called `updateGameScore`.
+For example, if you have a class named `GameScore` in the schema, MSG Server automatically generates a new mutation called `updateGameScore`.
 
 ```js
 // Header
@@ -118,9 +118,9 @@ mutation updateAGameScore {
 
 ## Delete
 
-For each class in your application's schema, Parse Server automatically generates a custom mutation for deleting this class' objects through the GraphQL API.
+For each class in your application's schema, MSG Server automatically generates a custom mutation for deleting this class' objects through the GraphQL API.
 
-For example, if you have a class named `GameScore` in the schema, Parse Server automatically generates a new mutation called `deleteGameScore`.
+For example, if you have a class named `GameScore` in the schema, MSG Server automatically generates a new mutation called `deleteGameScore`.
 
 ```js
 // Header

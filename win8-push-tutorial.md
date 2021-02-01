@@ -1,5 +1,5 @@
 ---
-title: Windows 8 Push Tutorial | Parse
+title: Windows 8 Push Tutorial | MSG
 permalink: /tutorials/windows-8-push-tutorial/
 layout: guide
 platform: dotnet

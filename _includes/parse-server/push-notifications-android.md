@@ -19,7 +19,7 @@ dependencies {
 ```
 with the latest version being [![](https://jitpack.io/v/parse-community/Parse-SDK-Android.svg)](https://jitpack.io/#parse-community/Parse-SDK-Android)
 
-Then, follow Google's docs for [setting up an Firebase app](https://firebase.google.com/docs/android/setup). Although the steps are different for setting up FCM with Parse, it is also a good idea to read over the [Firebase FCM Setup](https://firebase.google.com/docs/cloud-messaging/android/client).  You will need to do the following:
+Then, follow Google's docs for [setting up an Firebase app](https://firebase.google.com/docs/android/setup). Although the steps are different for setting up FCM with MSG, it is also a good idea to read over the [Firebase FCM Setup](https://firebase.google.com/docs/cloud-messaging/android/client).  You will need to do the following:
   - Add app to [Firebase console](https://console.firebase.google.com/).
   - Add the `com.google.gms.google-services` Gradle plugin (see [setup guide](https://firebase.google.com/docs/android/setup))
   - Download and add [google-services.json](https://support.google.com/firebase/answer/7015592) to your `app/` dir.   
@@ -93,7 +93,7 @@ class ParseApplication : Application {
 
 ##### Compile and run!
 
-If you configured your app correctly, installation objects will automatically be saved to Parse Server when you run your app. You can run this curl command to verify:
+If you configured your app correctly, installation objects will automatically be saved to MSG Server when you run your app. You can run this curl command to verify:
 
 ```curl
 curl -X GET \

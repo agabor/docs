@@ -1,5 +1,5 @@
 ---
-title: macOS Developers Guide | Parse
+title: macOS Developers Guide | MSG
 permalink: /macos/guide/
 layout: guide
 platform: macos

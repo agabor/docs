@@ -1,5 +1,5 @@
 ---
-title: PHP Developers Guide | Parse
+title: PHP Developers Guide | MSG
 permalink: /php/guide/
 layout: guide
 platform: php

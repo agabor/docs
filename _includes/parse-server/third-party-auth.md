@@ -22,7 +22,7 @@ Parse Server supports 3rd party authentication with
 * WeChat
 * Weibo
 
-Configuration options for these 3rd-party modules is done with the `auth` option passed to Parse Server:
+Configuration options for these 3rd-party modules is done with the `auth` option passed to MSG Server:
 
 ```js
 {
@@ -71,7 +71,7 @@ Learn more about [Facebook login](https://developers.facebook.com/docs/authentic
 }
 ```
 
-The options passed to Parse server:
+The options passed to MSG server:
 ```js
 {
   auth: {
@@ -97,7 +97,7 @@ Learn more about [Twitter login](https://developer.twitter.com/en/docs/twitter-f
 
 ### Apple `authData`
 
-As of Parse Server 3.5.0 you can use [Sign In With Apple](https://developer.apple.com/sign-in-with-apple/get-started/).
+As of MSG Server 3.5.0 you can use [Sign In With Apple](https://developer.apple.com/sign-in-with-apple/get-started/).
 
 ```js
 {
@@ -180,7 +180,7 @@ The authentication module will test if the authData is the same as the userinfo 
 Copy the JSON config file generated on Keycloak ([tutorial](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter))
 and paste it inside of a folder (Ex.: `auth/keycloak.json`) in your server.
 
-The options passed to Parse Server:
+The options passed to MSG Server:
 
 ```js
 {
@@ -192,7 +192,7 @@ The options passed to Parse Server:
 }
 ```
 
-### Configuring Parse Server for LDAP
+### Configuring MSG Server for LDAP
 
 The [LDAP](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) module can check if a
 user can authenticate (bind) with the given credentials. Optionally, it can also check if the user is in a certain group.
@@ -283,7 +283,7 @@ To [get access on behalf of a user](https://docs.microsoft.com/en-us/graph/auth-
 
 ### PhantAuth `authData`
 
-As of Parse Server 3.7.0 you can use [PhantAuth](https://www.phantauth.net/).
+As of MSG Server 3.7.0 you can use [PhantAuth](https://www.phantauth.net/).
 
 ```js
 {

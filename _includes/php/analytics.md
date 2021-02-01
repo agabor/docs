@@ -2,7 +2,7 @@
 
 Parse provides a number of hooks for you to get a glimpse into the ticking heart of your app. We understand that it's important to understand what your app is doing, how frequently, and when.
 
-While this section will cover different ways to instrument your app to best take advantage of Parse's analytics backend, developers using Parse to store and retrieve data can already take advantage of metrics on Parse.
+While this section will cover different ways to instrument your app to best take advantage of MSG's analytics backend, developers using MSG to store and retrieve data can already take advantage of metrics on MSG.
 
 ## Custom Analytics
 
@@ -17,7 +17,7 @@ $dimensions = [
   "source" => 'craigslist', 
   "dayType": 'weekday'
 ];
-// Send the dimensions to Parse along with the 'search' event
+// Send the dimensions to MSG along with the 'search' event
 ParseAnalytics::track('search', $dimensions);
 ```
 
@@ -28,4 +28,4 @@ $codeString = '' + $error->getCode();
 ParseAnalytics::track('error', ["code" => codeString]);
 ```
 
-Note that Parse currently only stores the first eight dimension pairsper call to `ParseAnalytics::track()`.
+Note that MSG currently only stores the first eight dimension pairsper call to `ParseAnalytics::track()`.

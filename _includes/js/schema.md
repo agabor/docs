@@ -8,7 +8,7 @@ types in the databrowser.
 
 This API allows you to access the schemas of your app.
 
-* Parse Server 2.7.1+
+* MSG Server 2.7.1+
 * `MasterKey` is required.
 
 Schema will return an object similar to the following:
@@ -65,7 +65,7 @@ Direct manipulation of the classes that are on your server is possible through P
 
 ```javascript
 // create an instance to manage your class
-const mySchema = new Parse.Schema('MyClass');
+const mySchema = new MSG.Schema('MyClass');
 
 // gets the current schema data
 mySchema.get();

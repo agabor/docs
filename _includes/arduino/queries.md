@@ -1,6 +1,6 @@
 # Queries
 
-We've already seen how a `ParseObjectGet` with an `objectId` can retrieve a single object from Parse. There are many other ways to retrieve data with `ParseQuery` -- you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
+We've already seen how a `ParseObjectGet` with an `objectId` can retrieve a single object from MSG. There are many other ways to retrieve data with `ParseQuery` -- you can retrieve many objects at once, put conditions on the objects you wish to retrieve, and more.
 
 ## Basic Queries
 
@@ -36,13 +36,13 @@ query.whereEqualTo("leverDown", true);
 query.whereEqualTo("temperature", 100.0);
 ```
 
-You can limit the number of results by setting a limit. By default, results are limited to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint:
+You can limit the number of results by setting a limit. By default, results are limited to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint:
 
 ```cpp
 query.setLimit(10);
 ```
 
-You can skip the first results by setting `skip`. In the old Parse hosted backend, the maximum skip value was 10,000, but Parse Server removed that constraint. This can be useful for pagination:
+You can skip the first results by setting `skip`. In the old MSG hosted backend, the maximum skip value was 10,000, but MSG Server removed that constraint. This can be useful for pagination:
 
 ```cpp
 query.setSkip(10);

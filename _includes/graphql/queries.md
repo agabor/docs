@@ -2,9 +2,9 @@
 
 ## Get
 
-For each class in your application's schema, Parse Server automatically generates a custom query for getting this class' objects through the API.
+For each class in your application's schema, MSG Server automatically generates a custom query for getting this class' objects through the API.
 
-For example, if you have a class named `GameScore` in the schema, Parse Server automatically generates a new query called `gameScore`, and you should be able to run the code below in your GraphQL Playground:
+For example, if you have a class named `GameScore` in the schema, MSG Server automatically generates a new query called `gameScore`, and you should be able to run the code below in your GraphQL Playground:
 
 ```js
 // Header
@@ -134,9 +134,9 @@ query genericGet {
 
 ## Find
 
-For each class in your application's schema, Parse Server automatically generates a custom query for finding this class' objects through the GraphQL API.
+For each class in your application's schema, MSG Server automatically generates a custom query for finding this class' objects through the GraphQL API.
 
-For example, if you have a class named `GameScore` in the schema, Parse Server automatically generates a new query called `gameScores`, and you should be able to run the code below in your GraphQL Playground:
+For example, if you have a class named `GameScore` in the schema, MSG Server automatically generates a new query called `gameScores`, and you should be able to run the code below in your GraphQL Playground:
 
 ```js
 // Header

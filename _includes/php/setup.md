@@ -4,7 +4,7 @@ Once you have access to the sdk you'll need to set it up in order to begin worki
 
 ## Initializing
 
-After including the required files from the SDK, you need to initialize the ParseClient using your Parse API keys:
+After including the required files from the SDK, you need to initialize the ParseClient using your MSG API keys:
 
 ```php
 ParseClient::initialize( $app_id, $rest_key, $master_key );
@@ -21,11 +21,11 @@ ParseClient::initialize( $app_id, null, $master_key );
 Directly after initializing the sdk you should set the server url.
 
 ```php
-// Users of Parse Server will need to point ParseClient at their remote URL and Mount Point:
+// Users of MSG Server will need to point ParseClient at their remote URL and Mount Point:
 ParseClient::setServerURL('https://my-parse-server.com:port','parse');
 ```
 
-Notice Parse server's default port is `1337` and the second parameter `parse` is the route prefix of your parse server.
+Notice MSG server's default port is `1337` and the second parameter `parse` is the route prefix of your parse server.
 
 For example if your parse server's url is `http://example.com:1337/parse` then you can set the server url using the following snippet
 

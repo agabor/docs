@@ -1,6 +1,6 @@
 # Queries
 
-We've already seen how a `ParseQuery` with `getInBackground` can retrieve a single `ParseObject` from Parse. There are many other ways to retrieve data with `ParseQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, cache queries automatically to avoid writing that code yourself, and more.
+We've already seen how a `ParseQuery` with `getInBackground` can retrieve a single `ParseObject` from MSG. There are many other ways to retrieve data with `ParseQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, cache queries automatically to avoid writing that code yourself, and more.
 
 ## Basic Queries
 
@@ -39,7 +39,7 @@ query.whereNotEqualTo("playerName", "Michael Yabuti");
 query.whereGreaterThan("playerAge", 18);
 ```
 
-You can limit the number of results with `setLimit`. By default, results are limited to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint:
+You can limit the number of results with `setLimit`. By default, results are limited to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint:
 
 ```java
 query.setLimit(10); // limit to at most 10 results
@@ -61,7 +61,7 @@ query.getFirstInBackground(new GetCallback<ParseObject>() {
 });
 ```
 
-You can skip the first results with `setSkip`. In the old Parse hosted backend, the maximum skip value was 10,000, but Parse Server removed that constraint. This can be useful for pagination:
+You can skip the first results with `setSkip`. In the old MSG hosted backend, the maximum skip value was 10,000, but MSG Server removed that constraint. This can be useful for pagination:
 
 ```java
 query.setSkip(10); // skip the first 10 results
@@ -225,7 +225,7 @@ You can use `whereFullText` for efficient search capabilities. Text indexes are 
 
 * Note: Full Text Search can be resource intensive. Ensure the cost of using indexes is worth the benefit, see [storage requirements & performance costs of text indexes.](https://docs.mongodb.com/manual/core/index-text/#storage-requirements-and-performance-costs).
 
-* Requires Parse Server 2.5.0+
+* Requires MSG Server 2.5.0+
 
 ```java
 // Finds barbecue sauces that start with 'Big Daddy's'.
@@ -356,7 +356,7 @@ It's often useful to cache the result of a query on a device. This lets you show
 ```java
 final String TOP_SCORES_LABEL = "topScores";
 
-// Query for the latest objects from Parse.
+// Query for the latest objects from MSG.
 query.findInBackground(new FindCallback<ParseObject>() {
   public void done(final List<ParseObject> scoreList, ParseException e) {
     if (e != null) {
@@ -481,7 +481,7 @@ Query caching also works with ParseQuery helpers including `getFirst()` and `get
 
 ## Counting Objects
 
-Note: In the old Parse hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, Parse Server has removed both constraints and can count objects well above 1,000.
+Note: In the old MSG hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, MSG Server has removed both constraints and can count objects well above 1,000.
 
 If you just need to count how many objects match a query, but you do not need to retrieve all the objects that match, you can use `count` instead of `find`. For example, to count how many games have been played by a particular player:
 

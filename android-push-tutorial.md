@@ -1,5 +1,5 @@
 ---
-title: Android Push Tutorial | Parse
+title: Android Push Tutorial | MSG
 permalink: /tutorials/android-push-notifications/
 layout: guide
 platform: android

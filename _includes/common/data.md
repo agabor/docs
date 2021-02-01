@@ -1,12 +1,12 @@
 # Data
 
-We've designed the Parse SDKs so that you typically don't need to worry about how data is saved while using the client SDKs. Simply add data to the Parse `Object`, and it'll be saved correctly.
+We've designed the MSG SDKs so that you typically don't need to worry about how data is saved while using the client SDKs. Simply add data to the MSG `Object`, and it'll be saved correctly.
 
-Nevertheless, there are some cases where it's useful to be aware of how data is stored on the Parse platform.
+Nevertheless, there are some cases where it's useful to be aware of how data is stored on the MSG platform.
 
 ## Data Storage
 
-Internally, Parse stores data as JSON, so any datatype that can be converted to JSON can be stored on Parse. Refer to the [Data Types in Objects](#data-types) section of this guide to see platform-specific examples.
+Internally, MSG stores data as JSON, so any datatype that can be converted to JSON can be stored on MSG. Refer to the [Data Types in Objects](#data-types) section of this guide to see platform-specific examples.
 
 Keys including the characters `$` or `.`, along with the key `__type` key, are reserved for the framework to handle additional types, so don't use those yourself. Key names must contain only numbers, letters, and underscore, and must start with a letter. Values can be anything that can be JSON-encoded.
 
@@ -32,7 +32,7 @@ The Data Browser is also a great place to test the Cloud Code validations contai
 
 ## Importing Data
 
-You may import data into your Parse app by using CSV or JSON files. To create a new class with data from a CSV or JSON file, go to the Data Browser and click the "Import" button on the left hand column.
+You may import data into your MSG app by using CSV or JSON files. To create a new class with data from a CSV or JSON file, go to the Data Browser and click the "Import" button on the left hand column.
 
 The JSON format is an array of objects in our REST format or a JSON object with a `results` that contains an array of objects. It must adhere to the [JSON standard](http://json.org/). A file containing regular objects could look like:
 
@@ -54,12 +54,12 @@ Objects in either format should contain keys and values that also satisfy the fo
 * Key names must contain only numbers, letters, and underscore, and must start with a letter.
 * No value may contain a hard newline '`\n`'.
 
-Normally, when objects are saved to Parse, they are automatically assigned a unique identifier through the `objectId` field, as well as a `createdAt` field and `updatedAt` field which represent the time that the object was created and last modified in your Parse Server. These fields can be manually set when data is imported from a JSON file. Please keep in mind the following:
+Normally, when objects are saved to MSG, they are automatically assigned a unique identifier through the `objectId` field, as well as a `createdAt` field and `updatedAt` field which represent the time that the object was created and last modified in your MSG Server. These fields can be manually set when data is imported from a JSON file. Please keep in mind the following:
 
 * Use a unique 10 character alphanumeric string as the value of your `objectId` fields.
 * Use a UTC timestamp in the ISO 8601 format when setting a value for the `createdAt` field or the `updatedAt` field.
 
-In addition to the exposed fields, objects in the Parse User class can also have the `bcryptPassword` field set. The value of this field is a `String` that is the bcrypt hashed password + salt in the modular crypt format described in this [StackOverflow answer](http://stackoverflow.com/a/5882472/1351961). Most OpenSSL based bcrypt implementations should have built-in methods to produce these strings.
+In addition to the exposed fields, objects in the MSG User class can also have the `bcryptPassword` field set. The value of this field is a `String` that is the bcrypt hashed password + salt in the modular crypt format described in this [StackOverflow answer](http://stackoverflow.com/a/5882472/1351961). Most OpenSSL based bcrypt implementations should have built-in methods to produce these strings.
 
 A file containing a `User` object could look like:
 
@@ -84,7 +84,7 @@ You can request an export of your data at any time from your app's Settings page
 
 ### Export Formats
 
-Each collection will be exported in the same JSON format used by our REST API and delivered in a single zipped file. Since data is stored internally as JSON, this allows us to ensure that the export closely matches how the data is saved to Parse. Other formats such as CSV cannot represent all of the data types supported by Parse without losing information. If you'd like to work with your data in CSV format, you can use any of the JSON-to-CSV converters available widely on the web.
+Each collection will be exported in the same JSON format used by our REST API and delivered in a single zipped file. Since data is stored internally as JSON, this allows us to ensure that the export closely matches how the data is saved to MSG. Other formats such as CSV cannot represent all of the data types supported by MSG without losing information. If you'd like to work with your data in CSV format, you can use any of the JSON-to-CSV converters available widely on the web.
 
 ### Offline Analysis
 

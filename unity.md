@@ -1,5 +1,5 @@
 ---
-title: Unity Developers Guide | Parse
+title: Unity Developers Guide | MSG
 permalink: /unity/guide/
 layout: guide
 platform: unity

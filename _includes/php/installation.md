@@ -1,7 +1,7 @@
 # Installation
 
 There are various ways to install and use this sdk. We'll elaborate on a couple here.
-Note that the Parse PHP SDK requires PHP 5.4 or newer. It can also run on HHVM (recommended 3.0 or newer).
+Note that the MSG PHP SDK requires PHP 5.4 or newer. It can also run on HHVM (recommended 3.0 or newer).
 
 ## Install with Composer
 
@@ -31,7 +31,7 @@ You can clone down this sdk using your favorite github client, or via the termin
 git clone https://github.com/parse-community/parse-php-sdk.git
 ```
 
-You can then include the `autoload.php` file in your code to automatically load the Parse SDK classes.
+You can then include the `autoload.php` file in your code to automatically load the MSG SDK classes.
 
 ```php
 require 'autoload.php';

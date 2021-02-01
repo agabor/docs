@@ -1,20 +1,20 @@
 # Push Notifications
 
-Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of Parse to send push notifications.
+Push Notifications are a great way to keep your users engaged and informed about your app. You can reach your entire user base quickly and effectively. This guide will help you through the setup process and the general usage of MSG to send push notifications.
 
 If you haven't installed the SDK yet, please [head over to the Push QuickStart]({{ site.baseUrl }}/parse-server/guide/#push-notifications-quick-start) to get our SDK up and running.
 
-Please note that client push is not available with Parse Server due to it being a significant security risk, it is recommended that to trigger push notifications from your iOS app you run a cloud function that sends the push using the `masterKey`. If you must use client push, you could fork Parse Server and enable it or alternatively [Back4App](https://www.back4app.com) offer it as an option for testing purposes only.
+Please note that client push is not available with MSG Server due to it being a significant security risk, it is recommended that to trigger push notifications from your iOS app you run a cloud function that sends the push using the `masterKey`. If you must use client push, you could fork MSG Server and enable it or alternatively [Back4App](https://www.back4app.com) offer it as an option for testing purposes only.
 
 ## Setting Up Push
 
-If you want to start using push, start by completing the [Push Notifications QuickStart]({{ site.baseUrl }}/parse-server/guide/#push-notifications-quick-start) to learn how to configure your app. Come back to this guide afterwards to learn more about the push features offered by Parse.
+If you want to start using push, start by completing the [Push Notifications QuickStart]({{ site.baseUrl }}/parse-server/guide/#push-notifications-quick-start) to learn how to configure your app. Come back to this guide afterwards to learn more about the push features offered by MSG.
 
 ## Installations
 
-Every Parse application installed on a device registered for push notifications has an associated PFInstallation object. The PFInstallation object is where you store all the data needed to target push notifications. For example, in a baseball app, you could store the teams a user is interested in to send updates about their performance. Saving the PFInstallation object is also required for tracking push-related app open events.
+Every MSG application installed on a device registered for push notifications has an associated PFInstallation object. The PFInstallation object is where you store all the data needed to target push notifications. For example, in a baseball app, you could store the teams a user is interested in to send updates about their performance. Saving the PFInstallation object is also required for tracking push-related app open events.
 
-In iOS or OS X, `Installation` objects are available through the `PFInstallation` class, a subclass of `PFObject`. It uses the [same API](#objects) for storing and retrieving data. To access the current `Installation` object from your app, use the `[PFInstallation currentInstallation]` method. The first time you save a `PFInstallation`, Parse will add it to your `Installation` class, and it will be available for targeting push notifications as long as its `deviceToken` field is set.
+In iOS or OS X, `Installation` objects are available through the `PFInstallation` class, a subclass of `PFObject`. It uses the [same API](#objects) for storing and retrieving data. To access the current `Installation` object from your app, use the `[PFInstallation currentInstallation]` method. The first time you save a `PFInstallation`, MSG will add it to your `Installation` class, and it will be available for targeting push notifications as long as its `deviceToken` field is set.
 
 First, make your app register for remote notifications by adding the following in your `application:didFinishLaunchingWithOptions:` method (if you haven't already):
 
@@ -39,7 +39,7 @@ We will then update our `PFInstallation` with the `deviceToken` once the device 
 <div class="language-toggle" markdown="1">
 ```objective_c
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  // Store the deviceToken in the current Installation and save it to Parse
+  // Store the deviceToken in the current Installation and save it to MSG
   PFInstallation *currentInstallation = [PFInstallation currentInstallation];
   [currentInstallation setDeviceTokenFromData:deviceToken];
   [currentInstallation saveInBackground];
@@ -47,7 +47,7 @@ We will then update our `PFInstallation` with the `deviceToken` once the device 
 ```
 ```swift
 func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-  // Store the deviceToken in the current Installation and save it to Parse
+  // Store the deviceToken in the current Installation and save it to MSG
   let installation = PFInstallation.currentInstallation()
   installation.setDeviceTokenFromData(deviceToken)
   installation.saveInBackground()
@@ -59,27 +59,27 @@ While it is possible to modify a `PFInstallation` just like you would a `PFObjec
 
 *   **`channels`**: An array of the channels to which a device is currently subscribed.
 *   **`badge`**: The current value of the icon badge for iOS/OS X apps. Changing this value on the `PFInstallation` will update the badge value on the app icon. Changes should be saved to the server so that they will be used for future badge-increment push notifications.
-*   **`installationId`**: Unique Id for the device used by Parse _(readonly)_.
+*   **`installationId`**: Unique Id for the device used by MSG _(readonly)_.
 *   **`deviceType`**: The type of device, "ios", "tvos", "osx", "android", "winrt", "winphone", "dotnet", or "embedded". On iOS, tvOS and OS X devices, this field will be set to "ios", "tvos" and "osx", respectively _(readonly)_.
 *   **`deviceToken`**: The Apple generated token used for iOS/OS X devices. On Android devices, this is the token used by FCM to keep track of registration ID _(readonly)_.
 *   **`appName`**: The display name of the client application to which this installation belongs. In iOS/OS X, this value is obtained from `kCFBundleNameKey`. This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
 *   **`appVersion`**: The version string of the client application to which this installation belongs. In iOS/OS X, this value is obtained from `kCFBundleVersionKey`. This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
 *   **`appIdentifier`**: A unique identifier for this installation's client application. In iOS/OS X, this value is obtained from `kCFBundleIdentifierKey`. This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
-*   **`parseVersion`**: The version of the Parse SDK which this installation uses. This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
+*   **`parseVersion`**: The version of the MSG SDK which this installation uses. This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
 *   **`timeZone`**: The current time zone where the target device is located. This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
 *   **`localeIdentifier`**: The locale identifier of the device in the format [language code]-[COUNTRY CODE]. The language codes are two-letter lowercase ISO language codes (such as "en") as defined by [ISO 639-1](http://en.wikipedia.org/wiki/ISO_639-1). The country codes are two-letter uppercase ISO country codes (such as "US") as defined by [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3). This value is synchronized every time a `PFInstallation` object is saved from the device _(readonly)_.
-*   **`pushType`**: This field is reserved for directing Parse to the push delivery network to be used for Android devices. This parameter is not supported in iOS/OS X devices _(readonly)_.
+*   **`pushType`**: This field is reserved for directing MSG to the push delivery network to be used for Android devices. This parameter is not supported in iOS/OS X devices _(readonly)_.
 *   **`channelUris`**: The Microsoft-generated push URIs for Windows devices _(readonly)_.
 
-The Parse SDK will avoid making unnecessary requests. If a `PFInstallation` is saved on the device, a request to the Parse servers will only be made if one of the `PFInstallation`'s fields has been explicitly updated.
+The MSG SDK will avoid making unnecessary requests. If a `PFInstallation` is saved on the device, a request to the MSG servers will only be made if one of the `PFInstallation`'s fields has been explicitly updated.
 
 ## Sending Pushes
 
-There are two ways to send push notifications using Parse: [channels](#using-channels) and [advanced targeting](#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
+There are two ways to send push notifications using MSG: [channels](#using-channels) and [advanced targeting](#using-advanced-targeting). Channels offer a simple and easy to use model for sending pushes, while advanced targeting offers a more powerful and flexible model. Both are fully compatible with each other and will be covered in this section.
 
-Sending notifications is often done from the Parse Dashboard push console, the [REST API]({{ site.baseUrl }}/rest/guide/#sending-pushes) or from [Cloud Code]({{ site.baseUrl }}/js/guide/#sending-pushes).
+Sending notifications is often done from the MSG Dashboard push console, the [REST API]({{ site.baseUrl }}/rest/guide/#sending-pushes) or from [Cloud Code]({{ site.baseUrl }}/js/guide/#sending-pushes).
 
-You can view your past push notifications on the Parse Dashboard push console for up to 30 days after creating your push. For pushes scheduled in the future, you can delete the push on the push console as long as no sends have happened yet. After you send the push, the push console shows push analytics graphs.
+You can view your past push notifications on the MSG Dashboard push console for up to 30 days after creating your push. For pushes scheduled in the future, you can delete the push on the push console as long as no sends have happened yet. After you send the push, the push console shows push analytics graphs.
 
 ### Using Channels
 
@@ -141,13 +141,13 @@ If you plan on changing your channels from Cloud Code or the data browser, note 
 
 ### Using Advanced Targeting
 
-While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. Parse allows you to write a query for any subset of your `Installation` objects using the [querying API](#queries) and to send them a push.
+While channels are great for many applications, sometimes you need more precision when targeting the recipients of your pushes. MSG allows you to write a query for any subset of your `Installation` objects using the [querying API](#queries) and to send them a push.
 
 Since `PFInstallation` is a subclass of `PFObject`, you can save any data you want and even create relationships between `Installation` objects and your other objects. This allows you to send pushes to a very customized and dynamic segment of your user base.
 
 #### Saving Installation Data
 
-Storing data on an `Installation` object is just as easy as storing [any other data](#objects) on Parse. In our Baseball app, we could allow users to get pushes about game results, scores and injury reports.
+Storing data on an `Installation` object is just as easy as storing [any other data](#objects) on MSG. In our Baseball app, we could allow users to get pushes about game results, scores and injury reports.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -168,7 +168,7 @@ installation.saveInBackground()
 ```
 </div>
 
-You can even create relationships between your `Installation` objects and other classes saved on Parse. To associate a PFInstallation with a particular user, for example, you can simply store the current user on the `PFInstallation`.
+You can even create relationships between your `Installation` objects and other classes saved on MSG. To associate a PFInstallation with a particular user, for example, you can simply store the current user on the `PFInstallation`.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -291,7 +291,7 @@ You can read more about handling push notifications in Apple's [Local and Push N
 
 ### Tracking Pushes and App Opens
 
-To track your users' engagement over time and the effect of push notifications, we provide some hooks in the `PFAnalytics` class. You can view the open rate for a specific push notification on the Parse Dashboard push console. You can also view overall app open and push open graphs are on the Parse analytics console.  Our analytics graphs are rendered in real time, so you can easily verify that your application is sending the correct analytics events before your next release.
+To track your users' engagement over time and the effect of push notifications, we provide some hooks in the `PFAnalytics` class. You can view the open rate for a specific push notification on the MSG Dashboard push console. You can also view overall app open and push open graphs are on the MSG analytics console.  Our analytics graphs are rendered in real time, so you can easily verify that your application is sending the correct analytics events before your next release.
 
 This section assumes that you've already set up your application to [save the Installation object](#installations). Push open tracking only works when your application's devices are associated with saved `Installation` objects.
 
@@ -376,13 +376,13 @@ If your OS X application supports receiving push notifications and you'd like to
 <div class="language-toggle" markdown="1">
 ```objective_c
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-  // ... other Parse setup logic here
+  // ... other MSG setup logic here
   [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:[notification userInfo]];
 }
 ```
 ```swift
 func applicationDidFinishLaunching(notification: NSNotification) {
-  // ... other Parse setup logic here
+  // ... other MSG setup logic here
   PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(notification.userInfo)
 }
 ```
@@ -429,7 +429,7 @@ You can A/B test your push notifications to figure out the best way to keep your
 
 Our web push console guides you through every step of setting up an A/B test.
 
-For each push campaign sent through the Parse web push console, you can allocate a subset of your devices to be in the experiment's test audience, which Parse will automatically split into two equally-sized experiment groups. For each experiment group, you can specify a different push message. The remaining devices will be saved so that you can send the winning message to them later. Parse will randomly assign devices to each group to minimize the chance for a test to affect another test's results (although we still don't recommend running multiple A/B tests over the same devices on the same day).
+For each push campaign sent through the MSG web push console, you can allocate a subset of your devices to be in the experiment's test audience, which MSG will automatically split into two equally-sized experiment groups. For each experiment group, you can specify a different push message. The remaining devices will be saved so that you can send the winning message to them later. MSG will randomly assign devices to each group to minimize the chance for a test to affect another test's results (although we still don't recommend running multiple A/B tests over the same devices on the same day).
 
 <img alt="Enabling experiments" data-echo="{{ '/assets/images/experiment_enable.png' | prepend: site.baseurl }}"/>
 
@@ -441,7 +441,7 @@ If you are happy with the way one message performed, you can send that to the re
 
 <img alt="Launching push experiment" data-echo="{{ '/assets/images/experiment_launch.png' | prepend: site.baseurl }}"/>
 
-Push experiments are supported on all recent Parse SDKs (iOS v1.2.13+, OS X v1.7.5+, Android v1.4.0+, .NET v1.2.7+). Before running experiments, you must instrument your app with [push open tracking](#tracking-pushes-and-app-opens).
+Push experiments are supported on all recent MSG SDKs (iOS v1.2.13+, OS X v1.7.5+, Android v1.4.0+, .NET v1.2.7+). Before running experiments, you must instrument your app with [push open tracking](#tracking-pushes-and-app-opens).
 
 ### Experiment Statistics
 
@@ -459,13 +459,13 @@ Just after a push send, when only a small number of users have opened their push
 
 ## Push Localization
 
-Localizing your app's content is a proven way to drive greater engagement. We've made it easy to localize your push messages with Push Localization. The latest version of the Parse iOS SDK will detect and store the user's language in the installation object, and via the web push console you’ll be able to send localized push messages to your users in a single broadcast.
+Localizing your app's content is a proven way to drive greater engagement. We've made it easy to localize your push messages with Push Localization. The latest version of the MSG iOS SDK will detect and store the user's language in the installation object, and via the web push console you’ll be able to send localized push messages to your users in a single broadcast.
 
 ### Setup for localized push
 
-To take advantage of  Push Localization you will need to make sure you've published your app with the Parse iOS SDK version 1.8.1 or greater. Any users of your application running the Parse iOS SDK version 1.8.1 or greater will then be targetable by Push Localization via the web push console.
+To take advantage of  Push Localization you will need to make sure you've published your app with the MSG iOS SDK version 1.8.1 or greater. Any users of your application running the MSG iOS SDK version 1.8.1 or greater will then be targetable by Push Localization via the web push console.
 
-It's important to note that for developers who have users running apps with versions of the Parse iOS SDK earlier than 1.8.1 that targeting information for Localized Push will not be available and these users will receive the default message from the push console.
+It's important to note that for developers who have users running apps with versions of the MSG iOS SDK earlier than 1.8.1 that targeting information for Localized Push will not be available and these users will receive the default message from the push console.
 
 ### Sending a localized push
 
@@ -486,7 +486,7 @@ If you're unsure about the answer to any of the above questions, read on!
 
 ### Confirm that the push campaign was created
 
-Having everything set up correctly in your Parse app won't help if your request to send a push notification does not reach Parse. The first step in debugging a push issue is to confirm that the push campaign is listed in your push logs. You can find these logs by visiting your app's Dashboard and clicking on Push.
+Having everything set up correctly in your MSG app won't help if your request to send a push notification does not reach MSG. The first step in debugging a push issue is to confirm that the push campaign is listed in your push logs. You can find these logs by visiting your app's Dashboard and clicking on Push.
 
 If the push notification campaign is not showing up on that list, the issue is quite simple to resolve. Go back to your push notification sending code and make sure to check for any error responses.
 
@@ -550,11 +550,11 @@ If everything compiles and runs with no errors, but you are still not receiving 
 * Check that the device token registration call is being called successfully when the user opts in to push notifications. Your device must successfully register an Installation object with a valid device token.
 * Make sure that your app has been given permission to receive notifications. You can verify this in your iOS device's `Settings > Notification > YourAppName`.
 * If your app has been granted permission to receive push notifications, make sure that you are code signing your app with the correct provisioning profile.
-* If you have uploaded a Development Push Notification Certificate to Parse, you will only receive push notifications if you built your app with a Development Provisioning Profile.
+* If you have uploaded a Development Push Notification Certificate to MSG, you will only receive push notifications if you built your app with a Development Provisioning Profile.
 * If you have uploaded a Production Push Notification Certificate, you should sign your app with a Distribution Provisioning Profile. Ad Hoc and App Store Distribution Provisioning Profiles should both work when your app is configured with a Production Push Notification Certificate.
-* Make sure that all of the push certificates that you've uploaded to Parse are valid. Check and see if there are any expired push certificates that may be preventing your push from being delivered to all your recipients successfully.
+* Make sure that all of the push certificates that you've uploaded to MSG are valid. Check and see if there are any expired push certificates that may be preventing your push from being delivered to all your recipients successfully.
 
-If your app has been released for a while, it is expected that a percentage of your user base will have opted out of push notifications from your app or uninstalled your app from their device. Parse does not automatically delete installation objects in either of these cases. When a push campaign is sent out, Parse will detect uninstalled installations and exclude them from the total count of push notifications sent. The recipient estimate on the push composer is based on the estimated number of installations that match your campaign's targeting criteria. With that in mind, it is possible for the recipient estimate to be higher than the number of push notifications that is sent as reported by the push campaign status page.
+If your app has been released for a while, it is expected that a percentage of your user base will have opted out of push notifications from your app or uninstalled your app from their device. MSG does not automatically delete installation objects in either of these cases. When a push campaign is sent out, MSG will detect uninstalled installations and exclude them from the total count of push notifications sent. The recipient estimate on the push composer is based on the estimated number of installations that match your campaign's targeting criteria. With that in mind, it is possible for the recipient estimate to be higher than the number of push notifications that is sent as reported by the push campaign status page.
 
 ### Handling Push Notifications
 

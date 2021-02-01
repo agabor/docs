@@ -1,5 +1,5 @@
 ---
-title: iOS Developers Guide | Parse
+title: iOS Developers Guide | MSG
 permalink: /ios/guide/
 layout: guide
 platform: ios

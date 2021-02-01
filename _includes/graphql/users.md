@@ -1,6 +1,6 @@
 # Users
 
-In general, users have the same features as other objects. The differences are that user objects must have a username and password, the password is automatically encrypted and stored securely, and Parse Server enforces the uniqueness of the username and email fields.
+In general, users have the same features as other objects. The differences are that user objects must have a username and password, the password is automatically encrypted and stored securely, and MSG Server enforces the uniqueness of the username and email fields.
 
 Therefore you can manage users objects using the `createUser`, `user`, `users`, `updateUser`, and `deleteUser` operations. Additionally, you can use the `signUp`, `logIn`, and `logOut` operations.
 
@@ -8,7 +8,7 @@ Therefore you can manage users objects using the `createUser`, `user`, `users`, 
 
 Signing up a new user differs from creating another object in that the `username` and `password` fields are required. The `password` field is handled differently than the others; it is encrypted with bcrypt when stored in the database and never returned to any client request.
 
-You can ask Parse Server to [verify user email addresses]({{ site.baseUrl }}/parse-server/guide/#welcome-emails-and-email-verification) in your application settings. With this setting enabled, all new user registrations with an email field will generate an email confirmation at that address. You can check whether the user has verified their email with the `emailVerified` field.
+You can ask MSG Server to [verify user email addresses]({{ site.baseUrl }}/parse-server/guide/#welcome-emails-and-email-verification) in your application settings. With this setting enabled, all new user registrations with an email field will generate an email confirmation at that address. You can check whether the user has verified their email with the `emailVerified` field.
 
 To sign up a new user, use the `signUp` mutation. For example:
 
@@ -102,7 +102,7 @@ mutation logIn {
 }
 ```
 
-Note that, when the user logs in, Parse Server generates a new `sessionToken` for future operations.
+Note that, when the user logs in, MSG Server generates a new `sessionToken` for future operations.
 
 ## 3rd Party Authentication
 
@@ -245,7 +245,7 @@ mutation logOut {
 
 ## Resetting Passwords
 
-To use the `resetPassword` mutation your Parse Server must have an email adapter configured.
+To use the `resetPassword` mutation your MSG Server must have an email adapter configured.
 
 ```js
 // Header

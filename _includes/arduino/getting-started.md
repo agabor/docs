@@ -7,13 +7,13 @@
 
 If you haven't installed the SDK yet, please [head over to the Arduino SDK repository](https://github.com/parse-community/Parse-SDK-Arduino) to install the SDK in the Arduino IDE. Note that this SDK requires the Arduino Yún and the Arduino IDE v1.6.0+.
 
-The Parse platform provides a complete backend solution for your hardware device. Our goal is to totally eliminate the need for writing server code or maintaining servers.
+The MSG platform provides a complete backend solution for your hardware device. Our goal is to totally eliminate the need for writing server code or maintaining servers.
 
-Note that the Arduino SDK only contains a subset of Parse features found in mobile and desktop. This allows the SDK to be smaller in size and more performant, making it suitable for constrained embedded environments. The Arduino SDK is fully open source, and anyone can contribute to make it better, or make their own changes if necessary. Check out the [GitHub repository](https://github.com/parse-community/parse-embedded-sdks) for more information.
+Note that the Arduino SDK only contains a subset of MSG features found in mobile and desktop. This allows the SDK to be smaller in size and more performant, making it suitable for constrained embedded environments. The Arduino SDK is fully open source, and anyone can contribute to make it better, or make their own changes if necessary. Check out the [GitHub repository](https://github.com/parse-community/parse-embedded-sdks) for more information.
 
 ## Initialization
 
-In order for Parse to know which app is associated with the Arduino device, simply specify the application ID and client key in your `setup` function:
+In order for MSG to know which app is associated with the Arduino device, simply specify the application ID and client key in your `setup` function:
 
 ```cpp
 void setup() {
@@ -22,9 +22,9 @@ void setup() {
 }
 ```
 
-After this, all calls to the Parse Server will use the specified app.
+After this, all calls to the MSG Server will use the specified app.
 
-In order for the Arduino device to know where the Parse server is located, specify the URL in your `setup` function:
+In order for the Arduino device to know where the MSG server is located, specify the URL in your `setup` function:
 
 ```cpp
 void setup() {
@@ -34,7 +34,7 @@ void setup() {
 }
 ```
 
-When the Arduino attempts to connect to the Parse server, it will need to know whether or not to connect using SSL.  It is recommended to use SSL whenever possible.
+When the Arduino attempts to connect to the MSG server, it will need to know whether or not to connect using SSL.  It is recommended to use SSL whenever possible.
 
 Option 1: SSL
 
@@ -51,7 +51,7 @@ void setup() {
 
 Option 2: Insecure
 
-The Arduino can connect to Parse over an insecure connection if desired, but must be specified in your setup function:
+The Arduino can connect to MSG over an insecure connection if desired, but must be specified in your setup function:
 
 ```cpp
 void setup() {
@@ -62,4 +62,4 @@ void setup() {
 }
 ```
 
-Parse is now initialized and ready to make calls to the Parse server.
+Parse is now initialized and ready to make calls to the MSG server.

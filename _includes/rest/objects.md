@@ -2,7 +2,7 @@
 
 ## Object Format
 
-Storing data through the Parse REST API is built around a JSON encoding of the object's data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each object. You simply set whatever key-value pairs you want, and the backend will store it.
+Storing data through the MSG REST API is built around a JSON encoding of the object's data. This data is schemaless, which means that you don't need to specify ahead of time what keys exist on each object. You simply set whatever key-value pairs you want, and the backend will store it.
 
 For example, let's say you're tracking high scores for a game. A single object could contain:
 
@@ -18,7 +18,7 @@ Keys must be alphanumeric strings. Values can be anything that can be JSON-encod
 
 Each object has a class name that you can use to distinguish different sorts of data. For example, we could call the high score object a `GameScore`. We recommend that you NameYourClassesLikeThis and nameYourKeysLikeThis, just to keep your code looking pretty.
 
-When you retrieve objects from Parse, some fields are automatically added: `createdAt`, `updatedAt`, and `objectId`. These field names are reserved, so you cannot set them yourself. The object above could look like this when retrieved:
+When you retrieve objects from MSG, some fields are automatically added: `createdAt`, `updatedAt`, and `objectId`. These field names are reserved, so you cannot set them yourself. The object above could look like this when retrieved:
 
 ```json
 {
@@ -54,7 +54,7 @@ The operations specific to a single object are available as a nested URL. For ex
 
 ## Creating Objects
 
-To create a new object on Parse, send a POST request to the class URL containing the contents of the object. For example, to create the object described above:
+To create a new object on MSG, send a POST request to the class URL containing the contents of the object. For example, to create the object described above:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -233,7 +233,7 @@ The response body is a JSON object containing just an `updatedAt` field with the
 
 ### Counters
 
-To help with storing counter-type data, Parse provides the ability to atomically increment (or decrement) any number field. So, we can increment the score field like so:
+To help with storing counter-type data, MSG provides the ability to atomically increment (or decrement) any number field. So, we can increment the score field like so:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -336,7 +336,7 @@ print result
 
 ### Relations
 
- In order to update `Relation` types, Parse provides special operators to atomically add and remove objects to a relation.  So, we can add an object to a relation like so:
+ In order to update `Relation` types, MSG provides special operators to atomically add and remove objects to a relation.  So, we can add an object to a relation like so:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -410,7 +410,7 @@ print result
 
 ## Deleting Objects
 
-To delete an object from the Parse Cloud, send a DELETE request to its object URL. For example:
+To delete an object from the MSG Cloud, send a DELETE request to its object URL. For example:
 
 <div class="language-toggle">
 <pre><code class="bash">
@@ -607,7 +607,7 @@ Note that N requests sent in a batch will still count toward your request limit 
 
 ## Data Types
 
-So far we have only used values that can be encoded with standard JSON. The Parse mobile client libraries also support dates, geolocations, and relational data. In the REST API, these values are encoded as JSON hashes with the `__type` field set to indicate their type, so you can read or write these fields if you use the correct encoding. Overall, the following types are allowed for each field in your object:
+So far we have only used values that can be encoded with standard JSON. The MSG mobile client libraries also support dates, geolocations, and relational data. In the REST API, these values are encoded as JSON hashes with the `__type` field set to indicate their type, so you can read or write these fields if you use the correct encoding. Overall, the following types are allowed for each field in your object:
 
 * String
 * Number
@@ -616,8 +616,8 @@ So far we have only used values that can be encoded with standard JSON. The Pars
 * JSON Objects
 * DateTime
 * File
-* Pointer to another Parse Object
-* Relation to another Parse Class
+* Pointer to another MSG Object
+* Relation to another MSG Class
 * Null
 
 The `Date` type contains a field `iso` which contains a UTC timestamp stored in ISO 8601 format with millisecond precision: `YYYY-MM-DDTHH:MM:SS.MMMZ`.
@@ -661,7 +661,7 @@ print result
 </code></pre>
 </div>
 
-The `Pointer` type is used when mobile code sets another Parse `Object` as the value of another object. It contains the `className` and `objectId` of the referred-to value.
+The `Pointer` type is used when mobile code sets another MSG `Object` as the value of another object. It contains the `className` and `objectId` of the referred-to value.
 
 ```json
 {
@@ -684,7 +684,7 @@ The `Relation` type is used for many-to-many relations. It has a `className` tha
 
 When querying, `Relation` objects behave like arrays of Pointers. Any operation that is valid for arrays of pointers (other than `include`) works for `Relation` objects.
 
-We do not recommend storing large pieces of binary data like images or documents on a Parse object. To store more, we recommend you use `File`. You may associate a [previously uploaded file](#files) using the `File` type.
+We do not recommend storing large pieces of binary data like images or documents on a MSG object. To store more, we recommend you use `File`. You may associate a [previously uploaded file](#files) using the `File` type.
 
 ```json
 {
@@ -693,4 +693,4 @@ We do not recommend storing large pieces of binary data like images or documents
 }
 ```
 
-When more data types are added, they will also be represented as hashes with a `__type` field set, so you may not use this field yourself on JSON objects. For more information about how Parse handles data, check out our documentation on [Data](#data).
+When more data types are added, they will also be represented as hashes with a `__type` field set, so you may not use this field yourself on JSON objects. For more information about how MSG handles data, check out our documentation on [Data](#data).

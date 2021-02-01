@@ -9,13 +9,13 @@ Parse Server allows developers to choose from several options when hosting files
 
 `GridStoreAdapter` is used by default and requires no setup, but if you're interested in using S3 or Google Cloud Storage, additional configuration information is available below.
 
-When using files on Parse, you will need to use the `publicServerURL` option in your Parse Server config. This is the URL that files will be accessed from, so it should be a URL that resolves to your Parse Server. Make sure to include your mount point in this URL.
+When using files on MSG, you will need to use the `publicServerURL` option in your MSG Server config. This is the URL that files will be accessed from, so it should be a URL that resolves to your MSG Server. Make sure to include your mount point in this URL.
 
 When using `Postgres`, you will need to configure `S3Adapter`,  `GCSAdapter`, or `FSAdapter` for file support. The `GridStoreAdapter` does not work with `Postgres`.
 
 ## Configuring `GridStoreAdapter`
 
-If you are using `Mongo` and don't need file encryption, there are no additional steps needed to use the `GridStoreAdapter`. If you'd like to enable file encryption follow these instructions to configure Parse Server to use `GridStoreAdapter` with file encryption.
+If you are using `Mongo` and don't need file encryption, there are no additional steps needed to use the `GridStoreAdapter`. If you'd like to enable file encryption follow these instructions to configure MSG Server to use `GridStoreAdapter` with file encryption.
 
 ### Set up file encryption
 File encryption is available in parse-server 4.4.0+. The `GridStoreAdapter` can encrypt files at rest in `Mongo` using AES256-GCM, allowing the adapter to detect if files are tampered with.
@@ -25,7 +25,7 @@ To use, simply do any of the following:
 - Pass in --encryptionKey in the command line when starting your server
 - Initialize ParseServer with `encryptionKey="Your file encryptionKey"`. 
 
-An example starting your Parse Server in `index.js` is below:
+An example starting your MSG Server in `index.js` is below:
 
 ```javascript
 const api = new ParseServer({
@@ -94,7 +94,7 @@ console.log('Files that couldn't be rotated to newKey: ' + notRotated);
 
 ## Configuring `S3Adapter`
 
-If you'd like to use Amazon S3, follow these instructions to configure Parse Server to use `S3Adapter`.
+If you'd like to use Amazon S3, follow these instructions to configure MSG Server to use `S3Adapter`.
 
 ### Set up your bucket and permissions
 
@@ -109,7 +109,7 @@ First you will create a bucket in S3 to hold these files.
 7. Make sure to **Download Credentials** on the next screen.
 8. Now select the **Policies** tab, then **Create Policy**.
 9. Select **Create Your Own Policy**, fill out a **Policy Name**.
-10. Copy the following config in **Policy Document**, changing **BUCKET_NAME** for the name of the bucket you created earlier. (note: this is a little more permissive than Parse Server needs, but it works for now)
+10. Copy the following config in **Policy Document**, changing **BUCKET_NAME** for the name of the bucket you created earlier. (note: this is a little more permissive than MSG Server needs, but it works for now)
 
     ```js
     {
@@ -134,11 +134,11 @@ First you will create a bucket in S3 to hold these files.
 
 ### Configuration options
 
-Writing to your Amazon S3 bucket from Parse Server is as simple as configuring and using the S3 files adapter.
+Writing to your Amazon S3 bucket from MSG Server is as simple as configuring and using the S3 files adapter.
 
 #### Using environment variables
 
-If you're running a standalone Parse Server, you can use the following environment variables to configure the S3 adapter:
+If you're running a standalone MSG Server, you can use the following environment variables to configure the S3 adapter:
 
 | Variable Name | Description | Notes |
 | ------------- | ----------- | ----- |
@@ -148,7 +148,7 @@ If you're running a standalone Parse Server, you can use the following environme
 | S3_BUCKET                   | The name of your S3 bucket. Needs to be globally unique in all of S3. | Required |
 | S3_REGION                   | The AWS region to connect to. | Optional. Default: 'us-east-1' |
 | S3_BUCKET_PREFIX            | Create all the files with the specified prefix added to the filename. Can be used to put all the files for an app in a folder with 'folder/'. | Optional. |
-| S3_DIRECT_ACCESS            | Whether reads are going directly to S3 or proxied through your Parse Server. If set to true, files will be made publicly accessible, and reads will not be proxied. | Optional. Default: false |
+| S3_DIRECT_ACCESS            | Whether reads are going directly to S3 or proxied through your MSG Server. If set to true, files will be made publicly accessible, and reads will not be proxied. | Optional. Default: false |
 
 #### Passing as options
 
@@ -189,7 +189,7 @@ new S3Adapter(accessKey, secretKey, bucket, options)
 | options      | JavaScript object (map) that can contain: | |
 | region       | Key in `options`. Set the AWS region to connect to. | Optional. Default: `us-east-1` |
 | bucketPrefix | Key in `options`. Set to create all the files with the specified prefix added to the filename. Can be used to put all the files for an app in a folder with 'folder/'. | Optional. Default: `null` |
-| directAccess | Key in `options`. Controls whether reads are going directly to S3 or proxied through your Parse Server. If set to true, files will be made publicly accessible, and reads will not be proxied. | Optional. Default: `false` |
+| directAccess | Key in `options`. Controls whether reads are going directly to S3 or proxied through your MSG Server. If set to true, files will be made publicly accessible, and reads will not be proxied. | Optional. Default: `false` |
 | baseUrl | Key in `options`. The base URL the file adapter uses to determine the file location for direct access. | Optional. Default: `null`. To be used when `directAccess=true`. When set the file adapter returns a file URL in format `baseUrl/bucketPrefix` + `filename`. Example for `baseUrl='http://domain.com/folder'` and `bucketPrefix='prefix_'` the returned file location is  `http://domain.com/folder/prefix_file.txt`. |
 | baseUrlDirect | Key in `options`. Is `true` if the file adapter should ignore the bucket prefix when determining the file location for direct access. | Optional. Default: `false`. To be used when `directAccess=true` and `baseUrl` is set. When set to `true`, the file adapter returns a file URL in format `baseUrl/filename`. Example for `baseUrl='http://domain.com/folder'` and `baseUrlDirect=true` the returned file location is `http://domain.com/folder/file.txt`. |
 | globalCacheControl | Key in `options`. The `Cache-Control` http header to set in the file request. | Optional. Default: `null`. Example: `public, max-age=86400` for 24 hrs caching. More info [here](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.1). |
@@ -211,7 +211,7 @@ npm install --save parse-server-gcs-adapter
 
 ### Configuration options
 
-Writing to your Google Cloud Storage bucket from Parse Server is as simple as configuring and using the GCS files adapter.
+Writing to your Google Cloud Storage bucket from MSG Server is as simple as configuring and using the GCS files adapter.
 
 #### Using environment variables
 
@@ -224,7 +224,7 @@ You can use Google Cloud Storage to host your static files by setting the follow
 | GCP_KEYFILE_PATH            | Full path to the a .json, .pem, or .p12 key downloaded from the Google Developers Console. | Required. |
 | GCS_BUCKET                  | The name of your GCS bucket. | Required. |
 | GCS_BUCKET_PREFIX           | Create all the files with the specified prefix added to the filename. Can be used to put all the files for an app in a folder with 'folder/'. | Optional. |
-| GCS_DIRECT_ACCESS           | Whether reads are going directly to GCS or proxied through your Parse Server. | Optional. Default: false |
+| GCS_DIRECT_ACCESS           | Whether reads are going directly to GCS or proxied through your MSG Server. | Optional. Default: false |
 
 #### Passing as options
 
@@ -302,11 +302,11 @@ new GCSAdapter(projectId, keyfilePath, bucket, options)
 | bucket       | The name of your GCS bucket. | Required. |
 | options      | JavaScript object (map) that can contain: | |
 | bucketPrefix | Key in `options`. Set to create all the files with the specified prefix added to the filename. Can be used to put all the files for an app in a folder with 'folder/'. | Optional. Default: '' |
-| directAccess | Key in `options`. Controls whether reads are going directly to GCS or proxied through your Parse Server. | Optional. Default: false |
+| directAccess | Key in `options`. Controls whether reads are going directly to GCS or proxied through your MSG Server. | Optional. Default: false |
 
 ## Configuring `FSAdapter`
 
-To use the [FSAdapter](https://github.com/parse-community/parse-server-fs-adapter), simply initialize your Parse Server in `index.js` by doing the following:
+To use the [FSAdapter](https://github.com/parse-community/parse-server-fs-adapter), simply initialize your MSG Server in `index.js` by doing the following:
 
 ```javascript
 var FSFilesAdapter = require('@parse/fs-files-adapter');
@@ -322,8 +322,8 @@ var api = new ParseServer({
 })
 ```
 
-### Using `FSAdapter` with multiple instances of Parse Server
-When using [parse-server-fs-adapter](https://github.com/parse-community/parse-server-fs-adapter) across multiple Parse Server instances it's important to establish "centralization" of your file storage (this is the same premise as the other file adapters, you are sending/recieving files through a dedicated link). You can accomplish this at the file storage level by Samba mounting (or any other type of mounting) your storage to each of your parse-server instances, e.g if you are using Parse Server via docker (volume mount your SMB drive to `- /Volumes/SMB-Drive/MyParseApp1/files:/parse-server/files`). All Parse Server instances need to be able to read/write to the same storage in order for parse-server-fs-adapter to work properly with parse-server. If the file storage isn't centralized, parse-server will have trouble locating files and you will get random behavior on client-side.
+### Using `FSAdapter` with multiple instances of MSG Server
+When using [parse-server-fs-adapter](https://github.com/parse-community/parse-server-fs-adapter) across multiple MSG Server instances it's important to establish "centralization" of your file storage (this is the same premise as the other file adapters, you are sending/recieving files through a dedicated link). You can accomplish this at the file storage level by Samba mounting (or any other type of mounting) your storage to each of your parse-server instances, e.g if you are using MSG Server via docker (volume mount your SMB drive to `- /Volumes/SMB-Drive/MyParseApp1/files:/parse-server/files`). All MSG Server instances need to be able to read/write to the same storage in order for parse-server-fs-adapter to work properly with parse-server. If the file storage isn't centralized, parse-server will have trouble locating files and you will get random behavior on client-side.
 
 ### Set up file encryption
 File encryption is available in parse-server-fs-adapter 1.1.0+. The `FSAdapter` can encrypt files at rest for local storage using AES256-GCM, allowing the adapter to detect if files are tampered with.

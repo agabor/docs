@@ -1,5 +1,5 @@
 ---
-title: JavaScript Developers Guide | Parse
+title: JavaScript Developers Guide | MSG
 permalink: /js/guide/
 layout: guide
 platform: js

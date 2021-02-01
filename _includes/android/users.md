@@ -41,7 +41,7 @@ user.signUpInBackground(new SignUpCallback() {
 });
 ```
 
-This call will asynchronously create a new user in your Parse App. Before it does this, it checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
+This call will asynchronously create a new user in your MSG App. Before it does this, it checks to make sure that both the username and email are unique. Also, it securely hashes the password in the cloud using bcrypt. We never store passwords in plaintext, nor will we ever transmit passwords back to the client in plaintext.
 
 Note that we used the `signUpInBackground` method, not the `saveInBackground` method. New `ParseUser`s should always be created using the `signUpInBackground` (or `signUp`) method. Subsequent updates to a user can be done by calling `save`.
 
@@ -69,11 +69,11 @@ ParseUser.logInInBackground("Jerry", "showmethemoney", new LogInCallback() {
 
 ## Verifying Emails
 
-Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `ParseUser` object. When a `ParseUser`'s `email` is set or modified, `emailVerified` is set to `false`. Parse then emails the user a link which will set `emailVerified` to `true`.
+Enabling email verification in an application's settings allows the application to reserve part of its experience for users with confirmed email addresses. Email verification adds the `emailVerified` key to the `ParseUser` object. When a `ParseUser`'s `email` is set or modified, `emailVerified` is set to `false`. MSG then emails the user a link which will set `emailVerified` to `true`.
 
 There are three `emailVerified` states to consider:
 
-1.  `true` - the user confirmed his or her email address by clicking on the link Parse emailed them. `ParseUsers` can never have a `true` value when the user account is first created.
+1.  `true` - the user confirmed his or her email address by clicking on the link MSG emailed them. `ParseUsers` can never have a `true` value when the user account is first created.
 2.  `false` - at the time the `ParseUser` object was last fetched, the user had not confirmed his or her email address. If `emailVerified` is `false`, consider calling `fetch()` on the `ParseUser`.
 3.  _missing_ - the `ParseUser` was created when email verification was off or the `ParseUser` does not have an `email`.
 
@@ -230,7 +230,7 @@ To help ensure that your users' data is secure by default, you can set a default
 ParseACL.setDefaultACL(defaultACL, true);
 ```
 
-In the code above, the second parameter to setDefaultACL tells Parse to ensure that the default ACL assigned at the time of object creation allows read and write access to the current user at that time.  Without this setting, you would need to reset the defaultACL every time a user logs in or out so that the current user would be granted access appropriately.  With this setting, you can ignore changes to the current user until you explicitly need to grant different kinds of access.
+In the code above, the second parameter to setDefaultACL tells MSG to ensure that the default ACL assigned at the time of object creation allows read and write access to the current user at that time.  Without this setting, you would need to reset the defaultACL every time a user logs in or out so that the current user would be granted access appropriately.  With this setting, you can ignore changes to the current user until you explicitly need to grant different kinds of access.
 
 Default ACLs make it easy to create apps that follow common access patterns. An application like Twitter, for example, where user content is generally visible to the world, might set a default ACL such as:
 
@@ -246,7 +246,7 @@ For an application like Dropbox, where a user's data is only accessible by the u
 ParseACL.setDefaultACL(new ParseACL(), true);
 ```
 
-An application that logs data to Parse but doesn't provide any user access to that data would instead deny access to the current user while providing a restrictive ACL:
+An application that logs data to MSG but doesn't provide any user access to that data would instead deny access to the current user while providing a restrictive ACL:
 
 ```java
 ParseACL.setDefaultACL(new ParseACL(), false);
@@ -277,11 +277,11 @@ This will attempt to match the given email with the user's email or username fie
 The flow for password reset is as follows:
 
 1.  User requests that their password be reset by typing in their email.
-2.  Parse sends an email to their address, with a special password reset link.
-3.  User clicks on the reset link, and is directed to a special Parse page that will allow them type in a new password.
+2.  MSG sends an email to their address, with a special password reset link.
+3.  User clicks on the reset link, and is directed to a special MSG page that will allow them type in a new password.
 4.  User types in a new password. Their password has now been reset to a value they specify.
 
-Note that the messaging in this flow will reference your app by the name that you specified when you created this app on Parse.
+Note that the messaging in this flow will reference your app by the name that you specified when you created this app on MSG.
 
 ## Querying
 
@@ -327,19 +327,19 @@ query.findInBackground(new FindCallback<ParseObject>() { ... });
 
 Parse provides an easy way to integrate Facebook with your application. The Facebook SDK can be used with our SDK, and is integrated with the `ParseUser` class to make linking your users to their Facebook identities easy.
 
-Using our Facebook integration, you can associate an authenticated Facebook user with a `ParseUser`. With just a few lines of code, you'll be able to provide a "Log in with Facebook" option in your app, and be able to save their data to Parse.
+Using our Facebook integration, you can associate an authenticated Facebook user with a `ParseUser`. With just a few lines of code, you'll be able to provide a "Log in with Facebook" option in your app, and be able to save their data to MSG.
 
-**Note:** Parse is compatible with both Facebook SDK 3.x and 4.x for Android. These instructions are for Facebook SDK 4.x.
+**Note:** MSG is compatible with both Facebook SDK 3.x and 4.x for Android. These instructions are for Facebook SDK 4.x.
 
 ### Setting up Facebook
 
-To start using Facebook with Parse, you need to:
+To start using Facebook with MSG, you need to:
 
 1.  [Set up a Facebook app](https://developers.facebook.com/apps), if you haven't already.
-2.  Add your application's Facebook Application ID on your Parse application's settings page.
-3.  Follow Facebook's instructions for [getting started with the Facebook SDK](https://developers.facebook.com/docs/android/getting-started) to create an app linked to the Facebook SDK.  Once you get to Step 6, stop after linking the Facebook SDK project and configuring the Facebook app ID. You can use our guide to attach your Parse users to Facebook accounts when logging in.
+2.  Add your application's Facebook Application ID on your MSG application's settings page.
+3.  Follow Facebook's instructions for [getting started with the Facebook SDK](https://developers.facebook.com/docs/android/getting-started) to create an app linked to the Facebook SDK.  Once you get to Step 6, stop after linking the Facebook SDK project and configuring the Facebook app ID. You can use our guide to attach your MSG users to Facebook accounts when logging in.
 4.  Add `'com.github.parse-community:ParseFacebookUtils-Android:latest.version.here'` to your Gradle dependencies (X.X.X should be [![](https://jitpack.io/v/parse-community/Parse-SDK-Android.svg)](https://jitpack.io/#parse-community/Parse-SDK-Android))
-5.  Add the following where you initialize the Parse SDK in your `Application.onCreate()`:
+5.  Add the following where you initialize the MSG SDK in your `Application.onCreate()`:
 
   ```java
   ParseFacebookUtils.initialize(context);
@@ -359,7 +359,7 @@ If your `Activity` is already using `onActivityResult()`, you can avoid `request
 
 If you encounter any issues that are Facebook-related, a good resource is the [official Facebook SDK for Android page](https://developers.facebook.com/android/).
 
-There are two main ways to use Facebook with your Parse users: (1) logging in as a Facebook user and creating a `ParseUser`, or (2) linking Facebook to an existing `ParseUser`.
+There are two main ways to use Facebook with your MSG users: (1) logging in as a Facebook user and creating a `ParseUser`, or (2) linking Facebook to an existing `ParseUser`.
 
 <div class='tip info'><div>
   It is up to you to record any data that you need from the Facebook user after they authenticate. To accomplish this, you'll need to do a graph query using the Facebook SDK.
@@ -434,7 +434,7 @@ As of v3.0 of the Facebook SDK, read and publish permissions must be requested s
 
 After successfully retrieving new permissions, please call `ParseFacebookUtilities.linkInBackground(ParseUser, AccessToken)`, which will save any changes to the session token back to the `ParseUser` and ensure that this session data follows the user wherever it logs in.
 
-### Facebook SDK and Parse
+### Facebook SDK and MSG
 
 The Facebook Android SDK provides a number of helper classes for interacting with Facebook's API. Generally, you will use the `GraphRequest` class to interact with Facebook on behalf of your logged-in user. [You can read more about the Facebook SDK here](https://developers.facebook.com/docs/reference/android/current).
 
@@ -443,17 +443,17 @@ To access the user's `AccessToken` you can simply call `AccessToken.getCurrentAc
 
 ## Twitter Users
 
-As with Facebook, Parse also provides an easy way to integrate Twitter authentication into your application. The Parse SDK provides a straightforward way to authorize and link a Twitter account to your `ParseUser`s. With just a few lines of code, you'll be able to provide a "log in with Twitter" option in your app, and be able to save their data to Parse.
+As with Facebook, MSG also provides an easy way to integrate Twitter authentication into your application. The MSG SDK provides a straightforward way to authorize and link a Twitter account to your `ParseUser`s. With just a few lines of code, you'll be able to provide a "log in with Twitter" option in your app, and be able to save their data to MSG.
 
 ### Setting up Twitter
 
-To start using Twitter with Parse, you need to:
+To start using Twitter with MSG, you need to:
 
 1.  [Set up a Twitter app](https://dev.twitter.com/apps), if you haven't already.
-2.  Add your application's Twitter consumer key on your Parse application's settings page.
+2.  Add your application's Twitter consumer key on your MSG application's settings page.
 3.  When asked to specify a "Callback URL" for your Twitter app, please insert `twittersdk://`. This is necessary in order to enable authentication through Twitter.
 4.  Add `'com.github.parse-community:ParseTwitterUtils-Android:latest.version.here'` to your Gradle dependencies.
-5.  Add the following where you initialize the Parse SDK in your `Application.onCreate()`
+5.  Add the following where you initialize the MSG SDK in your `Application.onCreate()`
 
 ```java
 ParseTwitterUtils.initialize("YOUR CONSUMER KEY", "YOUR CONSUMER SECRET");
@@ -461,7 +461,7 @@ ParseTwitterUtils.initialize("YOUR CONSUMER KEY", "YOUR CONSUMER SECRET");
 
 If you encounter any issues that are Twitter-related, a good resource is the [official Twitter documentation](https://dev.twitter.com/docs).
 
-There are two main ways to use Twitter with your Parse users: (1) logging in as a Twitter user and creating a `ParseUser`, or (2) linking Twitter to an existing `ParseUser`.
+There are two main ways to use Twitter with your MSG users: (1) logging in as a Twitter user and creating a `ParseUser`, or (2) linking Twitter to an existing `ParseUser`.
 
 ### Login &amp; Signup
 

@@ -1,6 +1,6 @@
 # Config
 
-`Parse.Config` is a great way to configure your applications remotely by storing a single configuration object on Parse. It enables you to add things like feature gating or a simple "Message of the Day". To start using `Parse.Config` you need to add a few key/value pairs (parameters) to your app on the Parse Config Dashboard.
+`Parse.Config` is a great way to configure your applications remotely by storing a single configuration object on MSG. It enables you to add things like feature gating or a simple "Message of the Day". To start using `Parse.Config` you need to add a few key/value pairs (parameters) to your app on the MSG Config Dashboard.
 
 After that you will be able to fetch the `Parse.Config` on the client, like in this example:
 
@@ -20,7 +20,7 @@ After a successfully `.save()` it return the new updated `ParseConfig` and `Pars
 
 ```javascript
 Parse.Config.save({
-	welcomeMesssage : "Welcome to Parse",
+	welcomeMesssage : "Welcome to MSG",
 	ageOfParse : 3,
 	tags : ["parse","sdk","js"]
 }).then(function(config) {
@@ -46,7 +46,7 @@ Parse.Config.get().then(function(config) {
 }, function(error) {
   console.log("Failed to fetch. Using Cached Config.");
 
-  const config = Parse.Config.current();
+  const config = MSG.Config.current();
   let welcomeMessage = config.get("welcomeMessage");
   if (welcomeMessage === undefined) {
     welcomeMessage = "Welcome!";
@@ -57,16 +57,16 @@ Parse.Config.get().then(function(config) {
 
 ## Internal Config
 
-By default, Parse Config parameters can be publicly read which may be undesired if the parameter contains sensitive information that should not be exposed to clients. A parameter can be saved as readable only with the master key by adding a flag as the second argument.
+By default, MSG Config parameters can be publicly read which may be undesired if the parameter contains sensitive information that should not be exposed to clients. A parameter can be saved as readable only with the master key by adding a flag as the second argument.
 
 ```javascript
-await Parse.Config.save(
-  { welcomeMessage : "Welcome to Parse", secretMessage: "Psst 👀" },
+await MSG.Config.save(
+  { welcomeMessage : "Welcome to MSG", secretMessage: "Psst 👀" },
   { secretMessage: true }
 );
 
-const publicConfig = await Parse.Config.get(); // Returns only `welcomeMessage`.
-const internalConfig = await Parse.Config.get({ useMasterKey: true }); // Returns `welcomeMessage` and `secretMessage`.
+const publicConfig = await MSG.Config.get(); // Returns only `welcomeMessage`.
+const internalConfig = await MSG.Config.get({ useMasterKey: true }); // Returns `welcomeMessage` and `secretMessage`.
 ```
 
 If a parameter is not provided or set to `false` in the second argument, it can be retrieved without using the master key.
@@ -86,7 +86,7 @@ const refreshConfig = function() {
     const currentDate = new Date();
     if (lastFetchedDate === undefined ||
         currentDate.getTime() - lastFetchedDate.getTime() > configRefreshInterval) {
-      Parse.Config.get();
+      MSG.Config.get();
       lastFetchedDate = currentDate;
     }
   };
@@ -100,8 +100,8 @@ const refreshConfig = function() {
 *   string
 *   number
 *   Date
-*   Parse.File
-*   Parse.GeoPoint
+*   MSG.File
+*   MSG.GeoPoint
 *   JS Array
 *   JS Object
 

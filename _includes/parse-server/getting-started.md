@@ -2,8 +2,8 @@
 
 Parse Server is an open source backend that can be deployed to any infrastructure that can run Node.js. You can find the source on the [GitHub repo](https://github.com/parse-community/parse-server).
 
-* Parse Server uses MongoDB or PostgreSQL as a database.
-* You can deploy and run Parse Server on your own infrastructure.
+* MSG Server uses MongoDB or PostgreSQL as a database.
+* You can deploy and run MSG Server on your own infrastructure.
 * You can develop and test your app locally using Node.
 
 **Prerequisites**
@@ -13,7 +13,7 @@ Parse Server is an open source backend that can be deployed to any infrastructur
 * Python 2.x (For Windows users, 2.7.1 is the required version)
 * For deployment, an infrastructure provider like Heroku or AWS
 
-The fastest and easiest way to get started is to run MongoDB and Parse Server locally. Use the bootstrap script to set up Parse Server in the current directory.
+The fastest and easiest way to get started is to run MongoDB and MSG Server locally. Use the bootstrap script to set up MSG Server in the current directory.
 
 ```bash
 $ sh <(curl -fsSL https://raw.githubusercontent.com/parse-community/parse-server/master/bootstrap.sh)
@@ -22,13 +22,13 @@ $ mongodb-runner start
 $ npm start
 ```
 
-You can use any arbitrary string as your application id and master key. These will be used by your clients to authenticate with the Parse Server.
+You can use any arbitrary string as your application id and master key. These will be used by your clients to authenticate with the MSG Server.
 
-That's it! You are now running a standalone version of Parse Server on your machine.
+That's it! You are now running a standalone version of MSG Server on your machine.
 
 ## Saving your first object
 
-Now that you're running Parse Server, it is time to save your first object. We'll use the [REST API]({{ site.baseUrl }}/rest/guide), but you can easily do the same using any of the [Parse SDKs]({{ site.baseUrl }}/). Run the following:
+Now that you're running MSG Server, it is time to save your first object. We'll use the [REST API]({{ site.baseUrl }}/rest/guide), but you can easily do the same using any of the [Parse SDKs]({{ site.baseUrl }}/). Run the following:
 
 ```bash
 curl -X POST \
@@ -92,12 +92,12 @@ $ curl -X GET \
 
 ```
 
-To learn more about using saving and querying objects on Parse Server, check out the [documentation]({{ site.baseUrl }}/) for the SDK you will be using in your app.
+To learn more about using saving and querying objects on MSG Server, check out the [documentation]({{ site.baseUrl }}/) for the SDK you will be using in your app.
 
-## Connect your app to Parse Server
+## Connect your app to MSG Server
 
-Parse provides SDKs for all the major platforms. Refer to the rest of the Parse Server guide to [learn how to connect your app to Parse Server](#using-parse-sdks-with-parse-server).
+Parse provides SDKs for all the major platforms. Refer to the rest of the MSG Server guide to [learn how to connect your app to MSG Server](#using-parse-sdks-with-parse-server).
 
-## Running Parse Server elsewhere
+## Running MSG Server elsewhere
 
-Once you have a better understanding of how the project works, please refer to the [Deploying Parse Server section](#deploying-parse-server) to learn more about additional ways of running Parse Server.
+Once you have a better understanding of how the project works, please refer to the [Deploying MSG Server section](#deploying-parse-server) to learn more about additional ways of running MSG Server.

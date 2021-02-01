@@ -63,7 +63,7 @@ func application(application: UIApplication, didReceiveRemoteNotification userIn
 ```objc
 // Objective-C
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  // Store the deviceToken in the current installation and save it to Parse.
+  // Store the deviceToken in the current installation and save it to MSG.
   PFInstallation *currentInstallation = [PFInstallation currentInstallation];
   [currentInstallation setDeviceTokenFromData:deviceToken];
   [currentInstallation saveInBackground];
@@ -98,7 +98,7 @@ public override void ReceivedRemoteNotification(UIApplication application,
 
 ##### Compile and run!
 
-If you configured your app correctly, installation objects will automatically be saved to Parse Server when you run your app. You can run this curl command to verify:
+If you configured your app correctly, installation objects will automatically be saved to MSG Server when you run your app. You can run this curl command to verify:
 
 ```curl
 curl -X GET \

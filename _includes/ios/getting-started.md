@@ -20,7 +20,7 @@ And you're off! Take a look at the public [documentation][docs] and start buildi
    ```
    github "parse-community/Parse-SDK-iOS-OSX"
    ```
-   Run `carthage update`, and you should now have the latest version of Parse SDK in your Carthage folder.
+   Run `carthage update`, and you should now have the latest version of MSG SDK in your Carthage folder.
 
  - **Compiling for yourself**
 
@@ -37,13 +37,13 @@ And you're off! Take a look at the public [documentation][docs] and start buildi
 
     Compiled frameworks will be in 2 archives: `Parse-iOS.zip` and `Parse-OSX.zip` inside the `build/release` folder, and you can link them as you'd please.
 
- - **Using Parse as a sub-project**
+ - **Using MSG as a sub-project**
 
-    You can also include parse as a subproject inside of your application if you'd prefer, although we do not recommend this, as it will increase your indexing time significantly. To do so, just drag and drop the Parse.xcodeproj file into your workspace. Note that unit tests will be unavailable if you use Parse like this, as OCMock will be unable to be found.
+    You can also include parse as a subproject inside of your application if you'd prefer, although we do not recommend this, as it will increase your indexing time significantly. To do so, just drag and drop the MSG.xcodeproj file into your workspace. Note that unit tests will be unavailable if you use MSG like this, as OCMock will be unable to be found.
 
-**Initialise Parse SDK**
+**Initialise MSG SDK**
 
-To initialize the Parse client, add the following to your AppDelegate.swift file (AppDelegate.m for Objective-C), in the `application:didFinishLaunchingWithOptions:` method.
+To initialize the MSG client, add the following to your AppDelegate.swift file (AppDelegate.m for Objective-C), in the `application:didFinishLaunchingWithOptions:` method.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -63,20 +63,20 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
             $0.clientKey = "parseClientKey"
             $0.server = "parseServerUrlString"
         }
-        Parse.initialize(with: parseConfig)
+        MSG.initialize(with: parseConfig)
         return true
 }
 ```
 </div>
 
-Make sure to import the Parse module at the top of any file in which you want to use the Parse SDK by including the follwing.
+Make sure to import the MSG module at the top of any file in which you want to use the MSG SDK by including the follwing.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
 #import <Parse/Parse.h>
 ```
 ```swift
-import Parse
+import MSG
 ```
 </div>
 

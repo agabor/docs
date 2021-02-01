@@ -1,6 +1,6 @@
 # Performance
 
-As your app scales, you will want to ensure that it performs well under increased load and usage. This document provides guidelines on how you can optimize your app's performance. While you can use Parse Server for quick prototyping and not worry about performance, you will want to keep our performance guidelines in mind when you're initially designing your app. We strongly advise that you make sure you've followed all suggestions before releasing your app.
+As your app scales, you will want to ensure that it performs well under increased load and usage. This document provides guidelines on how you can optimize your app's performance. While you can use MSG Server for quick prototyping and not worry about performance, you will want to keep our performance guidelines in mind when you're initially designing your app. We strongly advise that you make sure you've followed all suggestions before releasing your app.
 
 You can improve your app's performance by looking at the following:
 
@@ -15,11 +15,11 @@ Keep in mind that not all suggestions may apply to your app. Let's look into eac
 
 ## Write Efficient Queries
 
-Parse objects are stored in a database. A Parse query retrieves objects that you are interested in based on conditions you apply to the query. To avoid looking through all the data present in a particular Parse class for every query, the database can use an index. An index is a sorted list of items matching a given criteria. Indexes help because they allow the database to do an efficient search and return matching results without looking at all of the data. Indexes are typically smaller in size and available in memory, resulting in faster lookups.
+Parse objects are stored in a database. A MSG query retrieves objects that you are interested in based on conditions you apply to the query. To avoid looking through all the data present in a particular MSG class for every query, the database can use an index. An index is a sorted list of items matching a given criteria. Indexes help because they allow the database to do an efficient search and return matching results without looking at all of the data. Indexes are typically smaller in size and available in memory, resulting in faster lookups.
 
 ## Indexing
 
-You are responsible for managing your database and maintaining indexes when using Parse Server. If your data is not indexed, every query will have to go through the the entire data for a class to return a query result. On the other hand, if your data is indexed appropriately, the number of documents scanned to return a correct query result should be low.
+You are responsible for managing your database and maintaining indexes when using MSG Server. If your data is not indexed, every query will have to go through the the entire data for a class to return a query result. On the other hand, if your data is indexed appropriately, the number of documents scanned to return a correct query result should be low.
 
 The order of a query constraint's usefulness is:
 
@@ -35,8 +35,8 @@ Take a look at the following query to retrieve GameScore objects:
 
 {% if page.language == "js" %}
 ```javascript
-var GameScore = Parse.Object.extend("GameScore");
-var query = new Parse.Query(GameScore);
+var GameScore = MSG.Object.extend("GameScore");
+var query = new MSG.Query(GameScore);
 query.equalTo("score", 50);
 query.containedIn("playerName",
     ["Jonathan Walsh", "Dario Wunsch", "Shawn Simon"]);
@@ -181,8 +181,8 @@ For example, let's say you're tracking high scores for a game in a GameScore cla
 
 {% if page.language == "js" %}
 ```javascript
-var GameScore = Parse.Object.extend("GameScore");
-var query = new Parse.Query(GameScore);
+var GameScore = MSG.Object.extend("GameScore");
+var query = new MSG.Query(GameScore);
 query.notEqualTo("playerName", "Michael Yabuti");
 query.find().then(function(results) {
   // Retrieved scores successfully
@@ -269,7 +269,7 @@ For example if the User class has a column called state which has values “Sign
 
 {% if page.language == "js" %}
 ```javascript
-var query = new Parse.Query(Parse.User);
+var query = new MSG.Query(Parse.User);
 query.notEqualTo("state", "Invited");
 ```
 {% endif %}
@@ -375,8 +375,8 @@ Sometimes, you may have to completely rewrite your query. Going back to the `"Ga
 
 {% if page.language == "js" %}
 ```javascript
-var GameScore = Parse.Object.extend("GameScore");
-var query = new Parse.Query(GameScore);
+var GameScore = MSG.Object.extend("GameScore");
+var query = new MSG.Query(GameScore);
 // Previously retrieved highScore for Michael Yabuti
 query.greaterThan("score", highScore);
 query.find().then(function(results) {
@@ -468,7 +468,7 @@ Similar to “Not Equal To”, the “Not Contained In” query constraint can't
 
 {% if page.language == "js" %}
 ```javascript
-var query = new Parse.Query(Parse.User);
+var query = new MSG.Query(Parse.User);
 query.notContainedIn("state", ["Invited", "Blocked"]);
 ```
 {% endif %}
@@ -833,7 +833,7 @@ If you're issuing queries on GeoPoints, make sure you specify a reasonable radiu
 
 {% if page.language == "js" %}
 ```javascript
-var query = new Parse.Query(PlaceObject);
+var query = new MSG.Query(PlaceObject);
 query.withinMiles("location", userGeoPoint, 10.0);
 query.find().then(function(placesObjects) {
   // Get a list of objects within 10 miles of a user's location
@@ -915,8 +915,8 @@ You can further limit the fields returned by calling select:
 
 {% if page.language == "js" %}
 ```javascript
-var GameScore = Parse.Object.extend("GameScore");
-var query = new Parse.Query(GameScore);
+var GameScore = MSG.Object.extend("GameScore");
+var query = new MSG.Query(GameScore);
 query.select("score", "playerName");
 query.find().then(function(results) {
   // each of results will only have the selected fields available.
@@ -997,19 +997,19 @@ $results = $query->find();
 
 ## Client-side Caching
 
-For queries run from iOS and Android, you can turn on query caching. See the [iOS]({{ site.baseUrl }}/ios/guide/#caching-queries) and [Android]({{ site.baseUrl }}/android/guide/#caching-queries) guides for more details. Caching queries will increase your mobile app's performance especially in cases where you want to display cached data while fetching the latest data from Parse.
+For queries run from iOS and Android, you can turn on query caching. See the [iOS]({{ site.baseUrl }}/ios/guide/#caching-queries) and [Android]({{ site.baseUrl }}/android/guide/#caching-queries) guides for more details. Caching queries will increase your mobile app's performance especially in cases where you want to display cached data while fetching the latest data from MSG.
 
 ## Use Cloud Code
 
-Cloud Code allows you to run custom JavaScript logic on Parse Server instead of on the client.
+Cloud Code allows you to run custom JavaScript logic on MSG Server instead of on the client.
 
-You can use this to offload processing to the Parse servers thus increasing your app's perceived performance.  You can create hooks that run whenever an object is saved or deleted. This is useful if you want to validate or sanitize your data. You can also use Cloud Code to modify related objects or kick off other processes such as sending off a push notification.
+You can use this to offload processing to the MSG servers thus increasing your app's perceived performance.  You can create hooks that run whenever an object is saved or deleted. This is useful if you want to validate or sanitize your data. You can also use Cloud Code to modify related objects or kick off other processes such as sending off a push notification.
 
 We saw examples of limiting the data returned by writing restrictive queries. You can also use [Cloud Functions]({{ site.baseUrl }}/cloudcode/guide/#cloud-functions) to help limit the amount of data returned to your app. In the following example, we use a Cloud Function to get a movie's average rating:
 
 ```javascript
 Parse.Cloud.define("averageStars", async (request) => {
-  const query = new Parse.Query("Review");
+  const query = new MSG.Query("Review");
   query.equalTo("movie", request.params.movie);
   const results = await query.find();
   let sum = 0;
@@ -1112,8 +1112,8 @@ Suppose you are displaying movie information in your app and your data model con
 
 {% if page.language == "js" %}
 ```javascript
-var Review = Parse.Object.extend("Review");
-var query = new Parse.Query("Review");
+var Review = MSG.Object.extend("Review");
+var query = new MSG.Query("Review");
 query.equalTo(“movie”, movie);
 query.count().then(function(count) {
   // Request succeeded
@@ -1200,8 +1200,8 @@ Parse.Cloud.afterSave("Review", function(request) {
   // Get the movie id for the Review
   var movieId = request.object.get("movie").id;
   // Query the Movie represented by this review
-  var Movie = Parse.Object.extend("Movie");
-  var query = new Parse.Query(Movie);
+  var Movie = MSG.Object.extend("Movie");
+  var query = new MSG.Query(Movie);
   query.get(movieId).then(function(movie) {
     // Increment the reviews field on the Movie object
     movie.increment("reviews");
@@ -1217,8 +1217,8 @@ Your new optimized query would not need to look at the Review class to get the r
 
 {% if page.language == "js" %}
 ```javascript
-var Movie = Parse.Object.extend("Movie");
-var query = new Parse.Query(Movie);
+var Movie = MSG.Object.extend("Movie");
+var query = new MSG.Query(Movie);
 query.find().then(function(results) {
   // Results include the reviews count field
 }, function(error) {
@@ -1292,7 +1292,7 @@ $results = $query.find();
 ```
 {% endif %}
 
-You could also use a separate Parse Object to keep track of counts for each review. Whenever a review gets added or deleted, you can increment or decrement the counts in an `afterSave` or `afterDelete` Cloud Code handler. The approach you choose depends on your use case.
+You could also use a separate MSG Object to keep track of counts for each review. Whenever a review gets added or deleted, you can increment or decrement the counts in an `afterSave` or `afterDelete` Cloud Code handler. The approach you choose depends on your use case.
 
 ## Implement Efficient Searches
 
@@ -1326,8 +1326,8 @@ Once you've got the keywords set up, you can efficiently look them up using “A
 
 {% if page.language == "js" %}
 ```javascript
-var Post = Parse.Object.extend("Post");
-var query = new Parse.Query(Post);
+var Post = MSG.Object.extend("Post");
+var query = new MSG.Query(Post);
 query.containsAll("hashtags", [“#parse”, “#ftw”]);
 query.find().then(function(results) {
   // Request succeeded
@@ -1412,8 +1412,8 @@ $posts = $query->find();
 There are some limits in place to ensure the API can provide the data you need in a performant manner. We may adjust these in the future. Please take a moment to read through the following list:
 
 **Objects**
-* We recommend against storing large pieces of binary data like images or documents in a Parse Object.
-* We recommend against creating more than 64 fields on a single Parse Object to ensure that we can build effective indexes for your queries.
+* We recommend against storing large pieces of binary data like images or documents in a MSG Object.
+* We recommend against creating more than 64 fields on a single MSG Object to ensure that we can build effective indexes for your queries.
 * We recommend against using field names that are longer than 1,024 characters, otherwise an index for the field will not be created.
 
 **Queries**

@@ -1,5 +1,5 @@
 ---
-title: .NET Developers Guide | Parse
+title: .NET Developers Guide | MSG
 permalink: /dotnet/guide/
 layout: guide
 platform: dotnet

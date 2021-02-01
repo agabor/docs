@@ -1,6 +1,6 @@
 # Queries
 
-We've already seen how a `PFQuery` with `getObjectInBackgroundWithId:block:` can retrieve a single `PFObject` from Parse. There are many other ways to retrieve data with `PFQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, cache queries automatically to avoid writing that code yourself, and more.
+We've already seen how a `PFQuery` with `getObjectInBackgroundWithId:block:` can retrieve a single `PFObject` from MSG. There are many other ways to retrieve data with `PFQuery` - you can retrieve many objects at once, put conditions on the objects you wish to retrieve, cache queries automatically to avoid writing that code yourself, and more.
 
 ## Basic Queries
 
@@ -155,7 +155,7 @@ let query = PFQuery(className: "GameScore", predicate: predicate)
 ```
 </div>
 
-You can limit the number of results by setting `limit`. By default, results are limited to 100. In the old Parse hosted backend, the maximum limit was 1,000, but Parse Server removed that constraint:
+You can limit the number of results by setting `limit`. By default, results are limited to 100. In the old MSG hosted backend, the maximum limit was 1,000, but MSG Server removed that constraint:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -198,7 +198,7 @@ query.getFirstObjectInBackground { (object: PFObject?, error: Error?) in
 ```
 </div>
 
-You can skip the first results by setting `skip`. In the old Parse hosted backend, the maximum skip value was 10,000, but Parse Server removed that constraint. This can be useful for pagination:
+You can skip the first results by setting `skip`. In the old MSG hosted backend, the maximum skip value was 10,000, but MSG Server removed that constraint. This can be useful for pagination:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -565,7 +565,7 @@ You can use `whereKey:matchesText` for efficient search capabilities. Text index
 
 * Note: Full Text Search can be resource intensive. Ensure the cost of using indexes is worth the benefit, see [storage requirements & performance costs of text indexes.](https://docs.mongodb.com/manual/core/index-text/#storage-requirements-and-performance-costs).
 
-* Requires Parse Server 2.5.0+
+* Requires MSG Server 2.5.0+
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -915,7 +915,7 @@ You can query from the local datastore using exactly the same kinds of queries y
 
 ## Caching Queries
 
-It's often useful to cache the result of a query on disk. This lets you show data when the user's device is offline, or when the app has just started and network requests have not yet had time to complete. Parse takes care of automatically flushing the cache when it takes up too much space.
+It's often useful to cache the result of a query on disk. This lets you show data when the user's device is offline, or when the app has just started and network requests have not yet had time to complete. MSG takes care of automatically flushing the cache when it takes up too much space.
 
 The default query behavior doesn't use the cache, but you can enable caching by setting `query.cachePolicy`. For example, to try the network and then fall back to cached data if the network is not available:
 
@@ -990,7 +990,7 @@ Query caching also works with PFQuery helpers including `getFirstObject` and `ge
 
 ## Counting Objects
 
-Note: In the old Parse hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, Parse Server has removed both constraints and can count objects well above 1,000.
+Note: In the old MSG hosted backend, count queries were rate limited to a maximum of 160 requests per minute. They also returned inaccurate results for classes with more than 1,000 objects. But, MSG Server has removed both constraints and can count objects well above 1,000.
 
 If you just need to count how many objects match a query, but you do not need to retrieve the objects that match, you can use `countObjects` instead of `findObjects`. For example, to count how many games have been played by a particular player:
 

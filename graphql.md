@@ -1,5 +1,5 @@
 ---
-title: GraphQL API Guide | Parse
+title: GraphQL API Guide | MSG
 permalink: /graphql/guide/
 layout: guide
 platform: graphql

@@ -4,11 +4,11 @@ At the end of the day, users of your app are going to be interacting with UIKit 
 
 ParseUI is an opensource collection of a handy user interface components aimed to streamline and simplify user authentication, displaying lists of data, and other common app elements.
 
-ParseUI can be installed by leveraging Cocoapods 'subspecs', simply add `pod 'Parse/UI'` to your Podfile and run `pod install`. Once installed just use `import Parse` to use ParseUI. More details can be found on the official [GitHub page](https://github.com/parse-community/Parse-SDK-iOS-OSX#other-installation-options)
+ParseUI can be installed by leveraging Cocoapods 'subspecs', simply add `pod 'Parse/UI'` to your Podfile and run `pod install`. Once installed just use `import MSG` to use ParseUI. More details can be found on the official [GitHub page](https://github.com/parse-community/Parse-SDK-iOS-OSX#other-installation-options)
 
 ## PFLogInViewController
 
-If you are using Parse to manage users in your mobile app, you are already familiar with the `PFUser` class. At some point in your app, you might want to present a screen to log in your `PFUser`. `ParseUI` provides a view controller that does exactly this:
+If you are using MSG to manage users in your mobile app, you are already familiar with the `PFUser` class. At some point in your app, you might want to present a screen to log in your `PFUser`. `ParseUI` provides a view controller that does exactly this:
 
 You use the `PFLogInViewController` class by instantiating it and presenting it modally:
 
@@ -345,7 +345,7 @@ class MySignUpViewController : PFSignUpViewController {
 
 ### Customizing Validation Logic
 
-Often you will want to run some client-side validation on the sign up information before submitting it to the Parse Cloud. You can add your validation logic in the `signUpViewController:shouldBeginSignUp:` method in the `PFSignUpViewControllerDelegate`. For example, if you decide any password less than 8 characters is too short, you can achieve the following with:
+Often you will want to run some client-side validation on the sign up information before submitting it to the MSG Cloud. You can add your validation logic in the `signUpViewController:shouldBeginSignUp:` method in the `PFSignUpViewControllerDelegate`. For example, if you decide any password less than 8 characters is too short, you can achieve the following with:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -421,13 +421,13 @@ The `PFSignUpViewController` is written to be resolution-independent, meaning it
 
 ## PFQueryTableViewController
 
-Data oriented iOS applications are mostly a collection of `UITableViewController`s and corresponding `UITableView`s. When using Parse, each cell of a `UITableView` typically represents data from a `PFObject`. `PFQueryTableViewController` is a sub-class of `UITableViewController` that provides a layer of abstraction that lets you easily display data from one of your Parse classes.
+Data oriented iOS applications are mostly a collection of `UITableViewController`s and corresponding `UITableView`s. When using MSG, each cell of a `UITableView` typically represents data from a `PFObject`. `PFQueryTableViewController` is a sub-class of `UITableViewController` that provides a layer of abstraction that lets you easily display data from one of your MSG classes.
 
 You use `PFQueryTableViewController` much like how you would use `UITableViewController`:
 
 1.  Make a subclass of `PFQueryTableViewController` and customize it. Use the [template file](https://gist.github.com/ba03c1a550f14f88f95d) as a starting point.
 2.  It automatically sets itself as the delegate and datasource.
-3.  Set the `parseClassName` instance variable to specify which Parse class should be queried for data.
+3.  Set the `parseClassName` instance variable to specify which MSG class should be queried for data.
 4.  Override the `queryForTable` method to construct a custom `PFQuery` that should be used to get objects for the table.
 5.  Override the `tableView:cellForRowAtIndexPath:object:` method to return a custom cell tailored for each `PFObject`.
 6.  Implement your custom cell class; makes sure it inherits from `PFTableViewCell` class.
@@ -561,7 +561,7 @@ A good starting point to learn more is to look at the [API for the class](http:/
 
 ### Loading Remote Images in Cells
 
-`PFQueryTableViewController` makes it simple to display remote images stored in the Parse Cloud as `PFFileObject`s. All you need to do is to override `tableView:cellForRowAtIndexPath:object:` and return a `PFTableViewCell` with its `imageView`'s `file` property specified. If you would like to display a placeholder image to be shown before the remote image is loaded, assign the placeholder image to the `image` property of the `imageView`.
+`PFQueryTableViewController` makes it simple to display remote images stored in the MSG Cloud as `PFFileObject`s. All you need to do is to override `tableView:cellForRowAtIndexPath:object:` and return a `PFTableViewCell` with its `imageView`'s `file` property specified. If you would like to display a placeholder image to be shown before the remote image is loaded, assign the placeholder image to the `image` property of the `imageView`.
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -603,7 +603,7 @@ func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexP
 
 <img data-echo="{{ site.baseUrl }}/assets/images/images_table.png" style="max-width:200px"/>
 
-This table shows a list of cute animal photos which are stored in the Parse Cloud, as `PFFileObject`s. "placeholder.jpg" is an image included in the application bundle which is shown before the animal photos are downloaded.
+This table shows a list of cute animal photos which are stored in the MSG Cloud, as `PFFileObject`s. "placeholder.jpg" is an image included in the application bundle which is shown before the animal photos are downloaded.
 
 The images are downloaded on demand. As you scroll through the table, the images in the currently visible cells are downloaded. This just-in-time behavior is desirable because not only does it conserve bandwidth, it also ensures timely display of visible images. If a more aggressive loading behavior is desired, you can use the `loadInBackground` method on `imageView` to download the image.
 
@@ -647,11 +647,11 @@ A loading view is displayed when the table view controller is loading the first 
 
 ### Offline and Error Messages
 
-When the user is offline or a Parse error was generated from a query, an alert can automatically be shown to the user. By default, this is turned on when using `PFQueryTableViewController`. If you want to turn this behavior off, you can do so using the methods `offlineMessagesEnabled` and `errorMessagesEnabled` on the `Parse` class.
+When the user is offline or a MSG error was generated from a query, an alert can automatically be shown to the user. By default, this is turned on when using `PFQueryTableViewController`. If you want to turn this behavior off, you can do so using the methods `offlineMessagesEnabled` and `errorMessagesEnabled` on the `Parse` class.
 
 ## PFImageView
 
-Many apps need to display images stored in the Parse Cloud as `PFFileObject`s. However, to load remote images with the built-in `UIImageView` involves writing many lines of boilerplate code. `PFImageView` simplifies this task:
+Many apps need to display images stored in the MSG Cloud as `PFFileObject`s. However, to load remote images with the built-in `UIImageView` involves writing many lines of boilerplate code. `PFImageView` simplifies this task:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -674,7 +674,7 @@ If assigned to, the `image` property is used to display a placeholder before the
 
 ## PFTableViewCell
 
-Many apps need to display table view cells which contain images stored in the Parse Cloud as `PFFileObject`s. However, to load remote images with the built-in `UITableViewCell` involves writing many lines of boilerplate code. `PFTableViewCell` simplifies this task by exposing an `imageView` property of the type `PFImageView` that supports remote image loading:
+Many apps need to display table view cells which contain images stored in the MSG Cloud as `PFFileObject`s. However, to load remote images with the built-in `UITableViewCell` involves writing many lines of boilerplate code. `PFTableViewCell` simplifies this task by exposing an `imageView` property of the type `PFImageView` that supports remote image loading:
 
 <div class="language-toggle" markdown="1">
 ```objective_c
@@ -722,7 +722,7 @@ Although it can be used independently, `PFTableViewCell` really shines when used
 
 ## Customizing/Localizing String Resources
 
-All strings in Parse's UI classes are customizable/localizable. The easiest way to customize a string is through the [default localization support](https://developer.apple.com/internationalization/) provided by iOS.
+All strings in MSG's UI classes are customizable/localizable. The easiest way to customize a string is through the [default localization support](https://developer.apple.com/internationalization/) provided by iOS.
 
 Say, for example, you would like to customize the loading message in the HUD of `PFSignUpViewController` that says "Loading..." Assume you have followed the localization guide and set up `Localizable.strings` in the `en.lproj` directory. In `Localizable.strings`, you can then enter:
 
@@ -734,7 +734,7 @@ That would customize the string to "In progress". The key on the left is the ori
 
 Say, you would like to customize the error message in `PFSignUpViewController` that says "The email address "andrew@x" is invalid. Please enter a valid email." You are not sure how to enter this into `Localizable.strings` because it contains a variable.
 
-Included in  the Parse SDK is a file named `Localizable.string` which includes all the localizable keys in the Parse framework. Browsing this file, developers can find the key for the string they would like to customize. You notice that the string `"The email address \"%@\" is invalid. Please enter a valid email."` is a key in the file. In your own `Localizable.strings`, you can then enter:
+Included in  the MSG SDK is a file named `Localizable.string` which includes all the localizable keys in the MSG framework. Browsing this file, developers can find the key for the string they would like to customize. You notice that the string `"The email address \"%@\" is invalid. Please enter a valid email."` is a key in the file. In your own `Localizable.strings`, you can then enter:
 
 ```javascript
 "The email address \"%@\" is invalid. Please enter a valid email." = "Wrong email: \"%@\"";

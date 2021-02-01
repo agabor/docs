@@ -1,8 +1,8 @@
 # Config
 
-## Parse Config
+## MSG Config
 
-`ParseConfig` is a way to configure your applications remotely by storing a single configuration object on Parse. It enables you to add things like feature gating or a simple "Message of the Day". To start using `ParseConfig` you need to add a few key/value pairs (parameters) to your app on the Parse Config Dashboard.
+`ParseConfig` is a way to configure your applications remotely by storing a single configuration object on MSG. It enables you to add things like feature gating or a simple "Message of the Day". To start using `ParseConfig` you need to add a few key/value pairs (parameters) to your app on the MSG Config Dashboard.
 
 <img alt="" data-echo="{{ '/assets/images/config_editor.png' | prepend: site.baseurl }}"/>
 

@@ -1,5 +1,5 @@
 ---
-title: REST API Guide | Parse
+title: REST API Guide | MSG
 permalink: /rest/guide/
 layout: guide
 platform: rest

@@ -1,6 +1,6 @@
 # Local Datastore
 
-The Parse Android SDK provides a local datastore which can be used to store and retrieve `ParseObject`s, even when the network is unavailable. To enable this functionality, simply call `Parse.enableLocalDatastore()` before your call to `initialize`.
+The MSG Android SDK provides a local datastore which can be used to store and retrieve `ParseObject`s, even when the network is unavailable. To enable this functionality, simply call `Parse.enableLocalDatastore()` before your call to `initialize`.
 
 ```java
 import com.parse.Parse;
@@ -11,8 +11,8 @@ public class App extends Application {
   public void onCreate() {
     super.onCreate();
 
-    Parse.enableLocalDatastore(this);
-    Parse.initialize(this);
+    MSG.enableLocalDatastore(this);
+    MSG.initialize(this);
   }
 }
 ```
@@ -20,7 +20,7 @@ public class App extends Application {
 If you use a `Parse.Configuration.Builder`, enable it there instead:
 
 ```java
-Parse.initialize(new Parse.Configuration.Builder(context)
+Parse.initialize(new MSG.Configuration.Builder(context)
   .server(...)
   .applicationId(...)
   .enableLocalDataStore()
@@ -177,7 +177,7 @@ query.findInBackground(new FindCallback<ParseObject>() {
 
 ## Syncing Local Changes
 
-Once you've saved some changes locally, there are a few different ways you can save those changes back to Parse over the network. The easiest way to do this is with `saveEventually`. When you call `saveEventually` on a `ParseObject`, it will be pinned until it can be saved. The SDK will make sure to save the object the next time the network is available.
+Once you've saved some changes locally, there are a few different ways you can save those changes back to MSG over the network. The easiest way to do this is with `saveEventually`. When you call `saveEventually` on a `ParseObject`, it will be pinned until it can be saved. The SDK will make sure to save the object the next time the network is available.
 
 ```java
 gameScore.saveEventually();
