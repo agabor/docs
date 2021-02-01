@@ -46,7 +46,7 @@ API access can be provided over **HTTPS** and **HTTP**. We recommend utilizing *
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>sessions/&lt;objectId&gt;</code>  | DELETE    | [Deleting Sessions](#deleting-sessions) |
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>sessions/me</code>          | PUT       | [Pairing with Installation](#pairing-session-with-installation) |
 {: .docs_table}
-
+<!---
 ## Roles API
 
 | URL                   | HTTP Verb | Functionality                               |
@@ -56,14 +56,14 @@ API access can be provided over **HTTPS** and **HTTP**. We recommend utilizing *
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>roles/&lt;objectId&gt;</code> | PUT       | [Updating Roles](#updating-roles)     |
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>roles/&lt;objectId&gt;</code> | DELETE    | [Deleting Roles](#deleting-roles)     |
 {: .docs_table}
-
+-->
 ## Files API
 
 | URL                   | HTTP Verb | Functionality                             |
 |-----------------------|-----------|-------------------------------------------|
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>files/&lt;fileName&gt;</code> | POST      | [Uploading Files](#uploading-files) |
 {: .docs_table}
-
+<!---
 ## Analytics API
 
 | URL                     | HTTP Verb | Functionality                                   |
@@ -89,7 +89,7 @@ API access can be provided over **HTTPS** and **HTTP**. We recommend utilizing *
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>installations</code>            | GET       | [Querying Installations](#querying-installations)        |
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>installations/&lt;objectId&gt;</code> | DELETE    | [Deleting Installations](#deleting-installations)        |
 {: .docs_table}
-
+-->
 ## Cloud Functions API
 
 | URL                   | HTTP Verb | Functionality                                             |
@@ -97,7 +97,7 @@ API access can be provided over **HTTPS** and **HTTP**. We recommend utilizing *
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>functions/&lt;name&gt;</code> | POST      | [Calling Cloud Functions](#calling-cloud-functions)    |
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>jobs/&lt;name&gt;</code>      | POST      | [Triggering Background Jobs](#triggering-background-jobs) |
 {: .docs_table}
-
+<!---
 ## Schemas API
 
 | URL                     | HTTP Verb | Functionality                                             |
@@ -128,7 +128,7 @@ API access can be provided over **HTTPS** and **HTTP**. We recommend utilizing *
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>hooks/triggers/&lt;className&gt;/&lt;triggerName&gt;</code> | PUT       | [Edit Cloud Trigger](#edit-trigger-webhook)       |
 | <code class="highlighter-rouge"><span class="custom-parse-server-mount">/parse/</span>hooks/triggers/&lt;className&gt;/&lt;triggerName&gt;</code> | DELETE    | [Delete Cloud Trigger](#delete-trigger-webhook)   |
 {: .docs_table}
-
+-->
 ## Request Format
 
 For POST and PUT requests, the request body must be JSON, with the `Content-Type` header set to `application/json`.
